@@ -13,8 +13,8 @@ module PervokaAchievement
       end
 
       module InstanceMethods
-        def after_update(record)
-          FirstLoveAchievement.check_conditions_for(User.current)
+        def after_save(record)
+          FirstLoveAchievement.check_conditions_for(record.assigned_to)
         end
       end
     end
