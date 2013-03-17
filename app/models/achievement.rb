@@ -4,6 +4,11 @@ class Achievement < ActiveRecord::Base
   after_save :deliver_mail
   validates_presence_of :user
 
+  @@registered_achievements = []
+  class << self
+    attr_reader :registered_achievements
+  end
+
   def deliver_mail
     Mailer.achievement_unlocked(self).deliver
   end
@@ -20,5 +25,9 @@ class Achievement < ActiveRecord::Base
     if !user.awarded?(self) and yield(user)
       user.award(self)
     end
+  end
+
+  def self.inherited(base)
+    @@registered_achievements << base
   end
 end
