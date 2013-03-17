@@ -1,0 +1,30 @@
+.achievement_entry
+{
+  width: 300px;
+  height: 80px;
+  margin-bottom: 1em;
+  padding: 1em;
+  border-radius: 5px;
+}
+
+.achievement_entry.unlocked
+{
+  color: #333;
+  background: #8ADDC0;
+}
+
+.achievement_entry.unlockable
+{
+  color: #CCC;
+  background: #FFF;
+}
+
+.achievement_entry h4
+{
+  font-weight: normal;
+}
+
+.achievement_entry p
+{
+  color: #588C79;
+}

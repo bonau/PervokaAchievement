@@ -1,5 +1,5 @@
 <div class="achievement_entry <%= unlocked ? 'unlocked' : 'unlockable' %>">
-  <h3><%= l(achievement.locale_prefix(:title)) %></h3>
+  <h3><%= l(achievement.locale_prefix(:title)) %><%= image_tag('true.png') if unlocked %></h3>
   <h4><%= l(achievement.locale_prefix(:description)) %></h4>
-  &quot;<%= l(achievement.locale_prefix(:quote)) %>&quot;
+  <p>&quot;<%= l(achievement.locale_prefix(:quote)) %>&quot;</p>
 </div>

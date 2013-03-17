@@ -1,3 +1,7 @@
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'main', :plugin => 'pervoka_achievement' %>
+<% end %>
+
 <h2><%= l(:"achievement.list_caption") %></h2>
 <div class="achievements_list">
   <%- @user_achievements.each do |achievement| %>
