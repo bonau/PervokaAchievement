@@ -1,9 +1,7 @@
-require_dependency 'user'
-require_dependency 'issue'
-require_dependency 'issue_observer'
-require 'pervoka_achievement/user_patch'
-require 'pervoka_achievement/issue_observer_patch'
-require 'pervoka_achievement/mailer_patch'
+plugin_dir =  File.dirname(__FILE__)
+['./app/models/achievement.rb', './app/models/*.rb', './lib/pervoka_achievement/*.rb'].each do |path|
+  Dir[File.expand_path(path, plugin_dir)].each { |f| require f }
+end
 
 Redmine::Plugin.register :pervoka_achievement do
   name 'Pervoka Achievement plugin'
