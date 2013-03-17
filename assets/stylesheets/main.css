@@ -28,3 +28,9 @@
 {
   color: #588C79;
 }
+
+.achievement_entry .date
+{
+  float: right;
+  font-size: 80%;
+}
