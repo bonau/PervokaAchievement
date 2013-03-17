@@ -1,7 +1,7 @@
 class Achievement < ActiveRecord::Base
   unloadable
   belongs_to :user
-  after_save :deliver_mail
+  after_create :deliver_mail
   validates_presence_of :user
 
   def deliver_mail
