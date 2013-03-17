@@ -1,8 +1,6 @@
 <h2><%= l(:"achievement.list_caption") %></h2>
 <div class="achievements_list">
-  <div class="achievement_entry">
-    <%- @user_achievements.each do |achievement| %>
-      <%= render partial: 'achievement_entry', locals: { achievement: achievement } %>
-    <%- end %>
-  </div>
+  <%- @user_achievements.each do |achievement| %>
+    <%= render partial: 'achievement_entry', locals: { achievement: achievement } %>
+  <%- end %>
 </div>
