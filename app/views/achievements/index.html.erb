@@ -1,0 +1,10 @@
+<h2><%= l(:"achievement.list_caption") %></h2>
+<div class="achievements_list">
+  <div class="achievement_entry">
+    <%- @user_achievements.each do |achievement| %>
+      <h3><%= l(achievement.class.locale_prefix(:title)) %></h3>
+      <h4><%= l(achievement.class.locale_prefix(:description)) %></h4>
+      &quot;<%= l(achievement.class.locale_prefix(:quote)) %>&quot;
+    <%- end %>
+  </div>
+</div>

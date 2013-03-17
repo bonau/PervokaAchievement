@@ -2,6 +2,7 @@ en:
   achievement:
     unlocked: Achievement "%{title}" Unlocked!
     detail: An achievement is unlocked. More functions will be available in the future.
+    list_caption: Achievements
     first_love_achievement:
       title: First Love
       description: Assigned to at least one issue

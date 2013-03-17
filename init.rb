@@ -12,6 +12,8 @@ Redmine::Plugin.register :pervoka_achievement do
   version '0.0.1'
   url 'https://github.com/bonau/PervokaAchievement'
   author_url 'https://github.com/bonau'
+
+  menu :account_menu, :achievements, {controller: 'achievements', action: 'index'}, caption: :"achievement.list_caption", first: true
 end
 
 Rails.configuration.to_prepare do
