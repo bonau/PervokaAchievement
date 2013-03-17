@@ -22,6 +22,10 @@ class Achievement < ActiveRecord::Base
     "achievement." + self.parameter_name + ( name ? "." + name.to_s : "" )
   end
 
+  def locale_prefix(name = nil)
+    self.class.locale_prefix(name)
+  end
+
   def self.check_conditions_for(user, &block)
     if !user.awarded?(self) and yield(user)
       user.award(self)
