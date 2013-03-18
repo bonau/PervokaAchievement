@@ -1,0 +1,8 @@
+"zh-TW":
+  achievement:
+    unlocked: 您已獲得「%{title}」成就
+    detail: 獲得新的成就，未來系統將會有更多功能與成就，請繼續努力。
+    first_love_achievement:
+      title: 初戀
+      description: 被分配到一個以上的問題
+      quote: 第一次總是特別痛。
