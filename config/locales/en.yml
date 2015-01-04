@@ -11,3 +11,7 @@ en:
       title: Stop-Loss Point
       description: Close a project
       quote: It's better to be *closed*.
+    it_must_be_kidding_achievement:
+      title: It MUST Be Kidding
+      description: Reopen a project
+      quote: Else I will find you, and I will kill you.

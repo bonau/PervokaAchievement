@@ -26,8 +26,8 @@ class Achievement < ActiveRecord::Base
     self.class.locale_prefix(name)
   end
 
-  def self.check_conditions_for(user, &block)
-    if !user.awarded?(self) and yield(user)
+  def self.check_conditions_for(user, *args, &block)
+    if user and !user.awarded?(self) and yield(user, *args)
       user.award(self)
     end
   end

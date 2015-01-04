@@ -11,3 +11,7 @@
       title: 停損點
       description: 關閉一個專案
       quote: 這樣做，對我們都好。
+    it_must_be_kidding_achievement:
+      title: 開玩笑的吧
+      description: 重開一個專案
+      quote: 不然我會找到你，並殺掉你。

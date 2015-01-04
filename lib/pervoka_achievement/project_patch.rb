@@ -7,9 +7,14 @@ module PervokaAchievement
         base.class_eval do
           unloadable
           alias_method :old_close, :close
+          alias_method :old_reopen, :reopen
           def close
             old_close
             CloseProjectAchievement.check_conditions_for(self)
+          end
+          def reopen
+            old_reopen
+            ItMustBeKiddingAchievement.check_conditions_for(self)
           end
         end
       end
