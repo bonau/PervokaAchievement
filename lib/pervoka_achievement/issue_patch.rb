@@ -13,8 +13,8 @@ module PervokaAchievement
       end
 
       module InstanceMethods
-        def check_achievement(record)
-          FirstLoveAchievement.check_conditions_for(record.assigned_to)
+        def check_achievement
+          FirstLoveAchievement.check_conditions_for(self.assigned_to)
         end
       end
     end
