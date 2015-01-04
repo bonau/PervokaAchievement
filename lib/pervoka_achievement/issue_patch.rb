@@ -1,11 +1,11 @@
 module PervokaAchievement
   module Patches
-    module IssueObserverPatch
+    module IssuePatch
       def self.included(base)
         base.extend(ClassMethods)
         base.send(:include, InstanceMethods)
         base.class_eval do
-          observe :issue
+          after_save :check_achievement
         end
       end
 
@@ -13,7 +13,7 @@ module PervokaAchievement
       end
 
       module InstanceMethods
-        def after_save(record)
+        def check_achievement(record)
           FirstLoveAchievement.check_conditions_for(record.assigned_to)
         end
       end
