@@ -16,3 +16,7 @@ en:
       title: It MUST Be Kidding
       description: Reopen a project
       quote: Else I will find you, and I will kill you.
+    attach_a_picture_achievement:
+      title: Where's The "Truth"?
+      description: Attach an image in a project
+      quote: It's no good to post without a pic.

@@ -19,4 +19,5 @@ Rails.configuration.to_prepare do
   Issue.send(:include, PervokaAchievement::Patches::IssuePatch) unless Issue.included_modules.include?(PervokaAchievement::Patches::IssuePatch)
   Mailer.send(:include, PervokaAchievement::Patches::MailerPatch) unless Mailer.included_modules.include?(PervokaAchievement::Patches::MailerPatch)
   Project.send(:include, PervokaAchievement::Patches::ProjectPatch) unless Project.included_modules.include?(PervokaAchievement::Patches::ProjectPatch)
+  Attachment.send(:inculde, PervokaAchievement::Patches::AttachmentPatch) unless Project.included_modules.include?(PervokaAchievement::Patches::AttachmentPatch)
 end
