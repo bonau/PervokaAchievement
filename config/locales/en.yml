@@ -7,3 +7,7 @@ en:
       title: First Love
       description: Assigned to at least one issue
       quote: First time's always painful.
+    close_project_achievement:
+      title: Stop-Loss Point
+      description: Close a project
+      quote: It's better to be *closed*.
