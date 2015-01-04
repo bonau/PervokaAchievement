@@ -1,5 +1,5 @@
 <div class="achievement_entry <%= unlocked ? 'unlocked' : 'unlockable' %>">
-  <span class="date"><%= User.current.time_to_date(achievement.created_at) if unlocked %></span>
+  <span class="date"><%= (User.current.time_to_date(achievement.created_at) if unlocked) rescue nil %></span>
   <h3><%= l(achievement.locale_prefix(:title)) %><%= image_tag('true.png') if unlocked %></h3>
   <h4><%= l(achievement.locale_prefix(:description)) %></h4>
   <p>&quot;<%= l(achievement.locale_prefix(:quote)) %>&quot;</p>
