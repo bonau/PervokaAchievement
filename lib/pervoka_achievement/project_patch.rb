@@ -12,9 +12,9 @@ module PervokaAchievement
         private
 
         def check_project_achievements
-          if status == Project::STATUS_CLOSED
+          if saved_change_to_status? && status == Project::STATUS_CLOSED
             CloseProjectAchievement.check_conditions_for(self)
-          elsif status == Project::STATUS_ACTIVE && saved_change_to_status?
+          elsif saved_change_to_status? && status == Project::STATUS_ACTIVE
             ItMustBeKiddingAchievement.check_conditions_for(self)
           end
         end
