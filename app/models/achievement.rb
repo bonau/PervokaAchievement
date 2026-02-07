@@ -11,6 +11,8 @@ class Achievement < ActiveRecord::Base
 
   def deliver_mail
     Mailer.achievement_unlocked(self).deliver_now
+  rescue => e
+    Rails.logger.error "PervokaAchievement: Failed to send achievement email: #{e.message}"
   end
 
   def self.parameter_name

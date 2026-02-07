@@ -81,11 +81,11 @@ jobs:
 
       - name: Run unit tests
         working-directory: redmine
-        run: bundle exec rake redmine:plugins:test:units NAME=pervoka_achievement
+        run: bundle exec rake redmine:plugins:test:units NAME=pervoka_achievement TESTOPTS="-v"
 
       - name: Run functional tests
         working-directory: redmine
-        run: bundle exec rake redmine:plugins:test:functionals NAME=pervoka_achievement
+        run: bundle exec rake redmine:plugins:test:functionals NAME=pervoka_achievement TESTOPTS="-v"
 
   lint:
     name: "Ruby Lint"

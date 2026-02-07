@@ -6,7 +6,12 @@ class IssuePatchTest < ActiveSupport::TestCase
 
   def setup
     @user = User.find(2)
+    User.current = @user
     ActionMailer::Base.deliveries.clear
+  end
+
+  def teardown
+    User.current = nil
   end
 
   test "issue should trigger achievement check on save" do
@@ -20,7 +25,9 @@ class IssuePatchTest < ActiveSupport::TestCase
 
   test "saving issue with assigned user triggers FirstLoveAchievement" do
     issue = issues(:issues_001)
-    issue.update!(assigned_to: @user)
+    issue.init_journal(@user)
+    issue.assigned_to = @user
+    issue.save!
 
     assert @user.awarded?(FirstLoveAchievement),
            "Saving issue with assignment should trigger FirstLoveAchievement"

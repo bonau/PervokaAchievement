@@ -21,4 +21,10 @@ Rails.configuration.to_prepare do
   Mailer.send(:include, PervokaAchievement::Patches::MailerPatch) unless Mailer.included_modules.include?(PervokaAchievement::Patches::MailerPatch)
   Project.send(:include, PervokaAchievement::Patches::ProjectPatch) unless Project.included_modules.include?(PervokaAchievement::Patches::ProjectPatch)
   Attachment.send(:include, PervokaAchievement::Patches::AttachmentPatch) unless Attachment.included_modules.include?(PervokaAchievement::Patches::AttachmentPatch)
+
+  # Eager load all achievement subclasses so they register via the inherited hook.
+  # Uses constantize to work correctly with both classic autoloader and Zeitwerk.
+  Dir[File.join(File.dirname(__FILE__), 'app', 'models', '*_achievement.rb')].each do |file|
+    File.basename(file, '.rb').camelize.constantize
+  end
 end

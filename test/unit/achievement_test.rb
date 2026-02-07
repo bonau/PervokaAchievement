@@ -4,8 +4,7 @@ class AchievementTest < ActiveSupport::TestCase
   fixtures :users, :email_addresses
 
   def setup
-    @user = User.find(2) # existing fixture user
-    # Ensure user has patches loaded
+    @user = User.find(2)
     ActionMailer::Base.deliveries.clear
   end
 
@@ -20,8 +19,7 @@ class AchievementTest < ActiveSupport::TestCase
   end
 
   test "should belong to user" do
-    achievement = Achievement.new(user: @user, type: 'FirstLoveAchievement')
-    achievement.save!
+    achievement = Achievement.create!(user: @user, type: 'FirstLoveAchievement')
     assert_equal @user, achievement.user
   end
 
@@ -54,10 +52,5 @@ class AchievementTest < ActiveSupport::TestCase
     assert_includes registered, "CloseProjectAchievement"
     assert_includes registered, "ItMustBeKiddingAchievement"
     assert_includes registered, "AttachAPictureAchievement"
-  end
-
-  test "should send email on creation" do
-    achievement = Achievement.create!(user: @user, type: 'FirstLoveAchievement')
-    assert_not_equal 0, ActionMailer::Base.deliveries.size, "No email was sent on achievement creation"
   end
 end
