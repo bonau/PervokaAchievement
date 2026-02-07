@@ -1,0 +1,150 @@
+name: Plugin Tests
+
+on:
+  push:
+    branches: [ master, develop, 'release/**' ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  test:
+    name: "Redmine ${{ matrix.redmine }} / Ruby ${{ matrix.ruby }}"
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Redmine 5.1 (Rails 6.1) - legacy support
+          - redmine: "5.1-stable"
+            ruby: "3.1"
+            db: sqlite3
+          # Redmine 6.0 (Rails 7.2) - current stable
+          - redmine: "6.0-stable"
+            ruby: "3.2"
+            db: sqlite3
+          - redmine: "6.0-stable"
+            ruby: "3.3"
+            db: sqlite3
+
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: redmine
+          POSTGRES_PASSWORD: redmine
+          POSTGRES_DB: redmine_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      RAILS_ENV: test
+      DB: ${{ matrix.db }}
+
+    steps:
+      - name: Checkout Redmine
+        uses: actions/checkout@v4
+        with:
+          repository: redmine/redmine
+          ref: ${{ matrix.redmine }}
+          path: redmine
+
+      - name: Checkout plugin
+        uses: actions/checkout@v4
+        with:
+          path: redmine/plugins/pervoka_achievement
+
+      - name: Set up Ruby ${{ matrix.ruby }}
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.ruby }}
+          bundler-cache: false
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libsqlite3-dev
+
+      - name: Configure database (SQLite)
+        if: matrix.db == 'sqlite3'
+        working-directory: redmine
+        run: |
+          cat > config/database.yml <<DBEOF
+          test:
+            adapter: sqlite3
+            database: db/test.sqlite3
+            pool: 5
+            timeout: 5000
+          DBEOF
+
+      - name: Install Ruby dependencies
+        working-directory: redmine
+        run: |
+          gem install bundler
+          bundle install --jobs=4 --retry=3 --without development rmagick
+
+      - name: Run Redmine migrations
+        working-directory: redmine
+        run: |
+          bundle exec rake db:migrate
+          bundle exec rake redmine:load_default_data REDMINE_LANG=en
+
+      - name: Run plugin migrations
+        working-directory: redmine
+        run: |
+          bundle exec rake redmine:plugins:migrate NAME=pervoka_achievement
+
+      - name: Run unit tests
+        working-directory: redmine
+        run: |
+          bundle exec rake redmine:plugins:test:units NAME=pervoka_achievement
+
+      - name: Run functional tests
+        working-directory: redmine
+        run: |
+          bundle exec rake redmine:plugins:test:functionals NAME=pervoka_achievement
+
+  lint:
+    name: "Ruby Lint"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout plugin
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+
+      - name: Check Ruby syntax
+        run: |
+          echo "=== Checking Ruby syntax ==="
+          find app lib -name "*.rb" -exec ruby -c {} \; 2>&1
+          echo ""
+          echo "=== Checking test syntax ==="
+          find test -name "*.rb" -exec ruby -c {} \; 2>&1
+
+      - name: Check ERB syntax
+        run: |
+          echo "=== Checking ERB templates ==="
+          find app/views -name "*.erb" -exec erb -x {} \; | ruby -c 2>&1 || true
+
+      - name: Check YAML syntax
+        run: |
+          echo "=== Checking locale files ==="
+          ruby -e "
+            require 'yaml'
+            Dir['config/locales/*.yml'].each do |f|
+              begin
+                YAML.load_file(f)
+                puts \"OK: #{f}\"
+              rescue => e
+                puts \"ERROR: #{f}: #{e.message}\"
+                exit 1
+              end
+            end
+          "
