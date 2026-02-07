@@ -1,5 +1,4 @@
 class Achievement < ActiveRecord::Base
-  unloadable
   belongs_to :user
   after_create :deliver_mail
   validates_presence_of :user
@@ -11,7 +10,7 @@ class Achievement < ActiveRecord::Base
   self.registered_achievements = []
 
   def deliver_mail
-    Mailer.achievement_unlocked(self).deliver
+    Mailer.achievement_unlocked(self).deliver_now
   end
 
   def self.parameter_name
@@ -33,6 +32,7 @@ class Achievement < ActiveRecord::Base
   end
 
   def self.inherited(base)
+    super
     Achievement.registered_achievements << base
   end
 end

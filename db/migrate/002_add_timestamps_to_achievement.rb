@@ -1,4 +1,4 @@
-class AddTimestampsToAchievement < ActiveRecord::Migration
+class AddTimestampsToAchievement < ActiveRecord::Migration[4.2]
   def up
     add_column :achievements, :created_at, :datetime
     add_column :achievements, :updated_at, :datetime

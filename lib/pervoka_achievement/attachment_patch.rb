@@ -2,19 +2,17 @@ module PervokaAchievement
   module Patches
     module AttachmentPatch
       def self.included(base)
-        base.extend(ClassMethods)
         base.send(:include, InstanceMethods)
         base.class_eval do
-          after_save :check_achievement
+          after_create :check_achievement
         end
       end
 
-      module ClassMethods
-      end
-
       module InstanceMethods
+        private
+
         def check_achievement
-          AttachAPictureAchievement.check_conditions_for(attachment)
+          AttachAPictureAchievement.check_conditions_for(self)
         end
       end
     end
