@@ -1,4 +1,5 @@
 <%= l(:"achievement.detail") %>
+<%= link_to l(:"achievement.view_list"), url_for(controller: 'achievements', action: 'index', :host => Setting.host_name) %>
 <hr />
 <h1><%= @achievement[:title] %></h1>
 <h2>&quot;<%= @achievement[:quote] %>&quot;</h2>
