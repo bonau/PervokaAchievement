@@ -1,0 +1,30 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+README.rdoc
+TEST_*.md
+
+# Docker files
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Development files
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Test files (如果不想在映像中包含測試)
+# test/
+
+# Logs
+*.log
+
+# Temporary files
+tmp/
+temp/

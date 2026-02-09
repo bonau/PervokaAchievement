@@ -1,0 +1,82 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: redmine-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: redmine
+      POSTGRES_USER: redmine
+      POSTGRES_PASSWORD: redmine_password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - redmine_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U redmine"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redmine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: redmine-with-achievement
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      # 資料庫設定
+      REDMINE_DB_POSTGRES: postgres
+      REDMINE_DB_DATABASE: redmine
+      REDMINE_DB_USERNAME: redmine
+      REDMINE_DB_PASSWORD: redmine_password
+      REDMINE_DB_PORT: 5432
+      
+      # PostgreSQL 連線資訊（用於啟動腳本）
+      POSTGRES_HOST: postgres
+      POSTGRES_DB: redmine
+      POSTGRES_USER: redmine
+      POSTGRES_PASSWORD: redmine_password
+      
+      # Redmine 設定
+      RAILS_ENV: production
+      REDMINE_LANG: zh-TW
+      
+      # 密鑰（生產環境應該使用環境變數或密鑰管理工具）
+      REDMINE_SECRET_KEY_BASE: ${REDMINE_SECRET_KEY_BASE:-please_change_this_secret_key_in_production}
+    volumes:
+      # 持久化資料
+      - redmine_files:/usr/src/redmine/files
+      - redmine_plugins:/usr/src/redmine/plugins
+      - redmine_themes:/usr/src/redmine/public/themes
+      
+      # 開發模式：掛載本地程式碼（取消註解以啟用即時更新）
+      # - ./:/usr/src/redmine/plugins/pervoka_achievement
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - redmine_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  postgres_data:
+    driver: local
+  redmine_files:
+    driver: local
+  redmine_plugins:
+    driver: local
+  redmine_themes:
+    driver: local
+
+networks:
+  redmine_network:
+    driver: bridge
