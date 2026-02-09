@@ -14,7 +14,7 @@ module PervokaAchievement
 
       module InstanceMethods
         def check_achievement
-          AttachAPictureAchievement.check_conditions_for(attachment)
+          AttachAPictureAchievement.check_conditions_for(self)
         end
       end
     end
