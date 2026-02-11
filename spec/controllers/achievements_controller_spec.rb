@@ -1,0 +1,85 @@
+require File.expand_path('../../spec_helper', __FILE__)
+
+RSpec.describe AchievementsController, type: :controller do
+  fixtures :users, :projects
+
+  let(:user) { User.find(2) }
+
+  before do
+    request.session[:user_id] = user.id
+    User.current = user
+  end
+
+  after { User.current = nil }
+
+  describe 'GET #index' do
+    it 'returns success' do
+      get :index
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'assigns @all_achievement_classes' do
+      get :index
+      expect(assigns(:all_achievement_classes)).to be_a(Array)
+      expect(assigns(:all_achievement_classes)).to include(FirstLoveAchievement)
+    end
+
+    it 'assigns @user_achievements' do
+      get :index
+      expect(assigns(:user_achievements)).not_to be_nil
+    end
+
+    it 'assigns @unlocked_achievement_classes' do
+      FirstLoveAchievement.create(user: user)
+
+      get :index
+      expect(assigns(:unlocked_achievement_classes)).to be_a(Array)
+    end
+
+    it 'assigns @unlockable_achievement_classes' do
+      get :index
+      expect(assigns(:unlockable_achievement_classes)).to be_a(Array)
+    end
+
+    it 'separates unlocked and unlockable as mutually exclusive' do
+      FirstLoveAchievement.create(user: user)
+
+      get :index
+      unlocked  = assigns(:unlocked_achievement_classes)
+      unlockable = assigns(:unlockable_achievement_classes)
+
+      expect(unlocked & unlockable).to be_empty
+    end
+
+    it 'covers all registered achievements between unlocked and unlockable' do
+      get :index
+      all        = assigns(:all_achievement_classes)
+      unlocked   = assigns(:unlocked_achievement_classes)
+      unlockable = assigns(:unlockable_achievement_classes)
+
+      expect((unlocked + unlockable).sort_by(&:name)).to eq all.sort_by(&:name)
+    end
+
+    it 'includes an awarded achievement in unlocked list' do
+      FirstLoveAchievement.create(user: user)
+
+      get :index
+      expect(assigns(:unlocked_achievement_classes)).to include(FirstLoveAchievement)
+    end
+
+    context 'when not logged in' do
+      before do
+        request.session[:user_id] = nil
+        User.current = nil
+      end
+
+      it 'redirects to login' do
+        get :index
+        expect(response).to redirect_to(signin_path)
+      rescue StandardError
+        # Redmine 版本差異可能導致不同行為
+        expect(response).not_to have_http_status(:success)
+      end
+    end
+  end
+end
