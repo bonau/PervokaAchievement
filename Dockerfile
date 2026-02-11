@@ -23,9 +23,9 @@ COPY --chown=redmine:redmine . /usr/src/redmine/plugins/pervoka_achievement
 # 設定工作目錄
 WORKDIR /usr/src/redmine
 
-# 安裝測試依賴（可選，如果需要執行測試）
-RUN echo "gem 'mocha', group: :test" >> Gemfile.local && \
-    bundle install --without development
+# 安裝 RSpec 測試依賴
+RUN echo -e "gem 'rspec-rails', '~> 6.0', group: [:development, :test]" >> Gemfile.local && \
+    bundle install --without ""
 
 # 建立啟動腳本來執行資料庫遷移
 USER root

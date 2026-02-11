@@ -121,15 +121,16 @@ case $choice in
         docker-compose exec redmine bash
         ;;
     9)
-        echo -e "${GREEN}執行測試...${NC}"
+        echo -e "${GREEN}執行 RSpec 測試...${NC}"
         echo "準備測試環境..."
         docker-compose exec redmine bash -c "
             bundle exec rake db:create RAILS_ENV=test 2>/dev/null || true
             bundle exec rake db:migrate RAILS_ENV=test
             bundle exec rake redmine:plugins:migrate NAME=pervoka_achievement RAILS_ENV=test
             echo ''
-            echo '執行測試...'
-            bundle exec rake redmine:plugins:test NAME=pervoka_achievement
+            echo '執行 RSpec 測試...'
+            cd plugins/pervoka_achievement
+            bundle exec rspec spec --format documentation
         "
         ;;
     0)
