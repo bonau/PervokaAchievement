@@ -78,6 +78,7 @@ jobs:
         run: |
           cd redmine
           echo "gem 'rspec-rails', '~> 6.0', group: [:development, :test]" >> Gemfile.local
+          echo "gem 'rspec_junit_formatter', group: [:test]" >> Gemfile.local
           bundle config set --local without 'development'
           bundle install --jobs 4 --retry 3
 
