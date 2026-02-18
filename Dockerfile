@@ -26,7 +26,7 @@ WORKDIR /usr/src/redmine
 # 安裝 RSpec 測試依賴
 RUN echo "gem 'rspec-rails', '~> 6.0', group: [:development, :test]" >> Gemfile.local && \
     echo "gem 'rspec_junit_formatter', group: [:test]" >> Gemfile.local && \
-    bundle install --without ""
+    bundle install
 
 # 建立啟動腳本來執行資料庫遷移
 USER root
