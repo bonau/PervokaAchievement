@@ -11,7 +11,7 @@ class Achievement < ActiveRecord::Base
   self.registered_achievements = []
 
   def deliver_mail
-    Mailer.achievement_unlocked(self).deliver
+    Mailer.achievement_unlocked(self).deliver_later
   end
 
   def self.parameter_name
