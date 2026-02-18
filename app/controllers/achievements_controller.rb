@@ -1,5 +1,6 @@
 class AchievementsController < ApplicationController
   unloadable
+  before_action :require_login
 
   def index
     @all_achievement_classes = Achievement.registered_achievements

@@ -14,30 +14,30 @@ RSpec.describe PervokaAchievement::Patches::MailerPatch, type: :model do
     end
 
     it 'creates a mail object' do
-      mail = Mailer.achievement_unlocked(achievement)
+      mail = Mailer.achievement_unlocked(user, achievement)
       expect(mail).not_to be_nil
     end
 
     it 'sends to the correct user email' do
-      mail = Mailer.achievement_unlocked(achievement)
+      mail = Mailer.achievement_unlocked(user, achievement)
       expect(mail.to).to eq [user.mail]
     end
 
     it 'has a non-empty subject' do
-      mail = Mailer.achievement_unlocked(achievement)
+      mail = Mailer.achievement_unlocked(user, achievement)
       expect(mail.subject).to be_present
     end
 
     it 'respects user language setting' do
       user.update_attribute(:language, 'zh-TW')
-      mail = Mailer.achievement_unlocked(achievement)
+      mail = Mailer.achievement_unlocked(user, achievement)
       expect(mail).not_to be_nil
     end
   end
 
   describe 'Achievement after_create callback' do
     it 'triggers mail delivery' do
-      mail_double = double(deliver: true)
+      mail_double = double(deliver_now: nil)
       allow(Mailer).to receive(:achievement_unlocked).and_return(mail_double)
 
       CloseProjectAchievement.create(user: user)
