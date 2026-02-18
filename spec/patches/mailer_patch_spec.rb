@@ -1,7 +1,7 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
 RSpec.describe PervokaAchievement::Patches::MailerPatch, type: :model do
-  fixtures :users
+  fixtures :users, :email_addresses
 
   let(:user) { User.find(2) }
   let(:achievement) { FirstLoveAchievement.create(user: user) }
@@ -37,7 +37,7 @@ RSpec.describe PervokaAchievement::Patches::MailerPatch, type: :model do
 
   describe 'Achievement after_create callback' do
     it 'triggers mail delivery' do
-      mail_double = double(deliver_now: nil)
+      mail_double = double(deliver_later: nil)
       allow(Mailer).to receive(:achievement_unlocked).and_return(mail_double)
 
       CloseProjectAchievement.create(user: user)

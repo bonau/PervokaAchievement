@@ -75,10 +75,8 @@ RSpec.describe AchievementsController, type: :controller do
 
       it 'redirects to login' do
         get :index
-        expect(response).to redirect_to(signin_path)
-      rescue StandardError
-        # Redmine 版本差異可能導致不同行為
-        expect(response).not_to have_http_status(:success)
+        expect(response).to have_http_status(:redirect)
+        expect(response.location).to include('/login')
       end
     end
   end

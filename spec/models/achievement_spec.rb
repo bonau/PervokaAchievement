@@ -92,7 +92,7 @@ RSpec.describe Achievement, type: :model do
 
   describe '#deliver_mail' do
     it 'is called after create' do
-      mail_double = double(deliver: true)
+      mail_double = double(deliver_later: nil)
       allow(Mailer).to receive(:achievement_unlocked).and_return(mail_double)
 
       Achievement.create(user: user)

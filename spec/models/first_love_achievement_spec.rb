@@ -2,7 +2,7 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 RSpec.describe FirstLoveAchievement, type: :model do
   fixtures :users, :projects, :issues, :trackers, :issue_statuses,
-           :issue_priorities, :projects_trackers, :roles, :members,
+           :enumerations, :projects_trackers, :roles, :members,
            :member_roles, :enabled_modules
 
   let(:user) { User.find(2) }
