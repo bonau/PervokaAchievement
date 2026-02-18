@@ -3,6 +3,19 @@ require File.expand_path('../../../../config/environment', __FILE__)
 
 require 'rspec/rails'
 
+# Explicitly apply plugin patches in the test environment.
+# Rails.configuration.to_prepare may not fire before RSpec loads depending
+# on the Redmine/Rails version; applying here guarantees correct state.
+[
+  [User,       PervokaAchievement::Patches::UserPatch],
+  [Issue,      PervokaAchievement::Patches::IssuePatch],
+  [Mailer,     PervokaAchievement::Patches::MailerPatch],
+  [Project,    PervokaAchievement::Patches::ProjectPatch],
+  [Attachment, PervokaAchievement::Patches::AttachmentPatch],
+].each do |klass, patch|
+  klass.send(:include, patch) unless klass.included_modules.include?(patch)
+end
+
 # Load Redmine test fixtures path
 REDMINE_TEST_DIR = File.expand_path('../../../../test', __FILE__)
 
