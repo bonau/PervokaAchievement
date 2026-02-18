@@ -19,14 +19,8 @@ RSpec.describe PervokaAchievement::Patches::AttachmentPatch, type: :model do
 
   describe 'after_save callback' do
     it 'calls check_achievement' do
-      new_attachment = Attachment.new(
-        filename: 'test.png', author: user,
-        container: Project.find(1), content_type: 'image/png'
-      )
-      allow(new_attachment).to receive(:files_to_final_location)
-
-      expect(new_attachment).to receive(:check_achievement).at_least(:once)
-      new_attachment.save!
+      expect(attachment).to receive(:check_achievement).at_least(:once)
+      attachment.save!
     end
   end
 end

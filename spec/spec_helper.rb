@@ -3,6 +3,13 @@ require File.expand_path('../../../../config/environment', __FILE__)
 
 require 'rspec/rails'
 
+# Eagerly load all application constants so Zeitwerk does not perform
+# lazy loading during test execution. Lazy loading can cause Zeitwerk's
+# internal mutex (@lock) to be in an incomplete state when RSpec tries
+# to set up message expectations on achievement classes, resulting in
+# NoMethodError: undefined method 'synchronize' for #<Module:...>.
+Rails.application.eager_load!
+
 # Explicitly apply plugin patches in the test environment.
 # Rails.configuration.to_prepare may not fire before RSpec loads depending
 # on the Redmine/Rails version; applying here guarantees correct state.

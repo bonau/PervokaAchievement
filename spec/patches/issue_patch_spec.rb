@@ -1,7 +1,9 @@
 require File.expand_path('../../spec_helper', __FILE__)
 
 RSpec.describe PervokaAchievement::Patches::IssuePatch, type: :model do
-  fixtures :users, :projects, :issues, :trackers, :issue_statuses
+  fixtures :users, :projects, :issues, :trackers, :issue_statuses,
+           :projects_trackers, :issue_priorities, :roles, :members,
+           :member_roles, :enabled_modules
 
   let(:issue) { Issue.find(1) }
   let(:user)  { User.find(2) }
@@ -25,13 +27,8 @@ RSpec.describe PervokaAchievement::Patches::IssuePatch, type: :model do
 
   describe 'after_save callback' do
     it 'calls check_achievement' do
-      new_issue = Issue.new(
-        project_id: 1, tracker_id: 1, subject: 'Test Issue',
-        author_id: 1, assigned_to_id: user.id, status_id: 1
-      )
-
-      expect(new_issue).to receive(:check_achievement).at_least(:once)
-      new_issue.save!
+      expect(issue).to receive(:check_achievement).at_least(:once)
+      issue.save!
     end
   end
 end
