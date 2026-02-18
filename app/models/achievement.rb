@@ -33,6 +33,7 @@ class Achievement < ActiveRecord::Base
   end
 
   def self.inherited(base)
+    super
     Achievement.registered_achievements << base
   end
 end
