@@ -2,8 +2,8 @@ require File.expand_path('../../spec_helper', __FILE__)
 
 RSpec.describe PervokaAchievement::Patches::IssuePatch, type: :model do
   fixtures :users, :projects, :issues, :trackers, :issue_statuses,
-           :projects_trackers, :enumerations, :roles, :members,
-           :member_roles, :enabled_modules
+           :projects_trackers, :enumerations, :issue_categories,
+           :roles, :members, :member_roles, :enabled_modules
 
   let(:issue) { Issue.find(1) }
   let(:user)  { User.find(2) }

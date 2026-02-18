@@ -71,21 +71,25 @@ RSpec.describe Achievement, type: :model do
   end
 
   describe '.check_conditions_for' do
-    before { user.achievements.where(type: 'FirstLoveAchievement').destroy_all }
+    before { user.achievements.destroy_all }
 
     it 'does not raise when user is nil' do
       expect { Achievement.check_conditions_for(nil) { true } }.not_to raise_error
     end
 
+    # Test the base Achievement mechanism (not a subclass that overrides the method)
     it 'does not award when condition block returns false' do
       expect {
-        FirstLoveAchievement.check_conditions_for(user) { false }
+        Achievement.check_conditions_for(user) { false }
       }.not_to change { user.achievements.count }
     end
 
     it 'awards when condition block returns true' do
+      mail_double = double(deliver_later: nil)
+      allow(Mailer).to receive(:achievement_unlocked).and_return(mail_double)
+
       expect {
-        FirstLoveAchievement.check_conditions_for(user) { true }
+        Achievement.check_conditions_for(user) { true }
       }.to change { user.achievements.count }.by(1)
     end
   end
