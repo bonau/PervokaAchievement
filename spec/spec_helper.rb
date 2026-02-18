@@ -7,7 +7,11 @@ require 'rspec/rails'
 REDMINE_TEST_DIR = File.expand_path('../../../../test', __FILE__)
 
 RSpec.configure do |config|
-  config.fixture_paths = ["#{REDMINE_TEST_DIR}/fixtures"]
+  if config.respond_to?(:fixture_paths=)
+    config.fixture_paths = ["#{REDMINE_TEST_DIR}/fixtures"]
+  else
+    config.fixture_path = "#{REDMINE_TEST_DIR}/fixtures"
+  end
   config.use_transactional_fixtures = true
   config.infer_spec_type_from_file_location!
 
