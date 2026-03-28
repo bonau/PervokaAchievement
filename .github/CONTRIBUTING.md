@@ -36,12 +36,12 @@
 ### 提交程式碼
 
 1. Fork 這個專案
-2. 建立您的功能分支 (`git checkout -b feature/amazing-feature`)
+2. 從 `develop` 建立您的功能分支 (`git checkout develop && git checkout -b feature/amazing-feature`)
 3. 撰寫測試並確保所有測試通過
 4. 遵循程式碼風格指南
 5. 提交您的變更 (`git commit -m 'Add some amazing feature'`)
 6. 推送到分支 (`git push origin feature/amazing-feature`)
-7. 開啟一個 Pull Request
+7. 開啟一個 **以 `develop` 為 base** 的 Pull Request
 
 ## 開發流程
 
