@@ -1,0 +1,163 @@
+# PervokaAchievement — Version Roadmap
+
+## Overview
+
+PervokaAchievement aims to be the most general-purpose achievement system for Redmine.
+This roadmap covers v0.2 through v1.0, tracking milestones from compatibility restoration
+to a fully configurable, notification-rich, and extensible achievement platform.
+
+**Version strategy**: Semantic versioning (plugin-independent of Redmine version).
+Redmine compatibility is documented per release in the changelog.
+
+---
+
+## v0.2 — Compatibility Release *(current develop)*
+
+**Goal**: First modern release. Establishes a stable, tested foundation.
+
+- Redmine 5.1 / 6.1 compatibility
+- Rails 6.x / 7.x compatibility
+- Ruby 3.1 / 3.2 / 3.3 support
+- Zeitwerk autoloading (removes deprecated `unloadable`)
+- RSpec test suite (12 spec files, 65 tests)
+- GitHub Actions CI/CD matrix (Ruby × Redmine combinations)
+- Docker support
+- 6 critical bug fixes (see project-001-revive retrospective)
+- Plugin version reset to semantic versioning (0.2.0)
+
+---
+
+## v0.3 — Content & UX Expansion
+
+**Goal**: Broaden achievement variety and improve the display experience.
+
+- Expand built-in achievements from 4 to 10+
+  - Issue-based: resolve N issues, create N issues
+  - Comment-based: post N journal entries
+  - Wiki-based: edit a wiki page
+  - Time-based: active on N consecutive days
+- UI improvements
+  - Categorized achievement list
+  - Display unlock timestamp and trigger event
+- i18n expansion (candidates: `ja.yml`, `zh-CN.yml`)
+
+> **Open question**: Countable achievements (e.g., "close N issues") require progress
+> tracking infrastructure. The decision on whether to introduce this in v0.3 or defer
+> to v0.5 will be made at design time for this version.
+
+---
+
+## v0.4 — Admin-Configurable Achievements *(Client-based)*
+
+**Goal**: Redmine administrators can control achievements from the admin UI without
+touching code.
+
+- Admin panel at `/admin/achievements`
+  - List all code-defined achievements
+  - Enable / disable individual achievements
+  - Override title, description, and quote per achievement (stored in DB, takes
+    precedence over locale defaults)
+- New `achievement_settings` table (or Redmine plugin settings mechanism)
+- UI styled to match Redmine admin interface
+
+> **Design note**: Achievement *conditions* remain code-defined in this version.
+> Dynamic condition configuration via UI is scoped to v1.0+.
+
+---
+
+## v0.5 — Progress & Tier System
+
+**Goal**: Support cumulative achievements and add depth through tiered rewards.
+
+- Progress tracking (`achievement_progresses` table: `user_id`, `achievement_type`,
+  `current_count`)
+- Achievement tier support (Bronze / Silver / Gold, or custom levels)
+- Progress bar displayed in the achievement list view
+- Backfill mechanism for existing users' historical data
+
+---
+
+## v0.6 — Social & Discovery
+
+**Goal**: Give the achievement system a sense of community.
+
+- Shareable personal achievement page (public profile option, opt-in)
+- Achievement score / points calculation
+- Simple leaderboard view
+- Achievement categories and tags (exploratory, milestone, fun, etc.)
+
+> **Note**: Scheduling relative to v0.5 depends on the stability of the v0.5 data
+> model. These two versions may be merged or reordered.
+
+> **Open question**: Whether the leaderboard is public by default or admin-only.
+
+---
+
+## v0.7 — Notification System Expansion
+
+**Goal**: Multi-channel notifications for a more immediate unlock experience.
+
+- **Redmine in-app notifications**: Write to Redmine's notification feed on unlock
+- **Flash popup**: Show an achievement unlock overlay on the next page load after
+  unlocking (stored in session, rendered by frontend)
+- **Webhook support**: Configure an endpoint URL; POST a JSON payload on unlock
+  (compatible with Slack / Discord incoming webhooks)
+- Notification channels individually toggleable from the Admin UI (extends v0.4
+  settings page)
+
+> **Technical challenge**: Redmine in-app notification API compatibility must be
+> verified across supported Redmine versions.
+>
+> **Open question**: Whether Webhook payloads require HMAC signature verification.
+
+---
+
+## v0.8 — Developer API & Extension Points
+
+**Goal**: Allow other Redmine plugins to integrate cleanly with the achievement system.
+
+- Public plugin API: `PervokaAchievement::API.register_achievement(...)`
+- REST API endpoints:
+  - `GET /achievements.json`
+  - `GET /users/:id/achievements.json`
+- Defined event hook interface (forward-compatible with event sourcing architecture)
+- Versioned API documentation
+
+---
+
+## v0.9 — Stabilization & Polish
+
+**Goal**: Final preparation for the v1.0 release.
+
+- Performance audit: N+1 query fixes, missing DB index review
+- Test coverage target: > 90%
+- Baseline accessibility (a11y) improvements
+- Complete user and developer documentation
+- Compatibility matrix update for latest Redmine versions
+- Deprecation cleanup
+
+---
+
+## v1.0 — General Achievement System (Stable Release)
+
+**Goal**: Stable, complete, and extensible Redmine achievement system.
+
+- All features from v0.2–v0.9 integrated
+- Stable public API (SemVer guarantees)
+- Full documentation: installation, extension, administration
+- Performance and security review passed
+
+---
+
+## Post v1.0 Direction
+
+After v1.0, the focus shifts toward making achievement *conditions* themselves
+configurable without code changes:
+
+- **Event sourcing architecture**: Abstract trigger conditions from code into a
+  configurable event pipeline, enabling admins to define complete achievement
+  conditions through the UI
+- **Pluggable condition engine (rule engine)**: Composable condition building
+  (e.g., "issues closed by user > 10 AND project = X")
+
+This work will be planned incrementally starting in v1.x.
