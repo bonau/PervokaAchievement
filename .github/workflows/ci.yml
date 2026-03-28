@@ -98,7 +98,7 @@ jobs:
           bundle exec rspec spec --format documentation --format RspecJunitFormatter --out ../../tmp/rspec-results.xml
 
       - name: Upload Test Results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: rspec-results-ruby${{ matrix.ruby }}-redmine${{ matrix.redmine }}
