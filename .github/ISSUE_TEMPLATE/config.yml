@@ -1,0 +1,11 @@
+blank_issues_enabled: true
+contact_links:
+  - name: 📚 文件
+    url: https://github.com/bonau/PervokaAchievement/blob/develop/README.md
+    about: 查看專案文件
+  - name: 💬 討論區
+    url: https://github.com/bonau/PervokaAchievement/discussions
+    about: 一般問題和討論請到討論區
+  - name: 🐳 Docker 安裝說明
+    url: https://github.com/bonau/PervokaAchievement/blob/develop/DOCKER_QUICKSTART.md
+    about: 查看 Docker 快速開始指南

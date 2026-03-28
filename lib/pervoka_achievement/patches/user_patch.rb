@@ -5,7 +5,6 @@ module PervokaAchievement
         base.extend(ClassMethods)
         base.send(:include, InstanceMethods)
         base.class_eval do
-          unloadable
           has_many :achievements
         end
       end
@@ -14,7 +13,7 @@ module PervokaAchievement
       end
       module InstanceMethods
         def awarded?(achievement)
-          achievements.count(:conditions => { :type => achievement }) > 0
+          achievements.where(type: achievement.to_s).exists?
         end
 
         def award(achievement)
