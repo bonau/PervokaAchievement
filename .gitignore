@@ -1,0 +1,84 @@
+# Environment variables (contains sensitive data)
+.env
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Linux
+*~
+.directory
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Editor/IDE
+*.swp
+*.swo
+*.swn
+*~
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+.settings/
+
+# Logs
+*.log
+log/
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Ruby/Rails
+*.gem
+*.rbc
+/.config
+/coverage/
+/InstalledFiles
+/pkg/
+/spec/reports/
+/test/tmp/
+/test/version_tmp/
+/.bundle/
+/vendor/bundle
+
+# Database
+*.sqlite3
+*.db
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# OS generated files
+.Spotlight-V100
+.Trashes
+.fseventsd
+
+# Docker volumes (local development)
+.docker-volumes/
+
+# Node modules (if any)
+node_modules/
+
+# Redmine specific
+files/
+public/plugin_assets/
+
+# Test coverage
+coverage/
+
+# RubyMine
+.rakeTasks

@@ -12,8 +12,7 @@ module PervokaAchievement
       module ClassMethods
       end
       module InstanceMethods
-        def achievement_unlocked(achievement)
-          user = achievement.user
+        def achievement_unlocked(user, achievement)
           set_language_if_valid user.language
           @achievement = l(achievement.class.locale_prefix)
           mail :to => user.mail,

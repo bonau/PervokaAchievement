@@ -1,9 +1,23 @@
 PervokaAchievement
 ==================
 
-An configurable achievement system for redmine, a fantastic project management web application.
+[![CI](https://github.com/bonau/PervokaAchievement/workflows/CI/badge.svg)](https://github.com/bonau/PervokaAchievement/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/bonau/PervokaAchievement/workflows/CodeQL%20Analysis/badge.svg)](https://github.com/bonau/PervokaAchievement/actions/workflows/codeql.yml)
+[![Docker Build](https://github.com/bonau/PervokaAchievement/workflows/CI/badge.svg?event=push)](https://github.com/bonau/PervokaAchievement/actions)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+A configurable achievement system for redmine, a fantastic project management web application.
 
 Every single achievement should be written in code, which is part of this achievement system.
+
+## ✨ Features
+
+- 🏆 Configurable achievement system
+- 📧 Email notifications when achievements are unlocked
+- 🎨 Beautiful achievement display page
+- 🐳 Docker support for easy deployment
+- ✅ Comprehensive RSpec test suite
+- 🔄 CI/CD with GitHub Actions
 
 
 Install
@@ -53,7 +67,7 @@ shows how we could customize our own strategy:
 
 Now we have to decide when to check if the "First Love" achievement is reached.
 
-ActiveRecord::Observer provides an effcient way to run some codes without monitor the whole database.
+ActiveRecord::Observer provides an efficient way to run some codes without monitor the whole database.
 Normally the observer codes are in app/models, but in this case, redmine has already implemented
 IssueObserver in app/models/issue\_observer.rb (redmine directory). All we have to do is to write a
 patch in lib/ (we will register it later).
@@ -87,7 +101,7 @@ To register the patch we've created, add the following codes in *init.rb*
       IssueObserver.send(:include, PervokaAchievement::Patches::IssueObserverPatch) unless IssueObserver.included_modules.include?(PervokaAchievement::Patches::IssueObserverPatch)
     end
 
-Futhermore, don't forget to register the observers in *init.rb* if you have any written in app/models
+Furthermore, don't forget to register the observers in *init.rb* if you have any written in app/models
 but has not been registered in redmine.
 
     RedmineApp::Application.configure do

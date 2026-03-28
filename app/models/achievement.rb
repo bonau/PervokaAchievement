@@ -4,8 +4,14 @@ class Achievement < ActiveRecord::Base
   after_create :deliver_mail
   validates_presence_of :user
 
+  class << self
+    attr_accessor :registered_achievements
+  end
+
+  self.registered_achievements = []
+
   def deliver_mail
-    Mailer.achievement_unlocked(self).deliver
+    Mailer.achievement_unlocked(user, self).deliver_later
   end
 
   def self.parameter_name
@@ -16,9 +22,18 @@ class Achievement < ActiveRecord::Base
     "achievement." + self.parameter_name + ( name ? "." + name.to_s : "" )
   end
 
-  def self.check_conditions_for(user, &block)
-    if !user.awarded?(self) and yield(user)
+  def locale_prefix(name = nil)
+    self.class.locale_prefix(name)
+  end
+
+  def self.check_conditions_for(user, *args, &block)
+    if user and !user.awarded?(self) and yield(user, *args)
       user.award(self)
     end
+  end
+
+  def self.inherited(base)
+    super
+    Achievement.registered_achievements << base
   end
 end

@@ -1,0 +1,28 @@
+name: Mark stale issues and pull requests
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # 每天執行一次
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      pull-requests: write
+    
+    steps:
+      - uses: actions/stale@v9
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-issue-message: '這個議題已經 60 天沒有活動了。如果還有相關需求，請回覆此議題，否則將在 7 天後自動關閉。'
+          stale-pr-message: '這個 PR 已經 30 天沒有活動了。如果還需要合併，請更新此 PR，否則將在 7 天後自動關閉。'
+          close-issue-message: '由於長時間沒有活動，此議題已自動關閉。如需重新開啟，請留言說明。'
+          close-pr-message: '由於長時間沒有活動，此 PR 已自動關閉。如需重新開啟，請更新並留言。'
+          days-before-stale: 60
+          days-before-close: 7
+          days-before-pr-stale: 30
+          stale-issue-label: 'stale'
+          stale-pr-label: 'stale'
+          exempt-issue-labels: 'pinned,security,bug'
+          exempt-pr-labels: 'pinned,security'

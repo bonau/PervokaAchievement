@@ -14,7 +14,7 @@ module PervokaAchievement
       end
       module InstanceMethods
         def awarded?(achievement)
-          achievements.count(:conditions => { :type => achievement }) > 0
+          achievements.where(type: achievement.to_s).exists?
         end
 
         def award(achievement)
