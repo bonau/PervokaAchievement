@@ -14,6 +14,8 @@ module PervokaAchievement
 
       module InstanceMethods
         def check_achievement
+          return unless saved_change_to_assigned_to_id?
+
           FirstLoveAchievement.check_conditions_for(self.assigned_to)
         end
       end

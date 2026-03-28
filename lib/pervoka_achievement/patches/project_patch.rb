@@ -2,25 +2,21 @@ module PervokaAchievement
   module Patches
     module ProjectPatch
       def self.included(base)
-        base.extend(ClassMethods)
-        base.send(:include, InstanceMethods)
-        base.class_eval do
-          alias_method :old_close, :close
-          alias_method :old_reopen, :reopen
-          def close
-            old_close
-            CloseProjectAchievement.check_conditions_for(self)
-          end
-          def reopen
-            old_reopen
-            ItMustBeKiddingAchievement.check_conditions_for(self)
-          end
-        end
+        base.prepend(InstanceMethods)
       end
 
-      module ClassMethods
-      end
       module InstanceMethods
+        def close
+          result = super
+          CloseProjectAchievement.check_conditions_for(self)
+          result
+        end
+
+        def reopen
+          result = super
+          ItMustBeKiddingAchievement.check_conditions_for(self)
+          result
+        end
       end
     end
   end
