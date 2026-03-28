@@ -5,7 +5,6 @@ module PervokaAchievement
         base.extend(ClassMethods)
         base.send(:include, InstanceMethods)
         base.class_eval do
-          unloadable
           alias_method :old_close, :close
           alias_method :old_reopen, :reopen
           def close

@@ -5,7 +5,6 @@ module PervokaAchievement
         base.extend(ClassMethods)
         base.send(:include, InstanceMethods)
         base.class_eval do
-          unloadable
           has_many :achievements
         end
       end
