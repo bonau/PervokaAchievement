@@ -23,6 +23,12 @@ RSpec.describe PervokaAchievement::Patches::IssuePatch, type: :model do
       issue.assigned_to = nil
       expect { issue.check_achievement }.not_to raise_error
     end
+
+    it 'handles Group assigned_to without raising' do
+      group = Group.create!(lastname: 'TestGroup')
+      issue.assigned_to = group
+      expect { issue.check_achievement }.not_to raise_error
+    end
   end
 
   describe 'after_save callback' do
