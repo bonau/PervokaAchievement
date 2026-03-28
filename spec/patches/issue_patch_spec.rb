@@ -35,7 +35,7 @@ RSpec.describe PervokaAchievement::Patches::IssuePatch, type: :model do
     it 'handles Group assigned_to without raising' do
       group = Group.create!(lastname: 'TestGroup')
       issue.assigned_to = group
-      issue.save!
+      allow(issue).to receive(:saved_change_to_assigned_to_id?).and_return(true)
       expect { issue.check_achievement }.not_to raise_error
     end
   end

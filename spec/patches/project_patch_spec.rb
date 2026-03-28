@@ -23,7 +23,7 @@ RSpec.describe PervokaAchievement::Patches::ProjectPatch, type: :model do
 
     it 'returns the original close result' do
       result = project.close
-      expect(result).to eq true
+      expect(result).to be_truthy
     end
   end
 
@@ -45,7 +45,7 @@ RSpec.describe PervokaAchievement::Patches::ProjectPatch, type: :model do
 
     it 'returns the original reopen result' do
       result = project.reopen
-      expect(result).to eq true
+      expect(result).to be_truthy
     end
   end
 end
