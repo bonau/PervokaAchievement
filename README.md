@@ -6,13 +6,13 @@ PervokaAchievement
 [![Docker Build](https://github.com/bonau/PervokaAchievement/workflows/CI/badge.svg?event=push)](https://github.com/bonau/PervokaAchievement/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-A configurable achievement system for redmine, a fantastic project management web application.
+An extensible achievement system for redmine, a fantastic project management web application.
 
 Every single achievement should be written in code, which is part of this achievement system.
 
 ## ✨ Features
 
-- 🏆 Configurable achievement system
+- 🏆 Extensible achievement framework (add new achievements via code)
 - 📧 Email notifications when achievements are unlocked
 - 🎨 Beautiful achievement display page
 - 🐳 Docker support for easy deployment
@@ -63,49 +63,40 @@ shows how we could customize our own strategy:
       end
     end
 
-### Add an observer
+### Add a patch to trigger the achievement
 
 Now we have to decide when to check if the "First Love" achievement is reached.
 
-ActiveRecord::Observer provides an efficient way to run some codes without monitor the whole database.
-Normally the observer codes are in app/models, but in this case, redmine has already implemented
-IssueObserver in app/models/issue\_observer.rb (redmine directory). All we have to do is to write a
-patch in lib/ (we will register it later).
+Create a patch that hooks into the relevant model's lifecycle using `after_save` callbacks:
 
-    # lib/pervoka_achievement/issue_observer_patch.rb
+    # lib/pervoka_achievement/patches/issue_patch.rb
     module PervokaAchievement
       module Patches
-        module IssueObserverPatch
+        module IssuePatch
           def self.included(base)
             base.send(:include, InstanceMethods)
             base.class_eval do
-              observe :issue
+              after_save :check_achievement
             end
           end
 
           module InstanceMethods
-            def after_save(record)
-              FirstLoveAchievement.check_conditions_for(record.assigned_to)
+            def check_achievement
+              return unless saved_change_to_assigned_to_id?
+
+              FirstLoveAchievement.check_conditions_for(self.assigned_to)
             end
           end
         end
       end
     end
 
-### Register all patches
+### Register the patch
 
-To register the patch we've created, add the following codes in *init.rb*
+To register the patch we've created, add the following code in *init.rb*:
 
-    require 'pervoka_achievement/issue_observer_patch'
     Rails.configuration.to_prepare do
-      IssueObserver.send(:include, PervokaAchievement::Patches::IssueObserverPatch) unless IssueObserver.included_modules.include?(PervokaAchievement::Patches::IssueObserverPatch)
-    end
-
-Furthermore, don't forget to register the observers in *init.rb* if you have any written in app/models
-but has not been registered in redmine.
-
-    RedmineApp::Application.configure do
-      config.active_record.observers += [:the_new_observer]
+      Issue.send(:include, PervokaAchievement::Patches::IssuePatch) unless Issue.included_modules.include?(PervokaAchievement::Patches::IssuePatch)
     end
 
 
@@ -121,12 +112,5 @@ but has not been registered in redmine.
 Roadmap
 -------
 
-### v0.1
-Basic achievement system implemented.
-
-### v0.4 (not implemented yet)
-Client-based achievement will be supported.
-
-### v0.7 (not implemented yet)
-One or more notification system will be involved.
+See [docs/roadmap.md](docs/roadmap.md) for the full roadmap from v0.2 to v1.0+.
 

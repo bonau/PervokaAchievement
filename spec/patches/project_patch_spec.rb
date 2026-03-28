@@ -9,16 +9,6 @@ RSpec.describe PervokaAchievement::Patches::ProjectPatch, type: :model do
   before  { User.current = user }
   after   { User.current = nil }
 
-  describe 'method aliasing' do
-    it 'defines old_close' do
-      expect(project).to respond_to(:old_close)
-    end
-
-    it 'defines old_reopen' do
-      expect(project).to respond_to(:old_reopen)
-    end
-  end
-
   describe '#close' do
     it 'triggers CloseProjectAchievement.check_conditions_for' do
       expect(CloseProjectAchievement).to receive(:check_conditions_for).with(project)
@@ -29,6 +19,11 @@ RSpec.describe PervokaAchievement::Patches::ProjectPatch, type: :model do
       project.close
       project.reload
       expect(project.status).to eq Project::STATUS_CLOSED
+    end
+
+    it 'returns the original close result' do
+      result = project.close
+      expect(result).to be_truthy
     end
   end
 
@@ -46,6 +41,11 @@ RSpec.describe PervokaAchievement::Patches::ProjectPatch, type: :model do
       project.reopen
       project.reload
       expect(project.status).to eq Project::STATUS_ACTIVE
+    end
+
+    it 'returns the original reopen result' do
+      result = project.reopen
+      expect(result).to be_truthy
     end
   end
 end

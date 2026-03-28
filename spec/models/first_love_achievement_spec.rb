@@ -15,6 +15,14 @@ RSpec.describe FirstLoveAchievement, type: :model do
   describe '.check_conditions_for' do
     before { user.achievements.where(type: described_class.name).destroy_all }
 
+    context 'when called with a Group' do
+      let(:group) { Group.create!(lastname: 'TestGroup') }
+
+      it 'does not raise and does not award' do
+        expect { described_class.check_conditions_for(group) }.not_to raise_error
+      end
+    end
+
     context 'when user has an assigned issue' do
       before do
         Issue.create!(

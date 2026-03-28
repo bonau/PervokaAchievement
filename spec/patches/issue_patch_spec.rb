@@ -13,21 +13,37 @@ RSpec.describe PervokaAchievement::Patches::IssuePatch, type: :model do
       expect(issue).to respond_to(:check_achievement)
     end
 
-    it 'delegates to FirstLoveAchievement.check_conditions_for with assigned_to' do
+    it 'delegates to FirstLoveAchievement.check_conditions_for when assigned_to_id changed' do
       issue.assigned_to = user
+      issue.save!
       expect(FirstLoveAchievement).to receive(:check_conditions_for).with(user)
       issue.check_achievement
     end
 
+    it 'skips check when assigned_to_id did not change' do
+      issue.save!
+      expect(FirstLoveAchievement).not_to receive(:check_conditions_for)
+      issue.update!(subject: 'Updated subject')
+    end
+
     it 'handles nil assigned_to without raising' do
       issue.assigned_to = nil
+      issue.save!
+      expect { issue.check_achievement }.not_to raise_error
+    end
+
+    it 'handles Group assigned_to without raising' do
+      group = Group.create!(lastname: 'TestGroup')
+      issue.assigned_to = group
+      allow(issue).to receive(:saved_change_to_assigned_to_id?).and_return(true)
       expect { issue.check_achievement }.not_to raise_error
     end
   end
 
   describe 'after_save callback' do
-    it 'calls check_achievement' do
+    it 'calls check_achievement on save' do
       expect(issue).to receive(:check_achievement).at_least(:once)
+      issue.assigned_to = user
       issue.save!
     end
   end
