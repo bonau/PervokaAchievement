@@ -1,10 +1,26 @@
+.achievement_category
+{
+  margin-bottom: 2em;
+}
+
+.achievement_category .category_title
+{
+  border-bottom: 2px solid #8ADDC0;
+  padding-bottom: 0.3em;
+  margin-bottom: 1em;
+  color: #555;
+}
+
 .achievement_entry
 {
   width: 300px;
-  height: 80px;
+  min-height: 80px;
   margin-bottom: 1em;
+  margin-right: 1em;
   padding: 1em;
   border-radius: 5px;
+  display: inline-block;
+  vertical-align: top;
 }
 
 .achievement_entry.unlocked
