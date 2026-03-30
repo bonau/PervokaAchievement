@@ -12,7 +12,7 @@ jobs:
       pull-requests: write
     
     steps:
-      - uses: actions/stale@v9
+      - uses: actions/stale@v10
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           stale-issue-message: '這個議題已經 60 天沒有活動了。如果還有相關需求，請回覆此議題，否則將在 7 天後自動關閉。'
