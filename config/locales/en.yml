@@ -22,6 +22,10 @@ en:
       title: It MUST Be Kidding
       description: Reopen a project
       quote: Else I will find you, and I will kill you.
+    create_first_issue_achievement:
+      title: Hello World
+      description: Create your first issue
+      quote: Every journey begins with a single step.
     attach_a_picture_achievement:
       title: Where's The "Truth"?
       description: Attach an image in a project

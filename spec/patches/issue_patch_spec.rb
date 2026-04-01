@@ -40,6 +40,23 @@ RSpec.describe PervokaAchievement::Patches::IssuePatch, type: :model do
     end
   end
 
+  describe '#check_achievement for new issue creation' do
+    let(:priority) { IssuePriority.first }
+
+    it 'calls CreateFirstIssueAchievement.check_conditions_for on new issue' do
+      expect(CreateFirstIssueAchievement).to receive(:check_conditions_for)
+      Issue.create!(
+        project_id: 1, tracker_id: 1, subject: 'New Issue',
+        author_id: user.id, status_id: 1, priority: priority
+      )
+    end
+
+    it 'does not call CreateFirstIssueAchievement on existing issue update' do
+      expect(CreateFirstIssueAchievement).not_to receive(:check_conditions_for)
+      issue.update!(subject: 'Updated subject')
+    end
+  end
+
   describe 'after_save callback' do
     it 'calls check_achievement on save' do
       expect(issue).to receive(:check_achievement).at_least(:once)
