@@ -21,6 +21,10 @@ module PervokaAchievement
           if previously_new_record?
             CreateFirstIssueAchievement.check_conditions_for(self)
           end
+
+          if saved_change_to_status_id? && closed?
+            ResolveFirstIssueAchievement.check_conditions_for(self)
+          end
         end
       end
     end

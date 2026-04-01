@@ -22,6 +22,10 @@
       title: 開玩笑的吧
       description: 重開一個專案
       quote: 不然我會找到你，並殺掉你。
+    resolve_first_issue_achievement:
+      title: 問題解決者
+      description: 解決你的第一個議題
+      quote: 一個解決了，還有無限個。
     create_first_issue_achievement:
       title: 哈囉世界
       description: 建立你的第一個議題
