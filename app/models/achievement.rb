@@ -1,4 +1,6 @@
 class Achievement < ActiveRecord::Base
+  CATEGORIES = [:issue, :project, :wiki, :social, :general].freeze
+
   belongs_to :user
   after_create :deliver_mail
   validates_presence_of :user
@@ -8,6 +10,14 @@ class Achievement < ActiveRecord::Base
   end
 
   self.registered_achievements = []
+
+  def self.category
+    :general
+  end
+
+  def self.categories
+    CATEGORIES
+  end
 
   def deliver_mail
     Mailer.achievement_unlocked(user, self).deliver_later

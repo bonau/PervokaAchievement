@@ -67,6 +67,29 @@ RSpec.describe AchievementsController, type: :controller do
       expect(assigns(:unlocked_achievement_classes)).to include(FirstLoveAchievement)
     end
 
+    it 'assigns @achievements_by_category' do
+      get :index
+      by_cat = assigns(:achievements_by_category)
+      expect(by_cat).to be_a(Hash)
+      expect(by_cat.keys).to all(be_a(Symbol))
+    end
+
+    it 'groups achievements by their category' do
+      get :index
+      by_cat = assigns(:achievements_by_category)
+      by_cat.each do |cat, achievements|
+        achievements[:unlocked].each { |a| expect(a.class.category).to eq cat }
+        achievements[:unlockable].each { |a| expect(a.category).to eq cat }
+      end
+    end
+
+    it 'includes all registered achievements across categories' do
+      get :index
+      by_cat = assigns(:achievements_by_category)
+      all_in_categories = by_cat.values.flat_map { |h| h[:unlocked].map(&:class) + h[:unlockable] }.uniq
+      expect(all_in_categories.sort_by(&:name)).to eq assigns(:all_achievement_classes).sort_by(&:name)
+    end
+
     context 'when not logged in' do
       before do
         request.session[:user_id] = nil
