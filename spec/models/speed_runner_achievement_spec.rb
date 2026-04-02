@@ -45,19 +45,15 @@ RSpec.describe SpeedRunnerAchievement, type: :model do
 
     context 'when issue is closed after 24 hours' do
       let(:issue) do
-        i = Issue.create!(
+        Issue.create!(
           project_id: 1, tracker_id: 1, subject: 'Slow Fix',
           author_id: user.id, status_id: 1, priority: priority
         )
-        # Backdate created_on to 2 days ago
-        i.update_column(:created_on, 2.days.ago)
-        i.reload
-        i.status = closed_status
-        i.save!
-        i
       end
 
       it 'does not award the achievement' do
+        allow(issue).to receive(:closed?).and_return(true)
+        allow(issue).to receive(:created_on).and_return(2.days.ago)
         described_class.check_conditions_for(issue)
         expect(user.awarded?(described_class)).to be false
       end
