@@ -25,6 +25,7 @@ module PervokaAchievement
 
           if saved_change_to_status_id? && closed?
             ResolveFirstIssueAchievement.check_conditions_for(self)
+            SpeedRunnerAchievement.check_conditions_for(self)
           end
         end
       end

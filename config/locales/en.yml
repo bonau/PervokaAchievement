@@ -30,6 +30,10 @@ en:
       title: Hello World
       description: Create your first issue
       quote: Every journey begins with a single step.
+    speed_runner_achievement:
+      title: Speed Runner
+      description: Close an issue within 24 hours of its creation
+      quote: Fast and furious.
     bug_hunter_achievement:
       title: Bug Hunter
       description: Report your first bug

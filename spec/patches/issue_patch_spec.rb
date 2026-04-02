@@ -79,6 +79,16 @@ RSpec.describe PervokaAchievement::Patches::IssuePatch, type: :model do
       issue.update!(status: closed_status)
     end
 
+    it 'calls SpeedRunnerAchievement.check_conditions_for when status changes to closed' do
+      issue = Issue.create!(
+        project_id: 1, tracker_id: 1, subject: 'Speed Test',
+        author_id: user.id, status_id: 1, priority: priority
+      )
+      issue.reload
+      expect(SpeedRunnerAchievement).to receive(:check_conditions_for).with(issue)
+      issue.update!(status: closed_status)
+    end
+
     it 'does not call ResolveFirstIssueAchievement when status does not change' do
       expect(ResolveFirstIssueAchievement).not_to receive(:check_conditions_for)
       issue.update!(subject: 'No status change')
