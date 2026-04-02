@@ -33,6 +33,7 @@ RSpec.describe ResolveFirstIssueAchievement, type: :model do
       end
 
       before do
+        issue.reload
         issue.status = closed_status
         issue.save!
       end
@@ -66,6 +67,7 @@ RSpec.describe ResolveFirstIssueAchievement, type: :model do
       end
 
       before do
+        issue.reload
         issue.status = closed_status
         issue.save!
         described_class.check_conditions_for(issue)

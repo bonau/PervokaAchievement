@@ -66,6 +66,7 @@ RSpec.describe PervokaAchievement::Patches::IssuePatch, type: :model do
         project_id: 1, tracker_id: 1, subject: 'Resolve Test',
         author_id: user.id, status_id: 1, priority: priority
       )
+      issue.reload
       expect(ResolveFirstIssueAchievement).to receive(:check_conditions_for).with(issue)
       issue.update!(status: closed_status)
     end
