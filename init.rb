@@ -16,4 +16,5 @@ Rails.configuration.to_prepare do
   Project.send(:include, PervokaAchievement::Patches::ProjectPatch) unless Project.included_modules.include?(PervokaAchievement::Patches::ProjectPatch)
   Attachment.send(:include, PervokaAchievement::Patches::AttachmentPatch) unless Attachment.included_modules.include?(PervokaAchievement::Patches::AttachmentPatch)
   Journal.send(:include, PervokaAchievement::Patches::JournalPatch) unless Journal.included_modules.include?(PervokaAchievement::Patches::JournalPatch)
+  WikiContent.send(:include, PervokaAchievement::Patches::WikiContentPatch) unless WikiContent.included_modules.include?(PervokaAchievement::Patches::WikiContentPatch)
 end

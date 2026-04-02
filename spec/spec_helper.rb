@@ -20,6 +20,7 @@ Rails.application.eager_load!
   [Project,    PervokaAchievement::Patches::ProjectPatch],
   [Attachment, PervokaAchievement::Patches::AttachmentPatch],
   [Journal,    PervokaAchievement::Patches::JournalPatch],
+  [WikiContent, PervokaAchievement::Patches::WikiContentPatch],
 ].each do |klass, patch|
   klass.send(:include, patch) unless klass.included_modules.include?(patch)
 end
