@@ -38,6 +38,10 @@ en:
       title: Bug Hunter
       description: Report your first bug
       quote: "It's not a bug, it's a feature... wait, no, it's a bug."
+    first_comment_achievement:
+      title: Voice Heard
+      description: Post your first comment on an issue
+      quote: Communication is key.
     attach_a_picture_achievement:
       title: Where's The "Truth"?
       description: Attach an image in a project
