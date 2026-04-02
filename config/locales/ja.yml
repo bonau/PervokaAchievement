@@ -1,0 +1,56 @@
+ja:
+  achievement:
+    unlocked: 実績「%{title}」を獲得しました！
+    detail: 実績を獲得しました。今後さらに多くの機能と実績が追加される予定です。
+    list_caption: 実績一覧
+    view_list: すべての実績を見る。
+    category:
+      issue: チケット
+      project: プロジェクト
+      wiki: Wiki
+      social: ソーシャル
+      general: 一般
+    first_love_achievement:
+      title: 初恋
+      description: 1つ以上のチケットに担当者として割り当てられる
+      quote: 初めてはいつも痛いもの。
+    close_project_achievement:
+      title: 損切りポイント
+      description: プロジェクトを閉じる
+      quote: こうするのが、お互いのため。
+    it_must_be_kidding_achievement:
+      title: 冗談でしょ
+      description: プロジェクトを再開する
+      quote: さもなくば、見つけ出して始末する。
+    resolve_first_issue_achievement:
+      title: 問題解決者
+      description: 最初のチケットを解決する
+      quote: 1つ片付いた、残りは無限大。
+    create_first_issue_achievement:
+      title: ハローワールド
+      description: 最初のチケットを作成する
+      quote: 千里の道も一歩から。
+    speed_runner_achievement:
+      title: スピードランナー
+      description: 作成から24時間以内にチケットを閉じる
+      quote: 速く、激しく。
+    bug_hunter_achievement:
+      title: バグハンター
+      description: 最初のバグを報告する
+      quote: バグじゃない、機能だ……いや、やっぱりバグだ。
+    wiki_editor_achievement:
+      title: 知識の番人
+      description: 初めてWikiページを編集する
+      quote: 共有された知識は二乗になる。
+    team_player_achievement:
+      title: チームプレイヤー
+      description: 3つ以上のプロジェクトのメンバーになる
+      quote: チームに「自分だけ」はない。
+    first_comment_achievement:
+      title: 声を上げて
+      description: チケットに最初のコメントを投稿する
+      quote: コミュニケーションが鍵。
+    attach_a_picture_achievement:
+      title: 「真実」はどこ？
+      description: プロジェクトに画像を添付する
+      quote: 画像なしの投稿は許されない。
