@@ -20,6 +20,7 @@ module PervokaAchievement
 
           if previously_new_record?
             CreateFirstIssueAchievement.check_conditions_for(self)
+            BugHunterAchievement.check_conditions_for(self)
           end
 
           if saved_change_to_status_id? && closed?

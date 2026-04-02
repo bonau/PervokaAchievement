@@ -30,6 +30,10 @@
       title: 哈囉世界
       description: 建立你的第一個議題
       quote: 千里之行始於足下。
+    bug_hunter_achievement:
+      title: 獵蟲者
+      description: 回報你的第一個 Bug
+      quote: 這不是 Bug，是功能……等等，不，這是 Bug。
     attach_a_picture_achievement:
       title: 真相呢？
       description: 在一個專案中貼圖
