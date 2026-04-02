@@ -42,6 +42,10 @@
       title: 知識守護者
       description: 第一次編輯維基頁面
       quote: 分享知識使知識倍增。
+    team_player_achievement:
+      title: 團隊合作者
+      description: 成為 3 個以上專案的成員
+      quote: 團隊中沒有「我」。
     first_comment_achievement:
       title: 發聲
       description: 在議題上發表你的第一則留言

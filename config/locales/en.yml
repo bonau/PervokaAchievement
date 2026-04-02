@@ -42,6 +42,10 @@ en:
       title: Knowledge Keeper
       description: Edit a wiki page for the first time
       quote: Knowledge shared is knowledge squared.
+    team_player_achievement:
+      title: Team Player
+      description: Be a member of 3 or more projects
+      quote: "There is no 'I' in 'team'."
     first_comment_achievement:
       title: Voice Heard
       description: Post your first comment on an issue
