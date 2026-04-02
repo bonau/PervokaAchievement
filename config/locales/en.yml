@@ -30,6 +30,10 @@ en:
       title: Hello World
       description: Create your first issue
       quote: Every journey begins with a single step.
+    bug_hunter_achievement:
+      title: Bug Hunter
+      description: Report your first bug
+      quote: "It's not a bug, it's a feature... wait, no, it's a bug."
     attach_a_picture_achievement:
       title: Where's The "Truth"?
       description: Attach an image in a project

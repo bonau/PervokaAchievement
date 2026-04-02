@@ -55,6 +55,14 @@ RSpec.describe PervokaAchievement::Patches::IssuePatch, type: :model do
       expect(CreateFirstIssueAchievement).not_to receive(:check_conditions_for)
       issue.update!(subject: 'Updated subject')
     end
+
+    it 'calls BugHunterAchievement.check_conditions_for on new issue' do
+      expect(BugHunterAchievement).to receive(:check_conditions_for)
+      Issue.create!(
+        project_id: 1, tracker_id: 1, subject: 'Bug Report',
+        author_id: user.id, status_id: 1, priority: priority
+      )
+    end
   end
 
   describe '#check_achievement for issue status change to closed' do
