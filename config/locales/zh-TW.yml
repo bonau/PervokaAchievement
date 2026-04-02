@@ -38,6 +38,10 @@
       title: 獵蟲者
       description: 回報你的第一個 Bug
       quote: 這不是 Bug，是功能……等等，不，這是 Bug。
+    wiki_editor_achievement:
+      title: 知識守護者
+      description: 第一次編輯維基頁面
+      quote: 分享知識使知識倍增。
     first_comment_achievement:
       title: 發聲
       description: 在議題上發表你的第一則留言
