@@ -57,6 +57,26 @@ RSpec.describe PervokaAchievement::Patches::IssuePatch, type: :model do
     end
   end
 
+  describe '#check_achievement for issue status change to closed' do
+    let(:priority) { IssuePriority.first }
+    let(:closed_status) { IssueStatus.where(is_closed: true).first }
+
+    it 'calls ResolveFirstIssueAchievement.check_conditions_for when status changes to closed' do
+      issue = Issue.create!(
+        project_id: 1, tracker_id: 1, subject: 'Resolve Test',
+        author_id: user.id, status_id: 1, priority: priority
+      )
+      issue.reload
+      expect(ResolveFirstIssueAchievement).to receive(:check_conditions_for).with(issue)
+      issue.update!(status: closed_status)
+    end
+
+    it 'does not call ResolveFirstIssueAchievement when status does not change' do
+      expect(ResolveFirstIssueAchievement).not_to receive(:check_conditions_for)
+      issue.update!(subject: 'No status change')
+    end
+  end
+
   describe 'after_save callback' do
     it 'calls check_achievement on save' do
       expect(issue).to receive(:check_achievement).at_least(:once)

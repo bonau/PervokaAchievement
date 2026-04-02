@@ -22,6 +22,10 @@ en:
       title: It MUST Be Kidding
       description: Reopen a project
       quote: Else I will find you, and I will kill you.
+    resolve_first_issue_achievement:
+      title: Problem Solver
+      description: Resolve your first issue
+      quote: One down, infinity to go.
     create_first_issue_achievement:
       title: Hello World
       description: Create your first issue
