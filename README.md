@@ -12,11 +12,13 @@ Every single achievement should be written in code, which is part of this achiev
 
 ## ✨ Features
 
-- 🏆 Extensible achievement framework (add new achievements via code)
+- 🏆 Extensible achievement framework with 11 built-in achievements
+- 📂 Achievement category system (Issues, Projects, Wiki, Social)
 - 📧 Email notifications when achievements are unlocked
-- 🎨 Beautiful achievement display page
+- 🎨 Categorized achievement display page with inline card layout
+- 🌐 i18n support (English, Traditional Chinese, Japanese, Simplified Chinese)
 - 🐳 Docker support for easy deployment
-- ✅ Comprehensive RSpec test suite
+- ✅ Comprehensive RSpec test suite (~105 tests)
 - 🔄 CI/CD with GitHub Actions
 
 
