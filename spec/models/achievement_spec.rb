@@ -124,6 +124,27 @@ RSpec.describe Achievement, type: :model do
         Achievement.check_conditions_for(user) { true }
       }.to change { user.achievements.count }.by(1)
     end
+
+    it 'does not award when achievement is disabled' do
+      AchievementSetting.create!(achievement_type: 'Achievement', enabled: false)
+
+      expect {
+        Achievement.check_conditions_for(user) { true }
+      }.not_to change { user.achievements.count }
+
+      AchievementSetting.where(achievement_type: 'Achievement').delete_all
+    end
+
+    it 'awards normally when no setting row exists (default enabled)' do
+      mail_double = double(deliver_later: nil)
+      allow(Mailer).to receive(:achievement_unlocked).and_return(mail_double)
+
+      AchievementSetting.where(achievement_type: 'Achievement').delete_all
+
+      expect {
+        Achievement.check_conditions_for(user) { true }
+      }.to change { user.achievements.count }.by(1)
+    end
   end
 
   describe '#deliver_mail' do

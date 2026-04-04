@@ -36,6 +36,7 @@ class Achievement < ActiveRecord::Base
   end
 
   def self.check_conditions_for(user, *args, &block)
+    return unless AchievementSetting.enabled?(self)
     if user and !user.awarded?(self) and yield(user, *args)
       user.award(self)
     end
