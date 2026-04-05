@@ -6,6 +6,7 @@
 <div class="achievement_score_banner">
   <span class="score_value"><%= User.current.achievement_score %></span>
   <span class="score_label"><%= l(:'achievement.total_score') %></span>
+  <span class="score_link"><%= link_to l(:'achievement.leaderboard_title'), achievement_leaderboard_path %></span>
 </div>
 
 <div class="achievement_visibility_setting">

@@ -19,6 +19,9 @@ en:
     user_achievements: "%{name}'s Achievements"
     public_profile_label: Make my achievements public
     share_hint: "Your shareable profile link:"
+    leaderboard_title: Leaderboard
+    leaderboard_empty: No achievements have been unlocked yet.
+    achievement_count: Achievements
     category:
       issue: Issues
       project: Projects

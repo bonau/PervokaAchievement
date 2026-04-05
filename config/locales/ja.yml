@@ -19,6 +19,9 @@ ja:
     user_achievements: "%{name} の実績"
     public_profile_label: 実績を公開する
     share_hint: 共有リンク：
+    leaderboard_title: リーダーボード
+    leaderboard_empty: まだ実績を獲得した人はいません。
+    achievement_count: 実績数
     category:
       issue: チケット
       project: プロジェクト

@@ -7,7 +7,7 @@ Redmine::Plugin.register :pervoka_achievement do
   author_url 'https://github.com/bonau'
 
   project_module :pervoka_achievement do
-    permission :view_achievements, { achievements: [:index] }, public: true, read: true
+    permission :view_achievements, { achievements: [:index, :show, :leaderboard] }, public: true, read: true
   end
 
   menu :account_menu, :achievements, {controller: 'achievements', action: 'index'},

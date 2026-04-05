@@ -200,6 +200,37 @@ RSpec.describe AchievementsController, type: :controller do
     end
   end
 
+  describe 'GET #leaderboard' do
+    before { Achievement.where(user_id: user.id).delete_all }
+
+    it 'returns success' do
+      get :leaderboard
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'assigns @leaderboard' do
+      get :leaderboard
+      expect(assigns(:leaderboard)).to be_a(Array)
+    end
+
+    it 'includes users with achievements sorted by score descending' do
+      FirstLoveAchievement.create(user: user)
+      get :leaderboard
+      leaderboard = assigns(:leaderboard)
+      expect(leaderboard).not_to be_empty
+      expect(leaderboard.first[:user]).to eq user
+      expect(leaderboard.first[:score]).to eq FirstLoveAchievement.effective_points
+      expect(leaderboard.first[:count]).to eq 1
+    end
+
+    it 'excludes users without any achievements' do
+      get :leaderboard
+      leaderboard = assigns(:leaderboard)
+      user_ids = leaderboard.map { |e| e[:user].id }
+      expect(user_ids).not_to include(user.id)
+    end
+  end
+
   describe 'PATCH #update_visibility' do
     after { AchievementUserSetting.delete_all }
 

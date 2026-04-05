@@ -1,0 +1,40 @@
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'main', :plugin => 'pervoka_achievement' %>
+<% end %>
+
+<h2><%= l(:'achievement.leaderboard_title') %></h2>
+
+<% if @leaderboard.any? %>
+  <table class="list achievement_leaderboard">
+    <thead>
+      <tr>
+        <th class="rank">#</th>
+        <th><%= l(:field_user) %></th>
+        <th class="score"><%= l(:'achievement.total_score') %></th>
+        <th class="count"><%= l(:'achievement.achievement_count') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @leaderboard.each_with_index do |entry, index| %>
+        <tr class="<%= cycle('odd', 'even') %> <%= 'leaderboard_current_user' if entry[:user] == User.current %>">
+          <td class="rank"><%= index + 1 %></td>
+          <td>
+            <% if entry[:user] == User.current || User.current.admin? || AchievementUserSetting.public_profile?(entry[:user]) %>
+              <%= link_to entry[:user].name, user_achievements_path(entry[:user].id) %>
+            <% else %>
+              <%= entry[:user].name %>
+            <% end %>
+          </td>
+          <td class="score"><%= entry[:score] %> <%= l(:'achievement.points_unit') %></td>
+          <td class="count"><%= entry[:count] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% else %>
+  <p class="nodata"><%= l(:'achievement.leaderboard_empty') %></p>
+<% end %>
+
+<p><%= link_to l(:'achievement.view_list'), achievements_path %></p>
+
+<% html_title(l(:'achievement.leaderboard_title')) %>

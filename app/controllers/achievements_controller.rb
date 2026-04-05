@@ -17,6 +17,15 @@ class AchievementsController < ApplicationController
     load_achievements_for(@target_user)
   end
 
+  def leaderboard
+    users_with_achievements = User.joins(:achievements)
+      .where(type: 'User', status: User::STATUS_ACTIVE)
+      .distinct
+    @leaderboard = users_with_achievements.map do |user|
+      { user: user, score: user.achievement_score, count: user.achievements.size }
+    end.sort_by { |entry| -entry[:score] }
+  end
+
   def update_visibility
     setting = AchievementUserSetting.for(User.current)
     setting.public_profile = params[:public_profile] == '1'

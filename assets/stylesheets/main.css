@@ -115,6 +115,31 @@
   color: #555;
 }
 
+.achievement_score_banner .score_link
+{
+  display: block;
+  margin-top: 0.3em;
+  font-size: 85%;
+}
+
+/* Leaderboard */
+.achievement_leaderboard .rank
+{
+  width: 40px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.achievement_leaderboard .score
+{
+  font-weight: bold;
+}
+
+.achievement_leaderboard .leaderboard_current_user td
+{
+  background: #e8f8f0;
+}
+
 /* Visibility setting */
 .achievement_visibility_setting
 {
