@@ -23,7 +23,7 @@ Rails.application.eager_load!
   [WikiContent, PervokaAchievement::Patches::WikiContentPatch],
   [Member,      PervokaAchievement::Patches::MemberPatch],
 ].each do |klass, patch|
-  klass.send(:include, patch) unless klass.included_modules.include?(patch)
+  klass.prepend patch unless klass < patch
 end
 
 # Load Redmine test fixtures path

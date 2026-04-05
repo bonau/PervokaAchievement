@@ -1,4 +1,6 @@
 en:
+  permission_view_achievements: View achievements
+  project_module_pervoka_achievement: Achievements
   label_achievement_admin: Achievement Settings
   label_achievement_name: Achievement
   label_achievement_category: Category
