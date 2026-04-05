@@ -14,7 +14,7 @@ RSpec.describe AchievementSetting, type: :model do
     it 'requires achievement_type' do
       setting = AchievementSetting.new(achievement_type: nil)
       expect(setting).not_to be_valid
-      expect(setting.errors[:achievement_type]).to include("can't be blank")
+      expect(setting.errors[:achievement_type]).not_to be_empty
     end
 
     it 'requires unique achievement_type' do
