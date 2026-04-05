@@ -16,6 +16,9 @@
     view_list: 查看所有成就。
     points_unit: 分
     total_score: 总分
+    user_achievements: "%{name} 的成就"
+    public_profile_label: 公开我的成就
+    share_hint: 你的成就分享链接：
     category:
       issue: 问题
       project: 项目
