@@ -1,16 +1,18 @@
 <% user = User.current %>
-<% achievements = user.achievements.order(created_at: :desc) %>
-<% if achievements.any? %>
-  <div class="box achievement_profile_box">
-    <h3><%= l(:"achievement.list_caption") %> (<%= achievements.size %>)</h3>
-    <ul class="achievement_profile_list">
-      <% achievements.each do |achievement| %>
-        <li class="achievement_profile_item">
-          <strong><%= l(achievement.locale_prefix(:title)) %></strong>
-          <span class="achievement_profile_date"><%= format_time(achievement.created_at) %></span>
-        </li>
-      <% end %>
-    </ul>
-    <p><%= link_to l(:"achievement.view_list"), url_for(controller: 'achievements', action: 'index') %></p>
-  </div>
+<% if user.allowed_to?(:view_achievements, nil, global: true) %>
+  <% achievements = user.achievements.order(created_at: :desc) %>
+  <% if achievements.any? %>
+    <div class="box achievement_profile_box">
+      <h3><%= l(:"achievement.list_caption") %> (<%= achievements.size %>)</h3>
+      <ul class="achievement_profile_list">
+        <% achievements.each do |achievement| %>
+          <li class="achievement_profile_item">
+            <strong><%= l(achievement.locale_prefix(:title)) %></strong>
+            <span class="achievement_profile_date"><%= format_time(achievement.created_at) %></span>
+          </li>
+        <% end %>
+      </ul>
+      <p><%= link_to l(:"achievement.view_list"), url_for(controller: 'achievements', action: 'index') %></p>
+    </div>
+  <% end %>
 <% end %>
