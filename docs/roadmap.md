@@ -79,19 +79,28 @@ touching code.
 
 ---
 
-## v0.6 — Social & Discovery
+## v0.6 — Social & Discovery *(completed)*
 
 **Goal**: Give the achievement system a sense of community.
 
-- Shareable personal achievement page (public profile option, opt-in)
-- Achievement score / points calculation
-- Simple leaderboard view
-- Achievement categories and tags (exploratory, milestone, fun, etc.)
+- Achievement points system (10–25 pts per achievement based on difficulty)
+  - Admin-configurable custom point values per achievement
+  - Total score displayed on achievements page
+- Shareable personal achievement page (opt-in public profile)
+  - `AchievementUserSetting` model with `public_profile` toggle
+  - Route: `GET /achievements/:id` for viewing other users' achievements
+  - Admins can view any profile regardless of visibility settings
+- Simple leaderboard view (`GET /achievements/leaderboard`)
+  - Ranks users by total achievement score
+  - Links to public profiles; current user highlighted
+- Achievement tags system (milestone, exploratory, fun, skill, teamwork)
+  - Color-coded tag badges on achievement cards
+  - Tags visible in admin settings table
+- 2 new migrations (004, 005), ~30 new specs
+- i18n: all new strings in en, zh-TW, zh-CN, ja
 
-> **Note**: Scheduling relative to v0.5 depends on the stability of the v0.5 data
-> model. These two versions may be merged or reordered.
-
-> **Open question**: Whether the leaderboard is public by default or admin-only.
+> **Decision**: Leaderboard is accessible to any user with `:view_achievements`
+> permission. Individual profile visibility is controlled by users via opt-in.
 
 ---
 
