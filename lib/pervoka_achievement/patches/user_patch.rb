@@ -16,7 +16,7 @@ module PervokaAchievement
       end
 
       def achievement_score
-        achievements.to_a.sum { |a| a.class.effective_points }
+        Achievement.where(user_id: id).to_a.sum { |a| a.class.effective_points }
       end
     end
   end
