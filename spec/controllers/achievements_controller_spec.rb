@@ -231,6 +231,100 @@ RSpec.describe AchievementsController, type: :controller do
     end
   end
 
+  describe 'GET #index (JSON)' do
+    before do
+      Setting.rest_api_enabled = '1'
+      @token = Token.create!(user: user, action: 'api')
+    end
+
+    after do
+      @token&.destroy
+      Setting.rest_api_enabled = '0'
+    end
+
+    let(:api_params) { { key: @token.value } }
+
+    it 'returns JSON with user achievements' do
+      get :index, params: api_params, format: :json
+      expect(response).to have_http_status(:success)
+      expect(response.content_type).to include('application/json')
+      json = JSON.parse(response.body)
+      expect(json).to have_key('user')
+      expect(json).to have_key('total_score')
+      expect(json).to have_key('unlocked')
+      expect(json).to have_key('locked')
+    end
+
+    it 'includes achievement details in locked list' do
+      get :index, params: api_params, format: :json
+      json = JSON.parse(response.body)
+      locked = json['locked']
+      expect(locked).to be_a(Array)
+      expect(locked.first).to include('type', 'category', 'tier', 'points', 'tags')
+    end
+
+    it 'includes unlocked achievements with timestamps' do
+      FirstLoveAchievement.create(user: user)
+      get :index, params: api_params, format: :json
+      json = JSON.parse(response.body)
+      unlocked = json['unlocked']
+      expect(unlocked.size).to be >= 1
+      expect(unlocked.first).to include('unlocked_at', 'id')
+    end
+  end
+
+  describe 'GET #show (JSON)' do
+    before do
+      Setting.rest_api_enabled = '1'
+      @token = Token.create!(user: user, action: 'api')
+    end
+
+    after do
+      @token&.destroy
+      Setting.rest_api_enabled = '0'
+    end
+
+    let(:api_params) { { key: @token.value } }
+
+    it 'returns JSON for own profile' do
+      get :show, params: api_params.merge(id: user.id), format: :json
+      expect(response).to have_http_status(:success)
+      json = JSON.parse(response.body)
+      expect(json['user']['id']).to eq(user.id)
+    end
+
+    it 'returns 403 for non-public profile' do
+      other_user = User.find(3)
+      get :show, params: api_params.merge(id: other_user.id), format: :json
+      expect(response).to have_http_status(:forbidden)
+    end
+  end
+
+  describe 'GET #leaderboard (JSON)' do
+    before do
+      Setting.rest_api_enabled = '1'
+      @token = Token.create!(user: user, action: 'api')
+    end
+
+    after do
+      @token&.destroy
+      Setting.rest_api_enabled = '0'
+    end
+
+    let(:api_params) { { key: @token.value } }
+
+    it 'returns JSON leaderboard with ranks' do
+      FirstLoveAchievement.create(user: user)
+      get :leaderboard, params: api_params, format: :json
+      expect(response).to have_http_status(:success)
+      json = JSON.parse(response.body)
+      expect(json).to have_key('leaderboard')
+      expect(json['leaderboard']).to be_a(Array)
+      entry = json['leaderboard'].first
+      expect(entry).to include('rank', 'user', 'score', 'achievement_count')
+    end
+  end
+
   describe 'PATCH #update_visibility' do
     after { AchievementUserSetting.delete_all }
 
