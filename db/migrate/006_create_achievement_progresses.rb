@@ -1,4 +1,4 @@
-class CreateAchievementProgresses < ActiveRecord::Migration[7.0]
+class CreateAchievementProgresses < ActiveRecord::Migration[6.1]
   def change
     create_table :achievement_progresses, id: :integer do |t|
       t.references :user, null: false, type: :integer
