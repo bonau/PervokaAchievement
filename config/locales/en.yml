@@ -7,6 +7,7 @@ en:
   label_achievement_custom_title: Custom Title
   label_achievement_custom_description: Custom Description
   label_achievement_custom_quote: Custom Quote
+  label_achievement_tags: Tags
   label_achievement_points: Points
   text_achievement_admin_info: "Leave custom fields blank to use locale defaults."
   achievement:
@@ -22,6 +23,12 @@ en:
     leaderboard_title: Leaderboard
     leaderboard_empty: No achievements have been unlocked yet.
     achievement_count: Achievements
+    tag:
+      milestone: Milestone
+      exploratory: Exploratory
+      fun: Fun
+      skill: Skill
+      teamwork: Teamwork
     category:
       issue: Issues
       project: Projects

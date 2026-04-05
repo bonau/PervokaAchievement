@@ -7,6 +7,10 @@ class FirstLoveAchievement < Achievement
     10
   end
 
+  def self.tags
+    [:milestone]
+  end
+
   def self.check_conditions_for(user)
     return unless user.is_a?(User)
 

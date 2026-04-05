@@ -7,6 +7,10 @@ class FirstCommentAchievement < Achievement
     10
   end
 
+  def self.tags
+    [:milestone, :teamwork]
+  end
+
   def self.check_conditions_for(journal)
     user = journal.user
     return unless user.is_a?(User)

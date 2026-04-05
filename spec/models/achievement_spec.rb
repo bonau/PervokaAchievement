@@ -76,6 +76,42 @@ RSpec.describe Achievement, type: :model do
     end
   end
 
+  describe '.tags' do
+    it 'returns empty array for the base class' do
+      expect(Achievement.tags).to eq []
+    end
+
+    it 'returns [:milestone] for CreateFirstIssueAchievement' do
+      expect(CreateFirstIssueAchievement.tags).to eq [:milestone]
+    end
+
+    it 'returns [:fun, :skill] for SpeedRunnerAchievement' do
+      expect(SpeedRunnerAchievement.tags).to eq [:fun, :skill]
+    end
+
+    it 'returns [:teamwork] for TeamPlayerAchievement' do
+      expect(TeamPlayerAchievement.tags).to eq [:teamwork]
+    end
+
+    it 'only contains valid tags from TAGS constant' do
+      Achievement.registered_achievements.each do |klass|
+        klass.tags.each do |tag|
+          expect(Achievement::TAGS).to include(tag), "#{klass.name} has invalid tag :#{tag}"
+        end
+      end
+    end
+  end
+
+  describe '.all_tags' do
+    it 'returns all defined tag types' do
+      expect(Achievement.all_tags).to eq [:milestone, :exploratory, :fun, :skill, :teamwork]
+    end
+
+    it 'is frozen' do
+      expect(Achievement.all_tags).to be_frozen
+    end
+  end
+
   describe '.category' do
     it 'returns :general for the base class' do
       expect(Achievement.category).to eq :general

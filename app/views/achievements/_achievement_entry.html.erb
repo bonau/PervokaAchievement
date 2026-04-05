@@ -11,5 +11,12 @@
     <h4><%= achievement_text(achievement, :description) %></h4>
     <p>&quot;<%= achievement_text(achievement, :quote) %>&quot;</p>
     <span class="achievement_points"><%= klass.effective_points %> <%= l(:'achievement.points_unit') %></span>
+    <% if klass.tags.any? %>
+      <span class="achievement_tags">
+        <% klass.tags.each do |tag| %>
+          <span class="achievement_tag tag_<%= tag %>"><%= l(:"achievement.tag.#{tag}") %></span>
+        <% end %>
+      </span>
+    <% end %>
   </div>
 </div>

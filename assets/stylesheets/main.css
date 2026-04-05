@@ -90,6 +90,34 @@
   color: #CCC;
 }
 
+/* Achievement tags */
+.achievement_tags
+{
+  display: block;
+  margin-top: 0.3em;
+}
+
+.achievement_tag
+{
+  display: inline-block;
+  padding: 0.1em 0.4em;
+  margin-right: 0.3em;
+  border-radius: 3px;
+  font-size: 80%;
+  font-weight: normal;
+}
+
+.achievement_tag.tag_milestone  { background: #D4EDDA; color: #155724; }
+.achievement_tag.tag_exploratory { background: #CCE5FF; color: #004085; }
+.achievement_tag.tag_fun        { background: #FFF3CD; color: #856404; }
+.achievement_tag.tag_skill      { background: #E2D5F1; color: #4A235A; }
+.achievement_tag.tag_teamwork   { background: #FDDCDC; color: #721C24; }
+
+.achievement_entry.unlockable .achievement_tag
+{
+  opacity: 0.4;
+}
+
 /* Score banner */
 .achievement_score_banner
 {
