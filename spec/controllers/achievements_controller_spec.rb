@@ -122,5 +122,17 @@ RSpec.describe AchievementsController, type: :controller do
         expect(response.location).to include('/login')
       end
     end
+
+    context 'when user lacks :view_achievements permission' do
+      before do
+        allow(User.current).to receive(:allowed_to?).and_call_original
+        allow(User.current).to receive(:allowed_to?).with(:view_achievements, nil, global: true).and_return(false)
+      end
+
+      it 'denies access' do
+        get :index
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
   end
 end
