@@ -11,12 +11,12 @@ Redmine::Plugin.register :pervoka_achievement do
 end
 
 Rails.configuration.to_prepare do
-  User.send(:include, PervokaAchievement::Patches::UserPatch) unless User.included_modules.include?(PervokaAchievement::Patches::UserPatch)
-  Issue.send(:include, PervokaAchievement::Patches::IssuePatch) unless Issue.included_modules.include?(PervokaAchievement::Patches::IssuePatch)
-  Mailer.send(:include, PervokaAchievement::Patches::MailerPatch) unless Mailer.included_modules.include?(PervokaAchievement::Patches::MailerPatch)
-  Project.send(:include, PervokaAchievement::Patches::ProjectPatch) unless Project.included_modules.include?(PervokaAchievement::Patches::ProjectPatch)
-  Attachment.send(:include, PervokaAchievement::Patches::AttachmentPatch) unless Attachment.included_modules.include?(PervokaAchievement::Patches::AttachmentPatch)
-  Journal.send(:include, PervokaAchievement::Patches::JournalPatch) unless Journal.included_modules.include?(PervokaAchievement::Patches::JournalPatch)
-  WikiContent.send(:include, PervokaAchievement::Patches::WikiContentPatch) unless WikiContent.included_modules.include?(PervokaAchievement::Patches::WikiContentPatch)
-  Member.send(:include, PervokaAchievement::Patches::MemberPatch) unless Member.included_modules.include?(PervokaAchievement::Patches::MemberPatch)
+  User.prepend PervokaAchievement::Patches::UserPatch unless User < PervokaAchievement::Patches::UserPatch
+  Issue.prepend PervokaAchievement::Patches::IssuePatch unless Issue < PervokaAchievement::Patches::IssuePatch
+  Mailer.prepend PervokaAchievement::Patches::MailerPatch unless Mailer < PervokaAchievement::Patches::MailerPatch
+  Project.prepend PervokaAchievement::Patches::ProjectPatch unless Project < PervokaAchievement::Patches::ProjectPatch
+  Attachment.prepend PervokaAchievement::Patches::AttachmentPatch unless Attachment < PervokaAchievement::Patches::AttachmentPatch
+  Journal.prepend PervokaAchievement::Patches::JournalPatch unless Journal < PervokaAchievement::Patches::JournalPatch
+  WikiContent.prepend PervokaAchievement::Patches::WikiContentPatch unless WikiContent < PervokaAchievement::Patches::WikiContentPatch
+  Member.prepend PervokaAchievement::Patches::MemberPatch unless Member < PervokaAchievement::Patches::MemberPatch
 end
