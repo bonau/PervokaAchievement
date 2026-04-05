@@ -15,6 +15,7 @@ class AdminAchievementsController < ApplicationController
       )
       setting.update(
         enabled: attrs[:enabled] == '1',
+        custom_points: attrs[:custom_points].presence&.to_i,
         custom_title: attrs[:custom_title].presence,
         custom_description: attrs[:custom_description].presence,
         custom_quote: attrs[:custom_quote].presence

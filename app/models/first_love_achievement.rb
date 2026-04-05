@@ -3,6 +3,10 @@ class FirstLoveAchievement < Achievement
     :issue
   end
 
+  def self.points
+    10
+  end
+
   def self.check_conditions_for(user)
     return unless user.is_a?(User)
 

@@ -44,6 +44,38 @@ RSpec.describe Achievement, type: :model do
     end
   end
 
+  describe '.points' do
+    it 'returns a default of 10 for the base class' do
+      expect(Achievement.points).to eq 10
+    end
+
+    it 'returns specific points for SpeedRunnerAchievement' do
+      expect(SpeedRunnerAchievement.points).to eq 25
+    end
+
+    it 'returns specific points for TeamPlayerAchievement' do
+      expect(TeamPlayerAchievement.points).to eq 20
+    end
+  end
+
+  describe '.effective_points' do
+    after { AchievementSetting.where(achievement_type: 'FirstLoveAchievement').delete_all }
+
+    it 'returns code-defined points when no custom setting exists' do
+      expect(FirstLoveAchievement.effective_points).to eq FirstLoveAchievement.points
+    end
+
+    it 'returns custom points when setting exists' do
+      AchievementSetting.create!(achievement_type: 'FirstLoveAchievement', custom_points: 50)
+      expect(FirstLoveAchievement.effective_points).to eq 50
+    end
+
+    it 'falls back to code-defined points when custom_points is nil' do
+      AchievementSetting.create!(achievement_type: 'FirstLoveAchievement', custom_points: nil)
+      expect(FirstLoveAchievement.effective_points).to eq FirstLoveAchievement.points
+    end
+  end
+
   describe '.category' do
     it 'returns :general for the base class' do
       expect(Achievement.category).to eq :general

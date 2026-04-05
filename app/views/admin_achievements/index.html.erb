@@ -9,6 +9,7 @@
         <th><%= l(:field_enabled) %></th>
         <th><%= l(:label_achievement_name) %></th>
         <th><%= l(:label_achievement_category) %></th>
+        <th><%= l(:label_achievement_points) %></th>
         <th><%= l(:label_achievement_custom_title) %></th>
         <th><%= l(:label_achievement_custom_description) %></th>
         <th><%= l(:label_achievement_custom_quote) %></th>
@@ -27,6 +28,11 @@
             <br /><span class="description"><%= klass.parameter_name %></span>
           </td>
           <td><%= l(:"achievement.category.#{klass.category}") %></td>
+          <td>
+            <%= number_field_tag "settings[#{klass.name}][custom_points]",
+                                 setting.respond_to?(:custom_points) ? setting.custom_points : nil,
+                                 placeholder: klass.points, min: 0, style: 'width: 60px' %>
+          </td>
           <td>
             <%= text_field_tag "settings[#{klass.name}][custom_title]",
                                setting.custom_title,
