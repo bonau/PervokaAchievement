@@ -3,6 +3,27 @@
 <% end %>
 
 <h2><%= l(:"achievement.list_caption") %></h2>
+<div class="achievement_score_banner">
+  <span class="score_value"><%= User.current.achievement_score %></span>
+  <span class="score_label"><%= l(:'achievement.total_score') %></span>
+  <span class="score_link"><%= link_to l(:'achievement.leaderboard_title'), achievement_leaderboard_path %></span>
+</div>
+
+<div class="achievement_visibility_setting">
+  <%= form_tag(achievement_visibility_path, method: :patch) do %>
+    <%= hidden_field_tag :public_profile, '0' %>
+    <%= check_box_tag :public_profile, '1', @user_setting.public_profile? %>
+    <%= label_tag :public_profile, l(:'achievement.public_profile_label') %>
+    <%= submit_tag l(:button_save), class: 'btn btn-small' %>
+  <% end %>
+  <% if @user_setting.public_profile? %>
+    <p class="hint">
+      <%= l(:'achievement.share_hint') %>
+      <%= link_to user_achievements_url(User.current.id), user_achievements_path(User.current.id) %>
+    </p>
+  <% end %>
+</div>
+
 <div class="achievements_list">
   <% @achievements_by_category.each do |category, achievements| %>
     <div class="achievement_category">

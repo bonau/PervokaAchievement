@@ -3,6 +3,14 @@ class TeamPlayerAchievement < Achievement
     :social
   end
 
+  def self.points
+    20
+  end
+
+  def self.tags
+    [:teamwork]
+  end
+
   def self.check_conditions_for(member)
     user = member.principal
     return unless user.is_a?(User)

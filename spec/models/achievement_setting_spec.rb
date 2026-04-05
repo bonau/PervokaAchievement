@@ -62,6 +62,18 @@ RSpec.describe AchievementSetting, type: :model do
     end
   end
 
+  describe 'custom_points' do
+    it 'accepts a custom_points value' do
+      setting = AchievementSetting.create!(achievement_type: achievement_class.name, custom_points: 50)
+      expect(setting.custom_points).to eq 50
+    end
+
+    it 'allows nil custom_points' do
+      setting = AchievementSetting.create!(achievement_type: achievement_class.name, custom_points: nil)
+      expect(setting.custom_points).to be_nil
+    end
+  end
+
   describe '#display_text' do
     it 'returns custom text when present' do
       setting = AchievementSetting.new(

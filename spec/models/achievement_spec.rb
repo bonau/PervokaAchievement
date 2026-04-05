@@ -44,6 +44,74 @@ RSpec.describe Achievement, type: :model do
     end
   end
 
+  describe '.points' do
+    it 'returns a default of 10 for the base class' do
+      expect(Achievement.points).to eq 10
+    end
+
+    it 'returns specific points for SpeedRunnerAchievement' do
+      expect(SpeedRunnerAchievement.points).to eq 25
+    end
+
+    it 'returns specific points for TeamPlayerAchievement' do
+      expect(TeamPlayerAchievement.points).to eq 20
+    end
+  end
+
+  describe '.effective_points' do
+    after { AchievementSetting.where(achievement_type: 'FirstLoveAchievement').delete_all }
+
+    it 'returns code-defined points when no custom setting exists' do
+      expect(FirstLoveAchievement.effective_points).to eq FirstLoveAchievement.points
+    end
+
+    it 'returns custom points when setting exists' do
+      AchievementSetting.create!(achievement_type: 'FirstLoveAchievement', custom_points: 50)
+      expect(FirstLoveAchievement.effective_points).to eq 50
+    end
+
+    it 'falls back to code-defined points when custom_points is nil' do
+      AchievementSetting.create!(achievement_type: 'FirstLoveAchievement', custom_points: nil)
+      expect(FirstLoveAchievement.effective_points).to eq FirstLoveAchievement.points
+    end
+  end
+
+  describe '.tags' do
+    it 'returns empty array for the base class' do
+      expect(Achievement.tags).to eq []
+    end
+
+    it 'returns [:milestone] for CreateFirstIssueAchievement' do
+      expect(CreateFirstIssueAchievement.tags).to eq [:milestone]
+    end
+
+    it 'returns [:fun, :skill] for SpeedRunnerAchievement' do
+      expect(SpeedRunnerAchievement.tags).to eq [:fun, :skill]
+    end
+
+    it 'returns [:teamwork] for TeamPlayerAchievement' do
+      expect(TeamPlayerAchievement.tags).to eq [:teamwork]
+    end
+
+    it 'only contains valid tags from TAGS constant' do
+      Achievement.registered_achievements.each do |klass|
+        klass.tags.each do |tag|
+          expect(Achievement::TAGS).to include(tag), "#{klass.name} has invalid tag :#{tag}"
+        end
+      end
+    end
+  end
+
+  describe '.all_tags' do
+    it 'returns all defined tag types' do
+      expect(Achievement.all_tags).to eq [:milestone, :exploratory, :fun, :skill, :teamwork]
+    end
+
+    it 'is frozen' do
+      expect(Achievement.all_tags).to be_frozen
+    end
+  end
+
   describe '.category' do
     it 'returns :general for the base class' do
       expect(Achievement.category).to eq :general

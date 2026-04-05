@@ -1,18 +1,25 @@
-<% user = User.current %>
-<% if user.allowed_to?(:view_achievements, nil, global: true) %>
-  <% achievements = user.achievements.order(created_at: :desc) %>
-  <% if achievements.any? %>
-    <div class="box achievement_profile_box">
-      <h3><%= l(:"achievement.list_caption") %> (<%= achievements.size %>)</h3>
-      <ul class="achievement_profile_list">
-        <% achievements.each do |achievement| %>
-          <li class="achievement_profile_item">
-            <strong><%= l(achievement.locale_prefix(:title)) %></strong>
-            <span class="achievement_profile_date"><%= format_time(achievement.created_at) %></span>
-          </li>
+<% target_user = @user || User.current %>
+<% if User.current.allowed_to?(:view_achievements, nil, global: true) %>
+  <% can_view = (target_user == User.current) || User.current.admin? || AchievementUserSetting.public_profile?(target_user) %>
+  <% if can_view %>
+    <% achievements = target_user.achievements.order(created_at: :desc) %>
+    <% if achievements.any? %>
+      <div class="box achievement_profile_box">
+        <h3><%= l(:"achievement.list_caption") %> (<%= achievements.size %>)</h3>
+        <ul class="achievement_profile_list">
+          <% achievements.each do |achievement| %>
+            <li class="achievement_profile_item">
+              <strong><%= l(achievement.locale_prefix(:title)) %></strong>
+              <span class="achievement_profile_date"><%= format_time(achievement.created_at) %></span>
+            </li>
+          <% end %>
+        </ul>
+        <% if target_user == User.current %>
+          <p><%= link_to l(:"achievement.view_list"), url_for(controller: 'achievements', action: 'index') %></p>
+        <% else %>
+          <p><%= link_to l(:"achievement.view_list"), user_achievements_path(target_user.id) %></p>
         <% end %>
-      </ul>
-      <p><%= link_to l(:"achievement.view_list"), url_for(controller: 'achievements', action: 'index') %></p>
-    </div>
+      </div>
+    <% end %>
   <% end %>
 <% end %>

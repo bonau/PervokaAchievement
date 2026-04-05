@@ -72,6 +72,124 @@
   font-size: 80%;
 }
 
+/* Achievement points */
+.achievement_points
+{
+  display: inline-block;
+  margin-top: 0.3em;
+  padding: 0.1em 0.5em;
+  border-radius: 3px;
+  font-size: 85%;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.1);
+  color: #555;
+}
+
+.achievement_entry.unlockable .achievement_points
+{
+  color: #CCC;
+}
+
+/* Achievement tags */
+.achievement_tags
+{
+  display: block;
+  margin-top: 0.3em;
+}
+
+.achievement_tag
+{
+  display: inline-block;
+  padding: 0.1em 0.4em;
+  margin-right: 0.3em;
+  border-radius: 3px;
+  font-size: 80%;
+  font-weight: normal;
+}
+
+.achievement_tag.tag_milestone  { background: #D4EDDA; color: #155724; }
+.achievement_tag.tag_exploratory { background: #CCE5FF; color: #004085; }
+.achievement_tag.tag_fun        { background: #FFF3CD; color: #856404; }
+.achievement_tag.tag_skill      { background: #E2D5F1; color: #4A235A; }
+.achievement_tag.tag_teamwork   { background: #FDDCDC; color: #721C24; }
+
+.achievement_entry.unlockable .achievement_tag
+{
+  opacity: 0.4;
+}
+
+/* Score banner */
+.achievement_score_banner
+{
+  display: inline-block;
+  margin-bottom: 1.5em;
+  padding: 0.8em 1.5em;
+  background: #8ADDC0;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.achievement_score_banner .score_value
+{
+  font-size: 2em;
+  font-weight: bold;
+  color: #333;
+  margin-right: 0.3em;
+}
+
+.achievement_score_banner .score_label
+{
+  font-size: 1em;
+  color: #555;
+}
+
+.achievement_score_banner .score_link
+{
+  display: block;
+  margin-top: 0.3em;
+  font-size: 85%;
+}
+
+/* Leaderboard */
+.achievement_leaderboard .rank
+{
+  width: 40px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.achievement_leaderboard .score
+{
+  font-weight: bold;
+}
+
+.achievement_leaderboard .leaderboard_current_user td
+{
+  background: #e8f8f0;
+}
+
+/* Visibility setting */
+.achievement_visibility_setting
+{
+  margin-bottom: 1.5em;
+  padding: 0.8em 1em;
+  background: #f8f8f8;
+  border: 1px solid #e0e0e0;
+  border-radius: 5px;
+}
+
+.achievement_visibility_setting form
+{
+  display: inline;
+}
+
+.achievement_visibility_setting .hint
+{
+  margin-top: 0.5em;
+  font-size: 90%;
+  color: #888;
+}
+
 /* User profile achievements widget */
 .achievement_profile_box h3
 {

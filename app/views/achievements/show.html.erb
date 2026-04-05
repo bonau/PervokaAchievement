@@ -1,0 +1,24 @@
+<% content_for :header_tags do %>
+  <%= stylesheet_link_tag 'main', :plugin => 'pervoka_achievement' %>
+<% end %>
+
+<h2><%= l(:'achievement.user_achievements', name: @target_user.name) %></h2>
+<div class="achievement_score_banner">
+  <span class="score_value"><%= @target_user.achievement_score %></span>
+  <span class="score_label"><%= l(:'achievement.total_score') %></span>
+</div>
+<div class="achievements_list">
+  <% @achievements_by_category.each do |category, achievements| %>
+    <div class="achievement_category">
+      <h3 class="category_title"><%= l(:"achievement.category.#{category}") %></h3>
+      <% achievements[:unlocked].each do |achievement| %>
+        <%= render partial: 'achievement_entry', locals: { achievement: achievement, unlocked: true } %>
+      <% end %>
+      <% achievements[:unlockable].each do |achievement| %>
+        <%= render partial: 'achievement_entry', locals: { achievement: achievement, unlocked: false } %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
+
+<% html_title(l(:'achievement.user_achievements', name: @target_user.name)) %>

@@ -7,12 +7,28 @@
   label_achievement_custom_title: 自訂標題
   label_achievement_custom_description: 自訂說明
   label_achievement_custom_quote: 自訂引言
+  label_achievement_tags: 標籤
+  label_achievement_points: 點數
   text_achievement_admin_info: 留空自訂欄位將使用語系預設值。
   achievement:
     unlocked: 您已獲得「%{title}」成就
     detail: 獲得新的成就，未來系統將會有更多功能與成就，請繼續努力。
     list_caption: 成就一覽
     view_list: 觀看所有成就。
+    points_unit: 分
+    total_score: 總分
+    user_achievements: "%{name} 的成就"
+    public_profile_label: 公開我的成就
+    share_hint: 你的成就分享連結：
+    leaderboard_title: 排行榜
+    leaderboard_empty: 目前還沒有人獲得成就。
+    achievement_count: 成就數
+    tag:
+      milestone: 里程碑
+      exploratory: 探索
+      fun: 趣味
+      skill: 技能
+      teamwork: 團隊
     category:
       issue: 議題
       project: 專案

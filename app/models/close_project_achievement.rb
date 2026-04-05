@@ -3,6 +3,14 @@ class CloseProjectAchievement < Achievement
     :project
   end
 
+  def self.points
+    15
+  end
+
+  def self.tags
+    [:teamwork]
+  end
+
   def self.check_conditions_for(project)
     user = User.current
     project.reload

@@ -1,5 +1,6 @@
 class Achievement < ActiveRecord::Base
   CATEGORIES = [:issue, :project, :wiki, :social, :general].freeze
+  TAGS = [:milestone, :exploratory, :fun, :skill, :teamwork].freeze
 
   belongs_to :user
   after_create :deliver_mail
@@ -13,6 +14,23 @@ class Achievement < ActiveRecord::Base
 
   def self.category
     :general
+  end
+
+  def self.points
+    10
+  end
+
+  def self.effective_points
+    setting = AchievementSetting.find_by(achievement_type: name)
+    setting&.custom_points || points
+  end
+
+  def self.tags
+    []
+  end
+
+  def self.all_tags
+    TAGS
   end
 
   def self.categories
