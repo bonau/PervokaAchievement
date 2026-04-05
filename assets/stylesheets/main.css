@@ -90,6 +90,27 @@
   color: #CCC;
 }
 
+/* Achievement tiers */
+.achievement_tier
+{
+  display: inline-block;
+  margin-top: 0.3em;
+  margin-right: 0.3em;
+  padding: 0.1em 0.5em;
+  border-radius: 3px;
+  font-size: 85%;
+  font-weight: bold;
+}
+
+.achievement_tier.tier_bronze { background: #E8D5B7; color: #8B6914; }
+.achievement_tier.tier_silver { background: #D8DDE3; color: #5A6570; }
+.achievement_tier.tier_gold   { background: #FFF0B3; color: #9A7B00; }
+
+.achievement_entry.unlockable .achievement_tier
+{
+  opacity: 0.4;
+}
+
 /* Achievement tags */
 .achievement_tags
 {

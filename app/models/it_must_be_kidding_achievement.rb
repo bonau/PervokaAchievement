@@ -7,6 +7,10 @@ class ItMustBeKiddingAchievement < Achievement
     20
   end
 
+  def self.tier
+    :gold
+  end
+
   def self.tags
     [:fun]
   end
