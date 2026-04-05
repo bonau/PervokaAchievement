@@ -19,6 +19,9 @@
     user_achievements: "%{name} 的成就"
     public_profile_label: 公开我的成就
     share_hint: 你的成就分享链接：
+    leaderboard_title: 排行榜
+    leaderboard_empty: 目前还没有人获得成就。
+    achievement_count: 成就数
     category:
       issue: 问题
       project: 项目

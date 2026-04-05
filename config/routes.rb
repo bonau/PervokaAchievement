@@ -2,6 +2,7 @@
 # See: http://guides.rubyonrails.org/routing.html
 
 get 'achievements', :to => 'achievements#index'
+get 'achievements/leaderboard', :to => 'achievements#leaderboard', :as => 'achievement_leaderboard'
 get 'achievements/:id', :to => 'achievements#show', :as => 'user_achievements'
 patch 'achievements/visibility', :to => 'achievements#update_visibility', :as => 'achievement_visibility'
 
