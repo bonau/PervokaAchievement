@@ -50,3 +50,30 @@
   float: right;
   font-size: 80%;
 }
+
+/* User profile achievements widget */
+.achievement_profile_box h3
+{
+  border-bottom: 2px solid #8ADDC0;
+  padding-bottom: 0.3em;
+}
+
+.achievement_profile_list
+{
+  list-style: none;
+  padding: 0;
+  margin: 0.5em 0;
+}
+
+.achievement_profile_item
+{
+  padding: 0.3em 0;
+  border-bottom: 1px solid #eee;
+}
+
+.achievement_profile_date
+{
+  float: right;
+  font-size: 80%;
+  color: #999;
+}
