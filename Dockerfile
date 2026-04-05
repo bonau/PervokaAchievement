@@ -26,43 +26,10 @@ WORKDIR /usr/src/redmine
 # 安裝 RSpec 測試依賴
 RUN echo "gem 'rspec-rails', '~> 6.0', group: [:development, :test]" >> Gemfile.local && \
     echo "gem 'rspec_junit_formatter', group: [:test]" >> Gemfile.local && \
+    echo "gem 'rails-controller-testing', group: [:test]" >> Gemfile.local && \
     bundle install
 
-# 建立啟動腳本來執行資料庫遷移
-USER root
-RUN echo '#!/bin/bash\n\
-set -e\n\
-\n\
-# 等待資料庫準備好\n\
-echo "Waiting for database..."\n\
-until PGPASSWORD=$POSTGRES_PASSWORD psql -h "$POSTGRES_HOST" -U "$POSTGRES_USER" -d "$POSTGRES_DB" -c "\\q" 2>/dev/null; do\n\
-  echo "Postgres is unavailable - sleeping"\n\
-  sleep 2\n\
-done\n\
-\n\
-echo "Database is up - executing migrations"\n\
-\n\
-# 執行 Redmine 資料庫遷移\n\
-bundle exec rake db:migrate RAILS_ENV=production\n\
-\n\
-# 執行 plugin 資料庫遷移\n\
-bundle exec rake redmine:plugins:migrate NAME=pervoka_achievement RAILS_ENV=production\n\
-\n\
-# 載入預設資料（僅在首次安裝時）\n\
-bundle exec rake redmine:load_default_data RAILS_ENV=production REDMINE_LANG=zh-TW || true\n\
-\n\
-# 啟動 Redmine\n\
-exec "$@"\n\
-' > /docker-entrypoint-custom.sh && \
-    chmod +x /docker-entrypoint-custom.sh && \
-    chown redmine:redmine /docker-entrypoint-custom.sh
-
-USER redmine
-
-# 使用自訂的 entrypoint
-ENTRYPOINT ["/docker-entrypoint-custom.sh"]
-CMD ["rails", "server", "-b", "0.0.0.0"]
-
+# 使用官方 Redmine entrypoint（自動處理 database.yml 生成與 db:migrate）
 # 暴露 Redmine 預設埠
 EXPOSE 3000
 
