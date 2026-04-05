@@ -18,14 +18,16 @@ end
 
 require_relative 'lib/pervoka_achievement/hooks/views_users_hook'
 
-Rails.configuration.to_prepare do
-  User.prepend PervokaAchievement::Patches::UserPatch unless User < PervokaAchievement::Patches::UserPatch
-  Issue.prepend PervokaAchievement::Patches::IssuePatch unless Issue < PervokaAchievement::Patches::IssuePatch
-  Mailer.prepend PervokaAchievement::Patches::MailerPatch unless Mailer < PervokaAchievement::Patches::MailerPatch
-  Project.prepend PervokaAchievement::Patches::ProjectPatch unless Project < PervokaAchievement::Patches::ProjectPatch
-  Attachment.prepend PervokaAchievement::Patches::AttachmentPatch unless Attachment < PervokaAchievement::Patches::AttachmentPatch
-  Journal.prepend PervokaAchievement::Patches::JournalPatch unless Journal < PervokaAchievement::Patches::JournalPatch
-  WikiContent.prepend PervokaAchievement::Patches::WikiContentPatch unless WikiContent < PervokaAchievement::Patches::WikiContentPatch
-  Member.prepend PervokaAchievement::Patches::MemberPatch unless Member < PervokaAchievement::Patches::MemberPatch
-  TimeEntry.prepend PervokaAchievement::Patches::TimeEntryPatch unless TimeEntry < PervokaAchievement::Patches::TimeEntryPatch
-end
+# Apply patches directly — Redmine's PluginLoader already executes init.rb
+# inside a Rails.application.config.to_prepare callback, so registering a
+# nested to_prepare block causes the patches to never fire in production
+# (Rails 7.2 only runs to_prepare once and ignores callbacks added mid-pass).
+User.prepend PervokaAchievement::Patches::UserPatch unless User < PervokaAchievement::Patches::UserPatch
+Issue.prepend PervokaAchievement::Patches::IssuePatch unless Issue < PervokaAchievement::Patches::IssuePatch
+Mailer.prepend PervokaAchievement::Patches::MailerPatch unless Mailer < PervokaAchievement::Patches::MailerPatch
+Project.prepend PervokaAchievement::Patches::ProjectPatch unless Project < PervokaAchievement::Patches::ProjectPatch
+Attachment.prepend PervokaAchievement::Patches::AttachmentPatch unless Attachment < PervokaAchievement::Patches::AttachmentPatch
+Journal.prepend PervokaAchievement::Patches::JournalPatch unless Journal < PervokaAchievement::Patches::JournalPatch
+WikiContent.prepend PervokaAchievement::Patches::WikiContentPatch unless WikiContent < PervokaAchievement::Patches::WikiContentPatch
+Member.prepend PervokaAchievement::Patches::MemberPatch unless Member < PervokaAchievement::Patches::MemberPatch
+TimeEntry.prepend PervokaAchievement::Patches::TimeEntryPatch unless TimeEntry < PervokaAchievement::Patches::TimeEntryPatch
