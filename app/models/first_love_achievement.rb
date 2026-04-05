@@ -1,4 +1,8 @@
 class FirstLoveAchievement < Achievement
+  def self.category
+    :issue
+  end
+
   def self.check_conditions_for(user)
     return unless user.is_a?(User)
 

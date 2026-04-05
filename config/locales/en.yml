@@ -4,6 +4,12 @@ en:
     detail: An achievement is unlocked. More functions will be available in the future.
     list_caption: Achievements
     view_list: View all achievements.
+    category:
+      issue: Issues
+      project: Projects
+      wiki: Wiki
+      social: Social
+      general: General
     first_love_achievement:
       title: First Love
       description: Assigned to at least one issue
@@ -16,6 +22,34 @@ en:
       title: It MUST Be Kidding
       description: Reopen a project
       quote: Else I will find you, and I will kill you.
+    resolve_first_issue_achievement:
+      title: Problem Solver
+      description: Resolve your first issue
+      quote: One down, infinity to go.
+    create_first_issue_achievement:
+      title: Hello World
+      description: Create your first issue
+      quote: Every journey begins with a single step.
+    speed_runner_achievement:
+      title: Speed Runner
+      description: Close an issue within 24 hours of its creation
+      quote: Fast and furious.
+    bug_hunter_achievement:
+      title: Bug Hunter
+      description: Report your first bug
+      quote: "It's not a bug, it's a feature... wait, no, it's a bug."
+    wiki_editor_achievement:
+      title: Knowledge Keeper
+      description: Edit a wiki page for the first time
+      quote: Knowledge shared is knowledge squared.
+    team_player_achievement:
+      title: Team Player
+      description: Be a member of 3 or more projects
+      quote: "There is no 'I' in 'team'."
+    first_comment_achievement:
+      title: Voice Heard
+      description: Post your first comment on an issue
+      quote: Communication is key.
     attach_a_picture_achievement:
       title: Where's The "Truth"?
       description: Attach an image in a project

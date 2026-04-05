@@ -40,6 +40,61 @@ RSpec.describe PervokaAchievement::Patches::IssuePatch, type: :model do
     end
   end
 
+  describe '#check_achievement for new issue creation' do
+    let(:priority) { IssuePriority.first }
+
+    it 'calls CreateFirstIssueAchievement.check_conditions_for on new issue' do
+      expect(CreateFirstIssueAchievement).to receive(:check_conditions_for)
+      Issue.create!(
+        project_id: 1, tracker_id: 1, subject: 'New Issue',
+        author_id: user.id, status_id: 1, priority: priority
+      )
+    end
+
+    it 'does not call CreateFirstIssueAchievement on existing issue update' do
+      expect(CreateFirstIssueAchievement).not_to receive(:check_conditions_for)
+      issue.update!(subject: 'Updated subject')
+    end
+
+    it 'calls BugHunterAchievement.check_conditions_for on new issue' do
+      expect(BugHunterAchievement).to receive(:check_conditions_for)
+      Issue.create!(
+        project_id: 1, tracker_id: 1, subject: 'Bug Report',
+        author_id: user.id, status_id: 1, priority: priority
+      )
+    end
+  end
+
+  describe '#check_achievement for issue status change to closed' do
+    let(:priority) { IssuePriority.first }
+    let(:closed_status) { IssueStatus.where(is_closed: true).first }
+
+    it 'calls ResolveFirstIssueAchievement.check_conditions_for when status changes to closed' do
+      issue = Issue.create!(
+        project_id: 1, tracker_id: 1, subject: 'Resolve Test',
+        author_id: user.id, status_id: 1, priority: priority
+      )
+      issue.reload
+      expect(ResolveFirstIssueAchievement).to receive(:check_conditions_for).with(issue)
+      issue.update!(status: closed_status)
+    end
+
+    it 'calls SpeedRunnerAchievement.check_conditions_for when status changes to closed' do
+      issue = Issue.create!(
+        project_id: 1, tracker_id: 1, subject: 'Speed Test',
+        author_id: user.id, status_id: 1, priority: priority
+      )
+      issue.reload
+      expect(SpeedRunnerAchievement).to receive(:check_conditions_for).with(issue)
+      issue.update!(status: closed_status)
+    end
+
+    it 'does not call ResolveFirstIssueAchievement when status does not change' do
+      expect(ResolveFirstIssueAchievement).not_to receive(:check_conditions_for)
+      issue.update!(subject: 'No status change')
+    end
+  end
+
   describe 'after_save callback' do
     it 'calls check_achievement on save' do
       expect(issue).to receive(:check_achievement).at_least(:once)

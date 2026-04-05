@@ -11,7 +11,7 @@ Redmine compatibility is documented per release in the changelog.
 
 ---
 
-## v0.2 — Compatibility Release *(current develop)*
+## v0.2 — Compatibility Release
 
 **Goal**: First modern release. Establishes a stable, tested foundation.
 
@@ -27,23 +27,25 @@ Redmine compatibility is documented per release in the changelog.
 
 ---
 
-## v0.3 — Content & UX Expansion
+## v0.3 — Content & UX Expansion *(current develop)*
 
 **Goal**: Broaden achievement variety and improve the display experience.
 
-- Expand built-in achievements from 4 to 10+
-  - Issue-based: resolve N issues, create N issues
-  - Comment-based: post N journal entries
-  - Wiki-based: edit a wiki page
-  - Time-based: active on N consecutive days
-- UI improvements
-  - Categorized achievement list
-  - Display unlock timestamp and trigger event
-- i18n expansion (candidates: `ja.yml`, `zh-CN.yml`)
+- Expanded built-in achievements from 4 to 11
+  - Issue-based: CreateFirstIssue, ResolveFirstIssue, BugHunter, SpeedRunner
+  - Comment-based: FirstComment (journal with notes)
+  - Wiki-based: WikiEditor
+  - Social: TeamPlayer (3+ project memberships)
+- Achievement category system (issue, project, wiki, social, general)
+- Categorized achievement list UI with section headers
+- Inline-block card layout with improved timestamp display
+- 3 new Redmine model patches: JournalPatch, WikiContentPatch, MemberPatch
+- i18n expansion: added `ja.yml` (Japanese) and `zh-CN.yml` (Simplified Chinese)
+- ~22 spec files, ~105 tests
 
-> **Open question**: Countable achievements (e.g., "close N issues") require progress
-> tracking infrastructure. The decision on whether to introduce this in v0.3 or defer
-> to v0.5 will be made at design time for this version.
+> **Design decision**: Progress tracking and countable achievements (N > 1) deferred
+> to v0.5. All v0.3 achievements are binary (one-time trigger). Time-based achievements
+> (active on N consecutive days) also deferred to v0.5.
 
 ---
 

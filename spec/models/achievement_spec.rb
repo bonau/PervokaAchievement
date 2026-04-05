@@ -44,6 +44,38 @@ RSpec.describe Achievement, type: :model do
     end
   end
 
+  describe '.category' do
+    it 'returns :general for the base class' do
+      expect(Achievement.category).to eq :general
+    end
+
+    it 'returns :issue for FirstLoveAchievement' do
+      expect(FirstLoveAchievement.category).to eq :issue
+    end
+
+    it 'returns :project for CloseProjectAchievement' do
+      expect(CloseProjectAchievement.category).to eq :project
+    end
+
+    it 'returns :project for ItMustBeKiddingAchievement' do
+      expect(ItMustBeKiddingAchievement.category).to eq :project
+    end
+
+    it 'returns :social for AttachAPictureAchievement' do
+      expect(AttachAPictureAchievement.category).to eq :social
+    end
+  end
+
+  describe '.categories' do
+    it 'returns the ordered list of all categories' do
+      expect(Achievement.categories).to eq [:issue, :project, :wiki, :social, :general]
+    end
+
+    it 'is frozen' do
+      expect(Achievement.categories).to be_frozen
+    end
+  end
+
   describe '.parameter_name' do
     it 'returns the underscored class name' do
       expect(FirstLoveAchievement.parameter_name).to eq 'first_love_achievement'

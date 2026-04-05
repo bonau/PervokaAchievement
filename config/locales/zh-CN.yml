@@ -1,0 +1,56 @@
+"zh-CN":
+  achievement:
+    unlocked: 您已获得「%{title}」成就
+    detail: 获得新的成就，未来系统将会有更多功能与成就，请继续努力。
+    list_caption: 成就一览
+    view_list: 查看所有成就。
+    category:
+      issue: 问题
+      project: 项目
+      wiki: 维基
+      social: 社交
+      general: 一般
+    first_love_achievement:
+      title: 初恋
+      description: 被分配到一个以上的问题
+      quote: 第一次总是特别痛。
+    close_project_achievement:
+      title: 止损点
+      description: 关闭一个项目
+      quote: 这样做，对我们都好。
+    it_must_be_kidding_achievement:
+      title: 开玩笑的吧
+      description: 重新开启一个项目
+      quote: 不然我会找到你，并杀掉你。
+    resolve_first_issue_achievement:
+      title: 问题解决者
+      description: 解决你的第一个问题
+      quote: 一个解决了，还有无限个。
+    create_first_issue_achievement:
+      title: 你好世界
+      description: 创建你的第一个问题
+      quote: 千里之行始于足下。
+    speed_runner_achievement:
+      title: 极速达人
+      description: 在问题创建 24 小时内解决它
+      quote: 快狠准。
+    bug_hunter_achievement:
+      title: 猎虫者
+      description: 报告你的第一个 Bug
+      quote: 这不是 Bug，是功能……等等，不，这是 Bug。
+    wiki_editor_achievement:
+      title: 知识守护者
+      description: 第一次编辑维基页面
+      quote: 分享知识使知识倍增。
+    team_player_achievement:
+      title: 团队合作者
+      description: 成为 3 个以上项目的成员
+      quote: 团队中没有「我」。
+    first_comment_achievement:
+      title: 发声
+      description: 在问题上发表你的第一条评论
+      quote: 沟通是关键。
+    attach_a_picture_achievement:
+      title: 真相呢？
+      description: 在一个项目中贴图
+      quote: 发帖不附图，此风不可长。
