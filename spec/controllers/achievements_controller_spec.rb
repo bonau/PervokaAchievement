@@ -122,5 +122,21 @@ RSpec.describe AchievementsController, type: :controller do
         expect(response.location).to include('/login')
       end
     end
+
+    context 'permission check' do
+      it 'enforces :view_achievements permission via before_action' do
+        callbacks = described_class._process_action_callbacks
+        filter_names = callbacks.select { |c| c.kind == :before }.map(&:filter)
+        expect(filter_names).to include(:check_view_permission)
+      end
+
+      it 'denies access when permission is missing' do
+        allow_any_instance_of(User).to receive(:allowed_to?)
+          .with(:view_achievements, nil, global: true)
+          .and_return(false)
+        get :index
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
   end
 end

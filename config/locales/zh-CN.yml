@@ -1,4 +1,6 @@
 "zh-CN":
+  permission_view_achievements: 查看成就
+  project_module_pervoka_achievement: 成就系统
   label_achievement_admin: 成就设置
   label_achievement_name: 成就
   label_achievement_category: 分类

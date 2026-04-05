@@ -1,4 +1,6 @@
 ja:
+  permission_view_achievements: 実績を表示
+  project_module_pervoka_achievement: 実績システム
   label_achievement_admin: 実績設定
   label_achievement_name: 実績
   label_achievement_category: カテゴリ

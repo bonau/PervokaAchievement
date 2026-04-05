@@ -1,4 +1,6 @@
 "zh-TW":
+  permission_view_achievements: 檢視成就
+  project_module_pervoka_achievement: 成就系統
   label_achievement_admin: 成就設定
   label_achievement_name: 成就
   label_achievement_category: 分類
