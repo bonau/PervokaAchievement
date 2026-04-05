@@ -84,3 +84,43 @@
       title: 真相呢？
       description: 在一個專案中貼圖
       quote: 發文不附圖，此風不可長。
+    night_owl_achievement:
+      title: 夜貓子
+      description: 在晚上 10 點到凌晨 5 點之間更新議題
+      quote: 最好的程式碼都是在午夜之後寫的。
+    early_bird_achievement:
+      title: 早起的鳥兒
+      description: 在截止日期前關閉議題
+      quote: 早起的鳥兒有蟲吃。
+    long_haul_achievement:
+      title: 持久戰
+      description: 關閉一個開啟超過 30 天的議題
+      quote: 堅持到底就是勝利。
+    priority_expert_achievement:
+      title: 優先大師
+      description: 關閉一個高優先級議題
+      quote: 先解決大問題。
+    detailed_reporter_achievement:
+      title: 詳細報告者
+      description: 撰寫一則 200 字以上的留言
+      quote: 魔鬼藏在細節裡。
+    paperwork_achievement:
+      title: 文書作業
+      description: 上傳一個非圖片檔案
+      quote: 文件就是愛，文件就是生命。
+    time_tracker_achievement:
+      title: 時間守護者
+      description: 記錄你的第一筆工時
+      quote: 時間就是金錢，朋友。
+    self_assigned_achievement:
+      title: 自動自發
+      description: 將議題指派給自己
+      quote: 要做好，就自己來。
+    weekend_warrior_achievement:
+      title: 週末戰士
+      description: 在週末更新議題
+      quote: 努力的人沒有假日。
+    multi_tracker_achievement:
+      title: 多重追蹤者
+      description: 在 3 種以上不同的追蹤器中建立議題
+      quote: 樣樣通，樣樣精。

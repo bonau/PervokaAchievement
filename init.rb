@@ -27,4 +27,5 @@ Rails.configuration.to_prepare do
   Journal.prepend PervokaAchievement::Patches::JournalPatch unless Journal < PervokaAchievement::Patches::JournalPatch
   WikiContent.prepend PervokaAchievement::Patches::WikiContentPatch unless WikiContent < PervokaAchievement::Patches::WikiContentPatch
   Member.prepend PervokaAchievement::Patches::MemberPatch unless Member < PervokaAchievement::Patches::MemberPatch
+  TimeEntry.prepend PervokaAchievement::Patches::TimeEntryPatch unless TimeEntry < PervokaAchievement::Patches::TimeEntryPatch
 end
