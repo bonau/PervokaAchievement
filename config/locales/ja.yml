@@ -16,6 +16,9 @@ ja:
     view_list: すべての実績を見る。
     points_unit: pt
     total_score: 合計スコア
+    user_achievements: "%{name} の実績"
+    public_profile_label: 実績を公開する
+    share_hint: 共有リンク：
     category:
       issue: チケット
       project: プロジェクト

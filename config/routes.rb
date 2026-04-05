@@ -2,6 +2,8 @@
 # See: http://guides.rubyonrails.org/routing.html
 
 get 'achievements', :to => 'achievements#index'
+get 'achievements/:id', :to => 'achievements#show', :as => 'user_achievements'
+patch 'achievements/visibility', :to => 'achievements#update_visibility', :as => 'achievement_visibility'
 
 scope '/admin' do
   get   'achievements',             :to => 'admin_achievements#index',       :as => 'admin_achievements'

@@ -123,6 +123,11 @@ RSpec.describe AchievementsController, type: :controller do
       end
     end
 
+    it 'assigns @user_setting' do
+      get :index
+      expect(assigns(:user_setting)).to be_a(AchievementUserSetting)
+    end
+
     context 'permission check' do
       it 'enforces :view_achievements permission via before_action' do
         callbacks = described_class._process_action_callbacks
@@ -137,6 +142,82 @@ RSpec.describe AchievementsController, type: :controller do
         get :index
         expect(response).to have_http_status(:forbidden)
       end
+    end
+  end
+
+  describe 'GET #show' do
+    let(:other_user) { User.find(3) }
+
+    after { AchievementUserSetting.delete_all }
+
+    context 'viewing own profile' do
+      it 'returns success' do
+        get :show, params: { id: user.id }
+        expect(response).to have_http_status(:success)
+      end
+
+      it 'assigns @target_user' do
+        get :show, params: { id: user.id }
+        expect(assigns(:target_user)).to eq user
+      end
+    end
+
+    context 'viewing another user with public profile' do
+      before do
+        AchievementUserSetting.create!(user: other_user, public_profile: true)
+      end
+
+      it 'returns success' do
+        get :show, params: { id: other_user.id }
+        expect(response).to have_http_status(:success)
+      end
+
+      it 'assigns @target_user to the other user' do
+        get :show, params: { id: other_user.id }
+        expect(assigns(:target_user)).to eq other_user
+      end
+    end
+
+    context 'viewing another user without public profile' do
+      it 'denies access' do
+        get :show, params: { id: other_user.id }
+        expect(response).to have_http_status(:forbidden)
+      end
+    end
+
+    context 'as admin viewing non-public profile' do
+      let(:admin) { User.find(1) }
+
+      before do
+        request.session[:user_id] = admin.id
+        User.current = admin
+      end
+
+      it 'returns success' do
+        get :show, params: { id: other_user.id }
+        expect(response).to have_http_status(:success)
+      end
+    end
+  end
+
+  describe 'PATCH #update_visibility' do
+    after { AchievementUserSetting.delete_all }
+
+    it 'creates setting and enables public profile' do
+      patch :update_visibility, params: { public_profile: '1' }
+      expect(AchievementUserSetting.public_profile?(user)).to be true
+    end
+
+    it 'disables public profile' do
+      AchievementUserSetting.create!(user: user, public_profile: true)
+      patch :update_visibility, params: { public_profile: '0' }
+      expect(AchievementUserSetting.public_profile?(user)).to be false
+    end
+
+    it 'redirects to index with success notice' do
+      patch :update_visibility, params: { public_profile: '1' }
+      expect(response).to redirect_to(achievements_path)
+      expect(flash[:notice]).to be_present
     end
   end
 end

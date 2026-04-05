@@ -16,6 +16,9 @@ en:
     view_list: View all achievements.
     points_unit: pts
     total_score: Total Score
+    user_achievements: "%{name}'s Achievements"
+    public_profile_label: Make my achievements public
+    share_hint: "Your shareable profile link:"
     category:
       issue: Issues
       project: Projects
