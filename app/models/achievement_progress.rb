@@ -18,7 +18,8 @@ class AchievementProgress < ActiveRecord::Base
   end
 
   def complete?
-    target_count && current_count >= target_count
+    return false unless target_count
+    current_count >= target_count
   end
 
   private
