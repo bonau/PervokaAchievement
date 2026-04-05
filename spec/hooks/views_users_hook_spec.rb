@@ -14,7 +14,7 @@ RSpec.describe PervokaAchievement::Hooks::ViewsUsersHook do
       # If the user's role has :view_achievements revoked, the profile
       # widget should not render. The partial must contain a permission
       # guard to prevent showing achievements to unauthorised users.
-      partial_path = File.expand_path('../../../app/views/hooks/_user_achievements.html.erb', __dir__)
+      partial_path = File.expand_path('../../app/views/hooks/_user_achievements.html.erb', __dir__)
       content = File.read(partial_path)
       expect(content).to include('view_achievements'),
         'profile partial should check :view_achievements permission'
