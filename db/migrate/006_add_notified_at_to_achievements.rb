@@ -1,4 +1,4 @@
-class AddNotifiedAtToAchievements < ActiveRecord::Migration[7.0]
+class AddNotifiedAtToAchievements < ActiveRecord::Migration[6.1]
   def change
     add_column :achievements, :notified_at, :datetime, default: nil
   end
