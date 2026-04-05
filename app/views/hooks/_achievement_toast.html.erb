@@ -1,0 +1,23 @@
+<div id="achievement-toast-container">
+  <% titles.each do |title| %>
+    <div class="achievement_toast">
+      <span class="achievement_toast_icon">&#9733;</span>
+      <span class="achievement_toast_text"><%= l(:'achievement.unlocked', title: title) %></span>
+      <button class="achievement_toast_close" onclick="this.parentElement.remove()">&times;</button>
+    </div>
+  <% end %>
+</div>
+<script>
+  (function() {
+    var toasts = document.querySelectorAll('.achievement_toast');
+    toasts.forEach(function(toast, i) {
+      setTimeout(function() { toast.classList.add('show'); }, i * 300);
+      setTimeout(function() { toast.classList.add('fade_out'); }, 6000 + i * 300);
+      setTimeout(function() { toast.remove(); }, 6500 + i * 300);
+    });
+    setTimeout(function() {
+      var container = document.getElementById('achievement-toast-container');
+      if (container && container.children.length === 0) container.remove();
+    }, 8000);
+  })();
+</script>

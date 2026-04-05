@@ -7,6 +7,7 @@ ja:
   label_achievement_custom_title: カスタムタイトル
   label_achievement_custom_description: カスタム説明
   label_achievement_custom_quote: カスタム引用
+  label_achievement_tier: ティア
   label_achievement_tags: タグ
   label_achievement_points: ポイント
   text_achievement_admin_info: カスタム項目を空にするとロケールのデフォルト値が使用されます。
@@ -24,6 +25,10 @@ ja:
     leaderboard_empty: まだ実績を獲得した人はいません。
     achievement_count: 実績数
     progress: "進捗：%{current}/%{target}"
+    tier:
+      bronze: ブロンズ
+      silver: シルバー
+      gold: ゴールド
     tag:
       milestone: マイルストーン
       exploratory: 探索
@@ -80,3 +85,43 @@ ja:
       title: 「真実」はどこ？
       description: プロジェクトに画像を添付する
       quote: 画像なしの投稿は許されない。
+    night_owl_achievement:
+      title: 夜型人間
+      description: 午後10時から午前5時の間にチケットを更新する
+      quote: 最高のコードは深夜に書かれる。
+    early_bird_achievement:
+      title: 早起きは三文の得
+      description: 期限前にチケットをクローズする
+      quote: 早い者勝ち。
+    long_haul_achievement:
+      title: 長期戦
+      description: 30日以上オープンだったチケットをクローズする
+      quote: 継続は力なり。
+    priority_expert_achievement:
+      title: 優先度マスター
+      description: 高優先度のチケットをクローズする
+      quote: 大きな問題から片付ける。
+    detailed_reporter_achievement:
+      title: 詳細レポーター
+      description: 200文字以上のコメントを投稿する
+      quote: 神は細部に宿る。
+    paperwork_achievement:
+      title: 書類仕事
+      description: 画像以外のファイルをアップロードする
+      quote: ドキュメントは愛、ドキュメントは命。
+    time_tracker_achievement:
+      title: タイムキーパー
+      description: 最初の作業時間を記録する
+      quote: 時は金なり。
+    self_assigned_achievement:
+      title: 自発的
+      description: チケットを自分に割り当てる
+      quote: 自分でやるのが一番確実。
+    weekend_warrior_achievement:
+      title: 週末戦士
+      description: 週末にチケットを更新する
+      quote: 頑張る者に休みはない。
+    multi_tracker_achievement:
+      title: マルチトラッカー
+      description: 3種類以上の異なるトラッカーでチケットを作成する
+      quote: 何でもこなす、マルチプレイヤー。

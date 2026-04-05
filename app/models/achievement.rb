@@ -1,6 +1,7 @@
 class Achievement < ActiveRecord::Base
   CATEGORIES = [:issue, :project, :wiki, :social, :general].freeze
   TAGS = [:milestone, :exploratory, :fun, :skill, :teamwork].freeze
+  TIERS = [:bronze, :silver, :gold].freeze
 
   belongs_to :user
   after_create :deliver_mail
@@ -23,6 +24,14 @@ class Achievement < ActiveRecord::Base
   def self.effective_points
     setting = AchievementSetting.find_by(achievement_type: name)
     setting&.custom_points || points
+  end
+
+  def self.tier
+    :bronze
+  end
+
+  def self.tiers
+    TIERS
   end
 
   def self.tags

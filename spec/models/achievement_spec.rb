@@ -102,6 +102,40 @@ RSpec.describe Achievement, type: :model do
     end
   end
 
+  describe '.tier' do
+    it 'returns :bronze for the base class' do
+      expect(Achievement.tier).to eq :bronze
+    end
+
+    it 'returns :silver for BugHunterAchievement' do
+      expect(BugHunterAchievement.tier).to eq :silver
+    end
+
+    it 'returns :gold for SpeedRunnerAchievement' do
+      expect(SpeedRunnerAchievement.tier).to eq :gold
+    end
+
+    it 'returns :gold for TeamPlayerAchievement' do
+      expect(TeamPlayerAchievement.tier).to eq :gold
+    end
+
+    it 'only contains valid tiers from TIERS constant' do
+      Achievement.registered_achievements.each do |klass|
+        expect(Achievement::TIERS).to include(klass.tier), "#{klass.name} has invalid tier :#{klass.tier}"
+      end
+    end
+  end
+
+  describe '.tiers' do
+    it 'returns all defined tier types' do
+      expect(Achievement.tiers).to eq [:bronze, :silver, :gold]
+    end
+
+    it 'is frozen' do
+      expect(Achievement.tiers).to be_frozen
+    end
+  end
+
   describe '.all_tags' do
     it 'returns all defined tag types' do
       expect(Achievement.all_tags).to eq [:milestone, :exploratory, :fun, :skill, :teamwork]

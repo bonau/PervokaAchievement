@@ -9,6 +9,7 @@
         <th><%= l(:field_enabled) %></th>
         <th><%= l(:label_achievement_name) %></th>
         <th><%= l(:label_achievement_category) %></th>
+        <th><%= l(:label_achievement_tier) %></th>
         <th><%= l(:label_achievement_tags) %></th>
         <th><%= l(:label_achievement_points) %></th>
         <th><%= l(:label_achievement_custom_title) %></th>
@@ -29,6 +30,7 @@
             <br /><span class="description"><%= klass.parameter_name %></span>
           </td>
           <td><%= l(:"achievement.category.#{klass.category}") %></td>
+          <td><span class="achievement_tier tier_<%= klass.tier %>"><%= l(:"achievement.tier.#{klass.tier}") %></span></td>
           <td>
             <% klass.tags.each do |tag| %>
               <span class="achievement_tag tag_<%= tag %>"><%= l(:"achievement.tag.#{tag}") %></span>

@@ -9,6 +9,7 @@ module PervokaAchievement
 
       def check_achievement
         AttachAPictureAchievement.check_conditions_for(self)
+        PaperworkAchievement.check_conditions_for(self)
       end
     end
   end
