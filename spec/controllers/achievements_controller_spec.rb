@@ -90,6 +90,26 @@ RSpec.describe AchievementsController, type: :controller do
       expect(all_in_categories.sort_by(&:name)).to eq assigns(:all_achievement_classes).sort_by(&:name)
     end
 
+    context 'when an achievement is disabled' do
+      before do
+        AchievementSetting.create!(achievement_type: 'FirstLoveAchievement', enabled: false)
+      end
+
+      after { AchievementSetting.delete_all }
+
+      it 'excludes disabled achievement from @all_achievement_classes' do
+        get :index
+        expect(assigns(:all_achievement_classes)).not_to include(FirstLoveAchievement)
+      end
+
+      it 'excludes disabled achievement from @achievements_by_category' do
+        get :index
+        by_cat = assigns(:achievements_by_category)
+        all_classes = by_cat.values.flat_map { |h| h[:unlocked].map(&:class) + h[:unlockable] }
+        expect(all_classes).not_to include(FirstLoveAchievement)
+      end
+    end
+
     context 'when not logged in' do
       before do
         request.session[:user_id] = nil

@@ -1,4 +1,11 @@
 "zh-TW":
+  label_achievement_admin: 成就設定
+  label_achievement_name: 成就
+  label_achievement_category: 分類
+  label_achievement_custom_title: 自訂標題
+  label_achievement_custom_description: 自訂說明
+  label_achievement_custom_quote: 自訂引言
+  text_achievement_admin_info: 留空自訂欄位將使用語系預設值。
   achievement:
     unlocked: 您已獲得「%{title}」成就
     detail: 獲得新的成就，未來系統將會有更多功能與成就，請繼續努力。

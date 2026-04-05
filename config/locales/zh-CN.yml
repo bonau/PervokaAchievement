@@ -1,4 +1,11 @@
 "zh-CN":
+  label_achievement_admin: 成就设置
+  label_achievement_name: 成就
+  label_achievement_category: 分类
+  label_achievement_custom_title: 自定义标题
+  label_achievement_custom_description: 自定义说明
+  label_achievement_custom_quote: 自定义引言
+  text_achievement_admin_info: 留空自定义栏位将使用语系预设值。
   achievement:
     unlocked: 您已获得「%{title}」成就
     detail: 获得新的成就，未来系统将会有更多功能与成就，请继续努力。

@@ -2,7 +2,7 @@ class AchievementsController < ApplicationController
   before_action :require_login
 
   def index
-    @all_achievement_classes = Achievement.registered_achievements
+    @all_achievement_classes = Achievement.registered_achievements.select { |a| AchievementSetting.enabled?(a) }
     @user_achievements = User.current.achievements
     @unlocked_achievement_classes = @user_achievements.map { |a| a.class }.uniq
     @unlockable_achievement_classes = @all_achievement_classes - @unlocked_achievement_classes
