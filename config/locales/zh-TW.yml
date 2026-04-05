@@ -7,6 +7,7 @@
   label_achievement_custom_title: 自訂標題
   label_achievement_custom_description: 自訂說明
   label_achievement_custom_quote: 自訂引言
+  label_achievement_tags: 標籤
   label_achievement_points: 點數
   text_achievement_admin_info: 留空自訂欄位將使用語系預設值。
   achievement:
@@ -22,6 +23,12 @@
     leaderboard_title: 排行榜
     leaderboard_empty: 目前還沒有人獲得成就。
     achievement_count: 成就數
+    tag:
+      milestone: 里程碑
+      exploratory: 探索
+      fun: 趣味
+      skill: 技能
+      teamwork: 團隊
     category:
       issue: 議題
       project: 專案

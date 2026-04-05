@@ -7,6 +7,10 @@ class BugHunterAchievement < Achievement
     15
   end
 
+  def self.tags
+    [:exploratory]
+  end
+
   def self.check_conditions_for(issue)
     user = issue.author
     return unless user.is_a?(User)

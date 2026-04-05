@@ -7,6 +7,7 @@ ja:
   label_achievement_custom_title: カスタムタイトル
   label_achievement_custom_description: カスタム説明
   label_achievement_custom_quote: カスタム引用
+  label_achievement_tags: タグ
   label_achievement_points: ポイント
   text_achievement_admin_info: カスタム項目を空にするとロケールのデフォルト値が使用されます。
   achievement:
@@ -22,6 +23,12 @@ ja:
     leaderboard_title: リーダーボード
     leaderboard_empty: まだ実績を獲得した人はいません。
     achievement_count: 実績数
+    tag:
+      milestone: マイルストーン
+      exploratory: 探索
+      fun: お楽しみ
+      skill: スキル
+      teamwork: チームワーク
     category:
       issue: チケット
       project: プロジェクト
