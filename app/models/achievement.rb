@@ -5,6 +5,7 @@ class Achievement < ActiveRecord::Base
 
   belongs_to :user
   after_create :deliver_mail
+  after_create :fire_unlocked_event
   validates_presence_of :user
 
   class << self
@@ -48,6 +49,14 @@ class Achievement < ActiveRecord::Base
 
   def deliver_mail
     Mailer.achievement_unlocked(user, self).deliver_later
+  end
+
+  def fire_unlocked_event
+    PervokaAchievement::Api.fire_event(:achievement_unlocked, {
+      user: user,
+      achievement: self,
+      achievement_class: self.class,
+    })
   end
 
   def self.icon_name
