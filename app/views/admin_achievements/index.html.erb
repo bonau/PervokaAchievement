@@ -1,0 +1,50 @@
+<h2><%= l(:label_achievement_admin) %></h2>
+
+<p class="subtitle"><%= l(:text_achievement_admin_info) %></p>
+
+<%= form_tag(bulk_update_admin_achievements_path, method: :patch) do %>
+  <table class="list">
+    <thead>
+      <tr>
+        <th><%= l(:field_enabled) %></th>
+        <th><%= l(:label_achievement_name) %></th>
+        <th><%= l(:label_achievement_category) %></th>
+        <th><%= l(:label_achievement_custom_title) %></th>
+        <th><%= l(:label_achievement_custom_description) %></th>
+        <th><%= l(:label_achievement_custom_quote) %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @achievement_classes.each do |klass| %>
+        <% setting = @settings[klass.name] || AchievementSetting.new(enabled: true) %>
+        <tr class="<%= cycle('odd', 'even') %>">
+          <td class="center">
+            <%= hidden_field_tag "settings[#{klass.name}][enabled]", '0' %>
+            <%= check_box_tag "settings[#{klass.name}][enabled]", '1', setting.enabled? %>
+          </td>
+          <td>
+            <%= l(klass.locale_prefix(:title)) %>
+            <br /><span class="description"><%= klass.parameter_name %></span>
+          </td>
+          <td><%= l(:"achievement.category.#{klass.category}") %></td>
+          <td>
+            <%= text_field_tag "settings[#{klass.name}][custom_title]",
+                               setting.custom_title,
+                               placeholder: l(klass.locale_prefix(:title)), size: 25 %>
+          </td>
+          <td>
+            <%= text_field_tag "settings[#{klass.name}][custom_description]",
+                               setting.custom_description,
+                               placeholder: l(klass.locale_prefix(:description)), size: 35 %>
+          </td>
+          <td>
+            <%= text_field_tag "settings[#{klass.name}][custom_quote]",
+                               setting.custom_quote,
+                               placeholder: l(klass.locale_prefix(:quote)), size: 30 %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <p><%= submit_tag l(:button_save) %></p>
+<% end %>

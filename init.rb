@@ -2,11 +2,12 @@ Redmine::Plugin.register :pervoka_achievement do
   name 'Pervoka Achievement plugin'
   author 'munouzin'
   description 'An extensible achievement system for redmine, a fantastic project management web application.'
-  version '0.3.0'
+  version '0.4.0'
   url 'https://github.com/bonau/PervokaAchievement'
   author_url 'https://github.com/bonau'
 
   menu :account_menu, :achievements, {controller: 'achievements', action: 'index'}, caption: :"achievement.list_caption", first: true
+  menu :admin_menu, :achievements, {controller: 'admin_achievements', action: 'index'}, caption: :label_achievement_admin
 end
 
 Rails.configuration.to_prepare do
