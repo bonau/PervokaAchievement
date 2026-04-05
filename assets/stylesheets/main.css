@@ -190,6 +190,72 @@
   color: #888;
 }
 
+/* Achievement toast notifications */
+#achievement-toast-container
+{
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.achievement_toast
+{
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.8em 1.2em;
+  background: #333;
+  color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.achievement_toast.show
+{
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.achievement_toast.fade_out
+{
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.achievement_toast_icon
+{
+  font-size: 1.4em;
+  color: #FFD700;
+}
+
+.achievement_toast_text
+{
+  flex: 1;
+}
+
+.achievement_toast_close
+{
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 0 0.2em;
+}
+
+.achievement_toast_close:hover
+{
+  color: #fff;
+}
+
 /* User profile achievements widget */
 .achievement_profile_box h3
 {
