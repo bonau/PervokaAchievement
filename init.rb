@@ -16,6 +16,8 @@ Redmine::Plugin.register :pervoka_achievement do
   menu :admin_menu, :achievements, {controller: 'admin_achievements', action: 'index'}, caption: :label_achievement_admin
 end
 
+require_relative 'lib/pervoka_achievement/hooks/views_users_hook'
+
 Rails.configuration.to_prepare do
   User.prepend PervokaAchievement::Patches::UserPatch unless User < PervokaAchievement::Patches::UserPatch
   Issue.prepend PervokaAchievement::Patches::IssuePatch unless Issue < PervokaAchievement::Patches::IssuePatch
