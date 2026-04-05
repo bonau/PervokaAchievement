@@ -13,14 +13,35 @@
 
 .achievement_entry
 {
-  width: 300px;
+  width: 340px;
   min-height: 80px;
   margin-bottom: 1em;
   margin-right: 1em;
   padding: 1em;
   border-radius: 5px;
-  display: inline-block;
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 0.8em;
   vertical-align: top;
+}
+
+.achievement_icon_wrap
+{
+  flex-shrink: 0;
+  width: 48px;
+  height: 48px;
+}
+
+.achievement_entry.unlockable .achievement_icon_wrap
+{
+  opacity: 0.3;
+  filter: grayscale(1);
+}
+
+.achievement_info
+{
+  flex: 1;
+  min-width: 0;
 }
 
 .achievement_entry.unlocked

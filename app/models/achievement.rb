@@ -23,6 +23,10 @@ class Achievement < ActiveRecord::Base
     Mailer.achievement_unlocked(user, self).deliver_later
   end
 
+  def self.icon_name
+    parameter_name.chomp('_achievement')
+  end
+
   def self.parameter_name
     self.name.underscore
   end
