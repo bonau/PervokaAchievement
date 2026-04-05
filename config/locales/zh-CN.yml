@@ -7,12 +7,15 @@
   label_achievement_custom_title: 自定义标题
   label_achievement_custom_description: 自定义说明
   label_achievement_custom_quote: 自定义引言
+  label_achievement_points: 点数
   text_achievement_admin_info: 留空自定义栏位将使用语系预设值。
   achievement:
     unlocked: 您已获得「%{title}」成就
     detail: 获得新的成就，未来系统将会有更多功能与成就，请继续努力。
     list_caption: 成就一览
     view_list: 查看所有成就。
+    points_unit: 分
+    total_score: 总分
     category:
       issue: 问题
       project: 项目

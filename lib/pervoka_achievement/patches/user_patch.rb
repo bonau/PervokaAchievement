@@ -14,6 +14,10 @@ module PervokaAchievement
       def award(achievement)
         achievement.create(user: self)
       end
+
+      def achievement_score
+        achievements.sum { |a| a.class.effective_points }
+      end
     end
   end
 end

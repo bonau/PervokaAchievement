@@ -72,6 +72,49 @@
   font-size: 80%;
 }
 
+/* Achievement points */
+.achievement_points
+{
+  display: inline-block;
+  margin-top: 0.3em;
+  padding: 0.1em 0.5em;
+  border-radius: 3px;
+  font-size: 85%;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.1);
+  color: #555;
+}
+
+.achievement_entry.unlockable .achievement_points
+{
+  color: #CCC;
+}
+
+/* Score banner */
+.achievement_score_banner
+{
+  display: inline-block;
+  margin-bottom: 1.5em;
+  padding: 0.8em 1.5em;
+  background: #8ADDC0;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.achievement_score_banner .score_value
+{
+  font-size: 2em;
+  font-weight: bold;
+  color: #333;
+  margin-right: 0.3em;
+}
+
+.achievement_score_banner .score_label
+{
+  font-size: 1em;
+  color: #555;
+}
+
 /* User profile achievements widget */
 .achievement_profile_box h3
 {

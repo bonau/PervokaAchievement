@@ -15,6 +15,15 @@ class Achievement < ActiveRecord::Base
     :general
   end
 
+  def self.points
+    10
+  end
+
+  def self.effective_points
+    setting = AchievementSetting.find_by(achievement_type: name)
+    setting&.custom_points || points
+  end
+
   def self.categories
     CATEGORIES
   end

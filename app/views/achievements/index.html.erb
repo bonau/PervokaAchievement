@@ -3,6 +3,10 @@
 <% end %>
 
 <h2><%= l(:"achievement.list_caption") %></h2>
+<div class="achievement_score_banner">
+  <span class="score_value"><%= User.current.achievement_score %></span>
+  <span class="score_label"><%= l(:'achievement.total_score') %></span>
+</div>
 <div class="achievements_list">
   <% @achievements_by_category.each do |category, achievements| %>
     <div class="achievement_category">

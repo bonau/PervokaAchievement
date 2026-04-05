@@ -7,12 +7,15 @@ ja:
   label_achievement_custom_title: カスタムタイトル
   label_achievement_custom_description: カスタム説明
   label_achievement_custom_quote: カスタム引用
+  label_achievement_points: ポイント
   text_achievement_admin_info: カスタム項目を空にするとロケールのデフォルト値が使用されます。
   achievement:
     unlocked: 実績「%{title}」を獲得しました！
     detail: 実績を獲得しました。今後さらに多くの機能と実績が追加される予定です。
     list_caption: 実績一覧
     view_list: すべての実績を見る。
+    points_unit: pt
+    total_score: 合計スコア
     category:
       issue: チケット
       project: プロジェクト

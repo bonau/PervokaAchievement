@@ -3,6 +3,10 @@ class ItMustBeKiddingAchievement < Achievement
     :project
   end
 
+  def self.points
+    20
+  end
+
   def self.check_conditions_for(project)
     user = User.current
     project.reload

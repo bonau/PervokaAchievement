@@ -7,12 +7,15 @@ en:
   label_achievement_custom_title: Custom Title
   label_achievement_custom_description: Custom Description
   label_achievement_custom_quote: Custom Quote
+  label_achievement_points: Points
   text_achievement_admin_info: "Leave custom fields blank to use locale defaults."
   achievement:
     unlocked: Achievement "%{title}" Unlocked!
     detail: An achievement is unlocked. More functions will be available in the future.
     list_caption: Achievements
     view_list: View all achievements.
+    points_unit: pts
+    total_score: Total Score
     category:
       issue: Issues
       project: Projects

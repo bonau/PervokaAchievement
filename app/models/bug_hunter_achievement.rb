@@ -3,6 +3,10 @@ class BugHunterAchievement < Achievement
     :issue
   end
 
+  def self.points
+    15
+  end
+
   def self.check_conditions_for(issue)
     user = issue.author
     return unless user.is_a?(User)

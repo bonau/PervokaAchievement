@@ -120,6 +120,45 @@ RSpec.describe AdminAchievementsController, type: :controller do
       expect(setting.custom_title).to eq 'Updated Title'
     end
 
+    it 'saves custom_points when provided' do
+      patch :bulk_update, params: {
+        settings: {
+          'CreateFirstIssueAchievement' => {
+            enabled: '1',
+            custom_points: '50',
+            custom_title: '',
+            custom_description: '',
+            custom_quote: ''
+          }
+        }
+      }
+
+      setting = AchievementSetting.find_by(achievement_type: 'CreateFirstIssueAchievement')
+      expect(setting.custom_points).to eq 50
+    end
+
+    it 'clears custom_points when blank is submitted' do
+      AchievementSetting.create!(
+        achievement_type: 'CreateFirstIssueAchievement',
+        custom_points: 50
+      )
+
+      patch :bulk_update, params: {
+        settings: {
+          'CreateFirstIssueAchievement' => {
+            enabled: '1',
+            custom_points: '',
+            custom_title: '',
+            custom_description: '',
+            custom_quote: ''
+          }
+        }
+      }
+
+      setting = AchievementSetting.find_by(achievement_type: 'CreateFirstIssueAchievement')
+      expect(setting.custom_points).to be_nil
+    end
+
     it 'clears custom text when blank is submitted' do
       AchievementSetting.create!(
         achievement_type: 'CreateFirstIssueAchievement',
