@@ -24,6 +24,7 @@ ja:
     leaderboard_title: リーダーボード
     leaderboard_empty: まだ実績を獲得した人はいません。
     achievement_count: 実績数
+    progress: "進捗：%{current}/%{target}"
     tier:
       bronze: ブロンズ
       silver: シルバー

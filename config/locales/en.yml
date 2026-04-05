@@ -24,6 +24,7 @@ en:
     leaderboard_title: Leaderboard
     leaderboard_empty: No achievements have been unlocked yet.
     achievement_count: Achievements
+    progress: "Progress: %{current}/%{target}"
     tier:
       bronze: Bronze
       silver: Silver

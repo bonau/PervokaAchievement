@@ -24,6 +24,7 @@
     leaderboard_title: 排行榜
     leaderboard_empty: 目前还没有人获得成就。
     achievement_count: 成就数
+    progress: "进度：%{current}/%{target}"
     tier:
       bronze: 铜
       silver: 银
