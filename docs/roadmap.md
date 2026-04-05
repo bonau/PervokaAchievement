@@ -132,7 +132,7 @@ touching code.
 
 **Goal**: Allow other Redmine plugins to integrate cleanly with the achievement system.
 
-- Public plugin API: `PervokaAchievement::API.register_achievement(...)`
+- Public plugin API: `PervokaAchievement::Api.register_achievement(...)`
 - REST API endpoints:
   - `GET /achievements.json`
   - `GET /users/:id/achievements.json`

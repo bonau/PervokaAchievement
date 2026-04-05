@@ -337,4 +337,22 @@ RSpec.describe Achievement, type: :model do
       expect(Mailer).to have_received(:achievement_unlocked)
     end
   end
+
+  describe '#fire_unlocked_event' do
+    after { PervokaAchievement::Api.reset! }
+
+    it 'fires :achievement_unlocked event on create' do
+      mail_double = double(deliver_later: nil)
+      allow(Mailer).to receive(:achievement_unlocked).and_return(mail_double)
+
+      payloads = []
+      PervokaAchievement::Api.on(:achievement_unlocked) { |p| payloads << p }
+
+      Achievement.create!(user: user)
+
+      expect(payloads.size).to eq(1)
+      expect(payloads.first[:user]).to eq(user)
+      expect(payloads.first[:achievement]).to be_a(Achievement)
+    end
+  end
 end
