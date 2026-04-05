@@ -128,16 +128,23 @@ touching code.
 
 ---
 
-## v0.8 — Developer API & Extension Points
+## v0.8 — Developer API & Extension Points *(completed)*
 
 **Goal**: Allow other Redmine plugins to integrate cleanly with the achievement system.
 
-- Public plugin API: `PervokaAchievement::API.register_achievement(...)`
-- REST API endpoints:
-  - `GET /achievements.json`
-  - `GET /users/:id/achievements.json`
-- Defined event hook interface (forward-compatible with event sourcing architecture)
-- Versioned API documentation
+- Public plugin API: `PervokaAchievement::Api.register_achievement(...)`
+  - External plugins can register achievements without subclassing
+  - `.award(:key, user)` and `.increment_progress(:key, user)` helpers
+  - `.registered?` / `.registered_keys` for querying
+- REST API endpoints (JSON, with `accept_api_auth`):
+  - `GET /achievements.json` — current user's achievements
+  - `GET /achievements/:id.json` — specific user's achievements
+  - `GET /achievements/leaderboard.json` — ranked leaderboard
+- Event hook interface: `PervokaAchievement::Api.on(:achievement_unlocked)`
+  - Fired after any achievement is awarded (including external)
+  - Error-isolated handlers (exceptions logged, not propagated)
+- Versioned API documentation (`docs/API.md`)
+- ~20 new specs for API and REST endpoints
 
 ---
 
