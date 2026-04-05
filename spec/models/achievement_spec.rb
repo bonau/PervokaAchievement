@@ -215,6 +215,84 @@ RSpec.describe Achievement, type: :model do
     end
   end
 
+  describe '.target_count' do
+    it 'returns nil for the base class' do
+      expect(Achievement.target_count).to be_nil
+    end
+
+    it 'returns nil for single-stage achievements' do
+      expect(FirstLoveAchievement.target_count).to be_nil
+    end
+  end
+
+  describe '.increment_progress_for' do
+    before { user.achievements.destroy_all; AchievementProgress.where(user: user).delete_all }
+    after { AchievementProgress.where(user: user).delete_all }
+
+    it 'does nothing when target_count is nil' do
+      expect {
+        Achievement.increment_progress_for(user)
+      }.not_to change { AchievementProgress.count }
+    end
+
+    it 'creates and increments progress for multi-stage achievements' do
+      stub_const('TestMultiAchievement', Class.new(Achievement) {
+        def self.target_count; 3; end
+      })
+
+      expect {
+        TestMultiAchievement.increment_progress_for(user)
+      }.to change { AchievementProgress.count }.by(1)
+
+      progress = AchievementProgress.for(user, TestMultiAchievement)
+      expect(progress.current_count).to eq 1
+    end
+
+    it 'awards achievement when target is reached' do
+      stub_const('TestMultiAchievement', Class.new(Achievement) {
+        def self.target_count; 2; end
+      })
+
+      mail_double = double(deliver_later: nil)
+      allow(Mailer).to receive(:achievement_unlocked).and_return(mail_double)
+
+      TestMultiAchievement.increment_progress_for(user)
+      expect(user.awarded?(TestMultiAchievement)).to be false
+
+      TestMultiAchievement.increment_progress_for(user)
+      expect(user.awarded?(TestMultiAchievement)).to be true
+    end
+
+    it 'does not increment when already awarded' do
+      stub_const('TestMultiAchievement', Class.new(Achievement) {
+        def self.target_count; 1; end
+      })
+
+      mail_double = double(deliver_later: nil)
+      allow(Mailer).to receive(:achievement_unlocked).and_return(mail_double)
+
+      TestMultiAchievement.increment_progress_for(user)
+      progress_count = AchievementProgress.for(user, TestMultiAchievement).current_count
+
+      TestMultiAchievement.increment_progress_for(user)
+      expect(AchievementProgress.for(user, TestMultiAchievement).current_count).to eq progress_count
+    end
+
+    it 'does not increment when achievement is disabled' do
+      stub_const('TestMultiAchievement', Class.new(Achievement) {
+        def self.target_count; 5; end
+      })
+
+      AchievementSetting.create!(achievement_type: 'TestMultiAchievement', enabled: false)
+
+      expect {
+        TestMultiAchievement.increment_progress_for(user)
+      }.not_to change { AchievementProgress.count }
+
+      AchievementSetting.where(achievement_type: 'TestMultiAchievement').delete_all
+    end
+  end
+
   describe '#deliver_mail' do
     it 'is called after create' do
       mail_double = double(deliver_later: nil)

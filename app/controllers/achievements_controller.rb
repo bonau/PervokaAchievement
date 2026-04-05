@@ -57,5 +57,7 @@ class AchievementsController < ApplicationController
       unlockable = @unlockable_achievement_classes.select { |a| a.category == cat }
       hash[cat] = { unlocked: unlocked, unlockable: unlockable } if unlocked.any? || unlockable.any?
     end
+
+    @progresses = AchievementProgress.where(user_id: user.id).index_by(&:achievement_type)
   end
 end

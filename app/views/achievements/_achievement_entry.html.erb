@@ -18,5 +18,15 @@
         <% end %>
       </span>
     <% end %>
+    <% if !unlocked && klass.target_count && defined?(@progresses) %>
+      <% progress = @progresses[klass.name] %>
+      <% current = progress&.current_count || 0 %>
+      <div class="achievement_progress">
+        <div class="achievement_progress_bar">
+          <div class="achievement_progress_fill" style="width: <%= [(current.to_f / klass.target_count * 100).floor, 100].min %>%"></div>
+        </div>
+        <span class="achievement_progress_text"><%= current %>/<%= klass.target_count %></span>
+      </div>
+    <% end %>
   </div>
 </div>

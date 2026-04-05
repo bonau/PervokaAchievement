@@ -118,6 +118,43 @@
   opacity: 0.4;
 }
 
+/* Achievement progress */
+.achievement_progress
+{
+  margin-top: 0.4em;
+}
+
+.achievement_progress_bar
+{
+  display: inline-block;
+  width: 120px;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.achievement_progress_fill
+{
+  height: 100%;
+  background: #8ADDC0;
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+.achievement_entry.unlockable .achievement_progress_fill
+{
+  background: #CCC;
+}
+
+.achievement_progress_text
+{
+  font-size: 80%;
+  margin-left: 0.3em;
+  color: #888;
+}
+
 /* Score banner */
 .achievement_score_banner
 {
