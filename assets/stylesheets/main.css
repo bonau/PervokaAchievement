@@ -90,6 +90,27 @@
   color: #CCC;
 }
 
+/* Achievement tiers */
+.achievement_tier
+{
+  display: inline-block;
+  margin-top: 0.3em;
+  margin-right: 0.3em;
+  padding: 0.1em 0.5em;
+  border-radius: 3px;
+  font-size: 85%;
+  font-weight: bold;
+}
+
+.achievement_tier.tier_bronze { background: #E8D5B7; color: #8B6914; }
+.achievement_tier.tier_silver { background: #D8DDE3; color: #5A6570; }
+.achievement_tier.tier_gold   { background: #FFF0B3; color: #9A7B00; }
+
+.achievement_entry.unlockable .achievement_tier
+{
+  opacity: 0.4;
+}
+
 /* Achievement tags */
 .achievement_tags
 {
@@ -116,6 +137,43 @@
 .achievement_entry.unlockable .achievement_tag
 {
   opacity: 0.4;
+}
+
+/* Achievement progress */
+.achievement_progress
+{
+  margin-top: 0.4em;
+}
+
+.achievement_progress_bar
+{
+  display: inline-block;
+  width: 120px;
+  height: 10px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+.achievement_progress_fill
+{
+  height: 100%;
+  background: #8ADDC0;
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+.achievement_entry.unlockable .achievement_progress_fill
+{
+  background: #CCC;
+}
+
+.achievement_progress_text
+{
+  font-size: 80%;
+  margin-left: 0.3em;
+  color: #888;
 }
 
 /* Score banner */
@@ -188,6 +246,72 @@
   margin-top: 0.5em;
   font-size: 90%;
   color: #888;
+}
+
+/* Achievement toast notifications */
+#achievement-toast-container
+{
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.achievement_toast
+{
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.8em 1.2em;
+  background: #333;
+  color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+  opacity: 0;
+  transform: translateX(100%);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.achievement_toast.show
+{
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.achievement_toast.fade_out
+{
+  opacity: 0;
+  transform: translateX(100%);
+}
+
+.achievement_toast_icon
+{
+  font-size: 1.4em;
+  color: #FFD700;
+}
+
+.achievement_toast_text
+{
+  flex: 1;
+}
+
+.achievement_toast_close
+{
+  background: none;
+  border: none;
+  color: #999;
+  font-size: 1.2em;
+  cursor: pointer;
+  padding: 0 0.2em;
+}
+
+.achievement_toast_close:hover
+{
+  color: #fff;
 }
 
 /* User profile achievements widget */

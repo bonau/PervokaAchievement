@@ -10,6 +10,7 @@
     <h3><%= achievement_text(achievement, :title) %><%= image_tag('true.png') if unlocked %></h3>
     <h4><%= achievement_text(achievement, :description) %></h4>
     <p>&quot;<%= achievement_text(achievement, :quote) %>&quot;</p>
+    <span class="achievement_tier tier_<%= klass.tier %>"><%= l(:"achievement.tier.#{klass.tier}") %></span>
     <span class="achievement_points"><%= klass.effective_points %> <%= l(:'achievement.points_unit') %></span>
     <% if klass.tags.any? %>
       <span class="achievement_tags">
@@ -17,6 +18,16 @@
           <span class="achievement_tag tag_<%= tag %>"><%= l(:"achievement.tag.#{tag}") %></span>
         <% end %>
       </span>
+    <% end %>
+    <% if !unlocked && klass.target_count && defined?(@progresses) %>
+      <% progress = @progresses[klass.name] %>
+      <% current = progress&.current_count || 0 %>
+      <div class="achievement_progress">
+        <div class="achievement_progress_bar">
+          <div class="achievement_progress_fill" style="width: <%= [(current.to_f / klass.target_count * 100).floor, 100].min %>%"></div>
+        </div>
+        <span class="achievement_progress_text"><%= current %>/<%= klass.target_count %></span>
+      </div>
     <% end %>
   </div>
 </div>

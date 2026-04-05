@@ -1,24 +1,22 @@
-class ResolveFirstIssueAchievement < Achievement
+class SelfAssignedAchievement < Achievement
   def self.category
     :issue
   end
 
   def self.points
-    15
-  end
-
-  def self.tier
-    :silver
+    10
   end
 
   def self.tags
-    [:milestone, :skill]
+    [:fun]
   end
 
   def self.check_conditions_for(issue)
     user = User.current
     return unless user.is_a?(User)
 
-    super(user, issue) { |_u, i| i.closed? }
+    super(user, issue) do |u, i|
+      i.assigned_to_id == u.id && i.author_id == u.id
+    end
   end
 end

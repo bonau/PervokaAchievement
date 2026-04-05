@@ -22,6 +22,7 @@ Rails.application.eager_load!
   [Journal,    PervokaAchievement::Patches::JournalPatch],
   [WikiContent, PervokaAchievement::Patches::WikiContentPatch],
   [Member,      PervokaAchievement::Patches::MemberPatch],
+  [TimeEntry,   PervokaAchievement::Patches::TimeEntryPatch],
 ].each do |klass, patch|
   klass.prepend patch unless klass < patch
 end

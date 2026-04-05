@@ -2,7 +2,7 @@ Redmine::Plugin.register :pervoka_achievement do
   name 'Pervoka Achievement plugin'
   author 'munouzin'
   description 'An extensible achievement system for redmine, a fantastic project management web application.'
-  version '0.6.0'
+  version '0.7.0'
   url 'https://github.com/bonau/PervokaAchievement'
   author_url 'https://github.com/bonau'
 
@@ -27,4 +27,5 @@ Rails.configuration.to_prepare do
   Journal.prepend PervokaAchievement::Patches::JournalPatch unless Journal < PervokaAchievement::Patches::JournalPatch
   WikiContent.prepend PervokaAchievement::Patches::WikiContentPatch unless WikiContent < PervokaAchievement::Patches::WikiContentPatch
   Member.prepend PervokaAchievement::Patches::MemberPatch unless Member < PervokaAchievement::Patches::MemberPatch
+  TimeEntry.prepend PervokaAchievement::Patches::TimeEntryPatch unless TimeEntry < PervokaAchievement::Patches::TimeEntryPatch
 end

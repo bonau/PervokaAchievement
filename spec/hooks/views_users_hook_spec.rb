@@ -9,6 +9,17 @@ RSpec.describe PervokaAchievement::Hooks::ViewsUsersHook do
     end
   end
 
+  describe 'toast notifications' do
+    it 'responds to view_layouts_base_body_bottom' do
+      expect(hook).to respond_to(:view_layouts_base_body_bottom)
+    end
+
+    it 'returns empty string when user is not logged in' do
+      allow(User).to receive(:current).and_return(User.anonymous)
+      expect(hook.view_layouts_base_body_bottom({})).to eq ''
+    end
+  end
+
   describe 'permission guard' do
     it 'checks :view_achievements permission in the profile partial' do
       # If the user's role has :view_achievements revoked, the profile

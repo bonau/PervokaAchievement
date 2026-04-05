@@ -7,6 +7,7 @@
   label_achievement_custom_title: 自定义标题
   label_achievement_custom_description: 自定义说明
   label_achievement_custom_quote: 自定义引言
+  label_achievement_tier: 等级
   label_achievement_tags: 标签
   label_achievement_points: 点数
   text_achievement_admin_info: 留空自定义栏位将使用语系预设值。
@@ -23,6 +24,11 @@
     leaderboard_title: 排行榜
     leaderboard_empty: 目前还没有人获得成就。
     achievement_count: 成就数
+    progress: "进度：%{current}/%{target}"
+    tier:
+      bronze: 铜
+      silver: 银
+      gold: 金
     tag:
       milestone: 里程碑
       exploratory: 探索
@@ -79,3 +85,43 @@
       title: 真相呢？
       description: 在一个项目中贴图
       quote: 发帖不附图，此风不可长。
+    night_owl_achievement:
+      title: 夜猫子
+      description: 在晚上 10 点到凌晨 5 点之间更新问题
+      quote: 最好的代码都是在午夜之后写的。
+    early_bird_achievement:
+      title: 早起的鸟儿
+      description: 在截止日期前关闭问题
+      quote: 早起的鸟儿有虫吃。
+    long_haul_achievement:
+      title: 持久战
+      description: 关闭一个开启超过 30 天的问题
+      quote: 坚持到底就是胜利。
+    priority_expert_achievement:
+      title: 优先大师
+      description: 关闭一个高优先级问题
+      quote: 先解决大问题。
+    detailed_reporter_achievement:
+      title: 详细报告者
+      description: 撰写一条 200 字以上的评论
+      quote: 魔鬼藏在细节里。
+    paperwork_achievement:
+      title: 文书工作
+      description: 上传一个非图片文件
+      quote: 文档就是爱，文档就是生命。
+    time_tracker_achievement:
+      title: 时间守护者
+      description: 记录你的第一笔工时
+      quote: 时间就是金钱，朋友。
+    self_assigned_achievement:
+      title: 自动自发
+      description: 将问题指派给自己
+      quote: 要做好，就自己来。
+    weekend_warrior_achievement:
+      title: 周末战士
+      description: 在周末更新问题
+      quote: 努力的人没有假日。
+    multi_tracker_achievement:
+      title: 多重追踪者
+      description: 在 3 种以上不同的跟踪器中创建问题
+      quote: 样样通，样样精。

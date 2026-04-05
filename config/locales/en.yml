@@ -7,6 +7,7 @@ en:
   label_achievement_custom_title: Custom Title
   label_achievement_custom_description: Custom Description
   label_achievement_custom_quote: Custom Quote
+  label_achievement_tier: Tier
   label_achievement_tags: Tags
   label_achievement_points: Points
   text_achievement_admin_info: "Leave custom fields blank to use locale defaults."
@@ -23,6 +24,11 @@ en:
     leaderboard_title: Leaderboard
     leaderboard_empty: No achievements have been unlocked yet.
     achievement_count: Achievements
+    progress: "Progress: %{current}/%{target}"
+    tier:
+      bronze: Bronze
+      silver: Silver
+      gold: Gold
     tag:
       milestone: Milestone
       exploratory: Exploratory
@@ -79,3 +85,43 @@ en:
       title: Where's The "Truth"?
       description: Attach an image in a project
       quote: It's no good to post without a pic.
+    night_owl_achievement:
+      title: Night Owl
+      description: Update an issue between 10 PM and 5 AM
+      quote: The best code is written after midnight.
+    early_bird_achievement:
+      title: Early Bird
+      description: Close an issue before its due date
+      quote: The early bird catches the worm.
+    long_haul_achievement:
+      title: Long Haul
+      description: Close an issue that was open for 30+ days
+      quote: Persistence pays off in the end.
+    priority_expert_achievement:
+      title: Priority Expert
+      description: Close a high-priority issue
+      quote: Tackling the big ones first.
+    detailed_reporter_achievement:
+      title: Detailed Reporter
+      description: Write a comment with 200+ characters
+      quote: The devil is in the details.
+    paperwork_achievement:
+      title: Paperwork
+      description: Upload a non-image file
+      quote: Documentation is love, documentation is life.
+    time_tracker_achievement:
+      title: Time Keeper
+      description: Log your first time entry
+      quote: Time is money, friend.
+    self_assigned_achievement:
+      title: Self Starter
+      description: Assign an issue to yourself
+      quote: If you want something done right, do it yourself.
+    weekend_warrior_achievement:
+      title: Weekend Warrior
+      description: Update an issue on a weekend
+      quote: No rest for the wicked.
+    multi_tracker_achievement:
+      title: Multi-tracker
+      description: Create issues in 3 or more different trackers
+      quote: Jack of all trades, master of... some.

@@ -7,6 +7,10 @@ class CloseProjectAchievement < Achievement
     15
   end
 
+  def self.tier
+    :silver
+  end
+
   def self.tags
     [:teamwork]
   end

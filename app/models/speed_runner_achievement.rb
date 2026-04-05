@@ -7,6 +7,10 @@ class SpeedRunnerAchievement < Achievement
     25
   end
 
+  def self.tier
+    :gold
+  end
+
   def self.tags
     [:fun, :skill]
   end

@@ -1,4 +1,4 @@
-class ResolveFirstIssueAchievement < Achievement
+class NightOwlAchievement < Achievement
   def self.category
     :issue
   end
@@ -7,18 +7,14 @@ class ResolveFirstIssueAchievement < Achievement
     15
   end
 
-  def self.tier
-    :silver
-  end
-
   def self.tags
-    [:milestone, :skill]
+    [:fun]
   end
 
   def self.check_conditions_for(issue)
     user = User.current
     return unless user.is_a?(User)
 
-    super(user, issue) { |_u, i| i.closed? }
+    super(user, issue) { |_u, _i| hour = Time.current.hour; hour >= 22 || hour < 5 }
   end
 end

@@ -102,6 +102,40 @@ RSpec.describe Achievement, type: :model do
     end
   end
 
+  describe '.tier' do
+    it 'returns :bronze for the base class' do
+      expect(Achievement.tier).to eq :bronze
+    end
+
+    it 'returns :silver for BugHunterAchievement' do
+      expect(BugHunterAchievement.tier).to eq :silver
+    end
+
+    it 'returns :gold for SpeedRunnerAchievement' do
+      expect(SpeedRunnerAchievement.tier).to eq :gold
+    end
+
+    it 'returns :gold for TeamPlayerAchievement' do
+      expect(TeamPlayerAchievement.tier).to eq :gold
+    end
+
+    it 'only contains valid tiers from TIERS constant' do
+      Achievement.registered_achievements.each do |klass|
+        expect(Achievement::TIERS).to include(klass.tier), "#{klass.name} has invalid tier :#{klass.tier}"
+      end
+    end
+  end
+
+  describe '.tiers' do
+    it 'returns all defined tier types' do
+      expect(Achievement.tiers).to eq [:bronze, :silver, :gold]
+    end
+
+    it 'is frozen' do
+      expect(Achievement.tiers).to be_frozen
+    end
+  end
+
   describe '.all_tags' do
     it 'returns all defined tag types' do
       expect(Achievement.all_tags).to eq [:milestone, :exploratory, :fun, :skill, :teamwork]
@@ -212,6 +246,84 @@ RSpec.describe Achievement, type: :model do
       expect {
         Achievement.check_conditions_for(user) { true }
       }.to change { user.achievements.count }.by(1)
+    end
+  end
+
+  describe '.target_count' do
+    it 'returns nil for the base class' do
+      expect(Achievement.target_count).to be_nil
+    end
+
+    it 'returns nil for single-stage achievements' do
+      expect(FirstLoveAchievement.target_count).to be_nil
+    end
+  end
+
+  describe '.increment_progress_for' do
+    before { user.achievements.destroy_all; AchievementProgress.where(user: user).delete_all }
+    after { AchievementProgress.where(user: user).delete_all }
+
+    it 'does nothing when target_count is nil' do
+      expect {
+        Achievement.increment_progress_for(user)
+      }.not_to change { AchievementProgress.count }
+    end
+
+    it 'creates and increments progress for multi-stage achievements' do
+      stub_const('TestMultiAchievement', Class.new(Achievement) {
+        def self.target_count; 3; end
+      })
+
+      expect {
+        TestMultiAchievement.increment_progress_for(user)
+      }.to change { AchievementProgress.count }.by(1)
+
+      progress = AchievementProgress.for(user, TestMultiAchievement)
+      expect(progress.current_count).to eq 1
+    end
+
+    it 'awards achievement when target is reached' do
+      stub_const('TestMultiAchievement', Class.new(Achievement) {
+        def self.target_count; 2; end
+      })
+
+      mail_double = double(deliver_later: nil)
+      allow(Mailer).to receive(:achievement_unlocked).and_return(mail_double)
+
+      TestMultiAchievement.increment_progress_for(user)
+      expect(user.awarded?(TestMultiAchievement)).to be false
+
+      TestMultiAchievement.increment_progress_for(user)
+      expect(user.awarded?(TestMultiAchievement)).to be true
+    end
+
+    it 'does not increment when already awarded' do
+      stub_const('TestMultiAchievement', Class.new(Achievement) {
+        def self.target_count; 1; end
+      })
+
+      mail_double = double(deliver_later: nil)
+      allow(Mailer).to receive(:achievement_unlocked).and_return(mail_double)
+
+      TestMultiAchievement.increment_progress_for(user)
+      progress_count = AchievementProgress.for(user, TestMultiAchievement).current_count
+
+      TestMultiAchievement.increment_progress_for(user)
+      expect(AchievementProgress.for(user, TestMultiAchievement).current_count).to eq progress_count
+    end
+
+    it 'does not increment when achievement is disabled' do
+      stub_const('TestMultiAchievement', Class.new(Achievement) {
+        def self.target_count; 5; end
+      })
+
+      AchievementSetting.create!(achievement_type: 'TestMultiAchievement', enabled: false)
+
+      expect {
+        TestMultiAchievement.increment_progress_for(user)
+      }.not_to change { AchievementProgress.count }
+
+      AchievementSetting.where(achievement_type: 'TestMultiAchievement').delete_all
     end
   end
 

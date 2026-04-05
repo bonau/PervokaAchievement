@@ -104,22 +104,27 @@ touching code.
 
 ---
 
-## v0.7 — Notification System Expansion
+## v0.7 — Tiers, Progress & Notifications *(completed)*
 
-**Goal**: Multi-channel notifications for a more immediate unlock experience.
+**Goal**: Add depth through tiered rewards, progress tracking, and in-app notifications.
 
-- **Redmine in-app notifications**: Write to Redmine's notification feed on unlock
-- **Flash popup**: Show an achievement unlock overlay on the next page load after
-  unlocking (stored in session, rendered by frontend)
-- **Webhook support**: Configure an endpoint URL; POST a JSON payload on unlock
-  (compatible with Slack / Discord incoming webhooks)
-- Notification channels individually toggleable from the Admin UI (extends v0.4
-  settings page)
-
-> **Technical challenge**: Redmine in-app notification API compatibility must be
-> verified across supported Redmine versions.
->
-> **Open question**: Whether Webhook payloads require HMAC signature verification.
+- Achievement tier system (Bronze / Silver / Gold)
+  - Tier badges displayed on achievement cards and admin panel
+  - Each achievement defines its tier based on difficulty
+- Achievement progress tracking system
+  - `achievement_progresses` table for multi-stage achievement support
+  - `Achievement.target_count` and `Achievement.increment_progress_for` API
+  - Progress bars displayed on unlockable achievements
+- In-app toast notifications on achievement unlock
+  - `notified_at` column on achievements table
+  - Slide-in toast popup via view hook, auto-dismiss after 6 seconds
+- 10 new achievements (total: 21)
+  - Night Owl, Early Bird, Long Haul, Priority Expert, Detailed Reporter,
+    Paperwork, Time Keeper, Self Starter, Weekend Warrior, Multi-tracker
+- New `TimeEntryPatch` for time tracking hook
+- Docker setup fixed (use official Redmine entrypoint)
+- 2 new migrations (006, 007), ~50 new specs
+- i18n: all new strings in en, zh-TW, zh-CN, ja
 
 ---
 

@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   postgres:
     image: postgres:15-alpine
@@ -34,27 +32,18 @@ services:
       REDMINE_DB_USERNAME: redmine
       REDMINE_DB_PASSWORD: redmine_password
       REDMINE_DB_PORT: 5432
-      
-      # PostgreSQL 連線資訊（用於啟動腳本）
-      POSTGRES_HOST: postgres
-      POSTGRES_DB: redmine
-      POSTGRES_USER: redmine
-      POSTGRES_PASSWORD: redmine_password
-      
+
       # Redmine 設定
       RAILS_ENV: production
       REDMINE_LANG: zh-TW
-      
+      REDMINE_PLUGINS_MIGRATE: 1
+
       # 密鑰（生產環境應該使用環境變數或密鑰管理工具）
       REDMINE_SECRET_KEY_BASE: ${REDMINE_SECRET_KEY_BASE:-please_change_this_secret_key_in_production}
     volumes:
       # 持久化資料
       - redmine_files:/usr/src/redmine/files
-      - redmine_plugins:/usr/src/redmine/plugins
       - redmine_themes:/usr/src/redmine/public/themes
-      
-      # 開發模式：掛載本地程式碼（取消註解以啟用即時更新）
-      # - ./:/usr/src/redmine/plugins/pervoka_achievement
     depends_on:
       postgres:
         condition: service_healthy
@@ -71,8 +60,6 @@ volumes:
   postgres_data:
     driver: local
   redmine_files:
-    driver: local
-  redmine_plugins:
     driver: local
   redmine_themes:
     driver: local

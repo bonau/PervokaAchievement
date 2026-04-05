@@ -7,6 +7,10 @@ class TeamPlayerAchievement < Achievement
     20
   end
 
+  def self.tier
+    :gold
+  end
+
   def self.tags
     [:teamwork]
   end
