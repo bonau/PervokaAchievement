@@ -1,4 +1,11 @@
 en:
+  label_achievement_admin: Achievement Settings
+  label_achievement_name: Achievement
+  label_achievement_category: Category
+  label_achievement_custom_title: Custom Title
+  label_achievement_custom_description: Custom Description
+  label_achievement_custom_quote: Custom Quote
+  text_achievement_admin_info: "Leave custom fields blank to use locale defaults."
   achievement:
     unlocked: Achievement "%{title}" Unlocked!
     detail: An achievement is unlocked. More functions will be available in the future.
