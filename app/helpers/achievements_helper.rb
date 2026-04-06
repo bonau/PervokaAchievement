@@ -11,8 +11,14 @@ module AchievementsHelper
 
   def achievement_text(achievement, field)
     klass = achievement.is_a?(Class) ? achievement : achievement.class
-    setting = AchievementSetting.find_by(achievement_type: klass.name)
+    setting = achievement_settings_cache[klass.name]
     custom = setting&.send("custom_#{field}")
     custom.presence || l(klass.locale_prefix(field))
+  end
+
+  private
+
+  def achievement_settings_cache
+    @achievement_settings_cache ||= AchievementSetting.all.index_by(&:achievement_type)
   end
 end

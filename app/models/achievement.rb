@@ -22,8 +22,12 @@ class Achievement < ActiveRecord::Base
     10
   end
 
-  def self.effective_points
-    setting = AchievementSetting.find_by(achievement_type: name)
+  def self.effective_points(settings_cache = nil)
+    setting = if settings_cache
+      settings_cache[name]
+    else
+      AchievementSetting.find_by(achievement_type: name)
+    end
     setting&.custom_points || points
   end
 
