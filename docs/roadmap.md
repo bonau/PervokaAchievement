@@ -148,16 +148,18 @@ touching code.
 
 ---
 
-## v0.9 — Stabilization & Polish
+## v0.9 — Stabilization & Polish *(completed)*
 
 **Goal**: Final preparation for the v1.0 release.
 
-- Performance audit: N+1 query fixes, missing DB index review
-- Test coverage target: > 90%
-- Baseline accessibility (a11y) improvements
-- Complete user and developer documentation
-- Compatibility matrix update for latest Redmine versions
-- Deprecation cleanup
+- Composite DB index on `achievements(user_id, type)` for query performance
+- N+1 query fixes: cached AchievementSetting lookups, pre-loaded leaderboard
+- Baseline accessibility (a11y): ARIA roles/labels, color contrast (WCAG AA)
+- Deprecation cleanup: modern `validates` syntax, `.exists?` over `.size > 0`
+- Test coverage: 306 specs (added icon_name, helper, leaderboard edge cases)
+- README rewrite and CHANGELOG.md added
+- Ruby 3.4 added to CI matrix
+- Compatibility verified: Ruby 3.1–3.4, Redmine 5.1/6.1
 
 ---
 
