@@ -1,5 +1,22 @@
 # PervokaAchievement API Documentation
 
+## Stability Guarantee
+
+Starting with **v1.0**, this API follows [Semantic Versioning](https://semver.org/):
+
+- **Public API surface**: All REST endpoints and the `PervokaAchievement::Api` module documented below.
+- **Patch releases** (1.0.x): Bug fixes only. No API changes.
+- **Minor releases** (1.x.0): New endpoints or options may be added. Existing endpoints and method signatures remain backwards-compatible.
+- **Major releases** (x.0.0): Breaking changes to endpoints or method signatures.
+
+**What is NOT part of the public API** (may change without notice):
+- Internal model methods and associations not documented here
+- View partials and HTML structure
+- CSS class names and DOM structure
+- Database schema (use the documented API, not direct DB queries)
+
+---
+
 ## REST API
 
 All REST endpoints require Redmine API authentication (API key or HTTP Basic auth)
@@ -130,3 +147,29 @@ end
 
 Event handlers that raise exceptions are caught and logged; they do not
 prevent the achievement from being saved.
+
+---
+
+## Authentication & Security
+
+### REST API Authentication
+
+All REST endpoints require one of:
+
+- **API key** as `key` query parameter: `GET /achievements.json?key=YOUR_API_KEY`
+- **API key** as HTTP header: `X-Redmine-API-Key: YOUR_API_KEY`
+- **HTTP Basic auth** with Redmine credentials
+
+The REST API must be enabled in Redmine: **Administration > Settings > API > Enable REST web service**.
+
+### Profile Visibility
+
+The `GET /achievements/:user_id.json` endpoint respects user privacy settings:
+
+- Returns `403 Forbidden` if the target user has not enabled their public profile
+- Admins bypass this restriction and can view any user's achievements
+- Users can always view their own achievements
+
+### Permissions
+
+All achievement endpoints (both HTML and JSON) require the `view_achievements` permission assigned to the user's role in at least one project.
