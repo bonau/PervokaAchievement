@@ -66,4 +66,36 @@ RSpec.describe AchievementsHelper, type: :helper do
       end
     end
   end
+
+  describe '#achievement_icon' do
+    it 'returns an img tag with correct alt text' do
+      html = helper.achievement_icon(achievement_class)
+      expect(html).to include('<img')
+      expect(html).to include('alt=')
+      expect(html).to include('create_first_issue')
+    end
+
+    it 'accepts a class argument' do
+      html = helper.achievement_icon(achievement_class, size: 64)
+      expect(html).to include('width="64"')
+      expect(html).to include('height="64"')
+    end
+
+    it 'accepts an instance argument' do
+      mail_double = double(deliver_later: nil)
+      allow(Mailer).to receive(:achievement_unlocked).and_return(mail_double)
+
+      instance = achievement_class.create!(user: user)
+      html = helper.achievement_icon(instance)
+      expect(html).to include('create_first_issue')
+
+      instance.destroy
+    end
+
+    it 'uses default size of 32' do
+      html = helper.achievement_icon(achievement_class)
+      expect(html).to include('width="32"')
+      expect(html).to include('height="32"')
+    end
+  end
 end

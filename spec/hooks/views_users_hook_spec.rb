@@ -10,12 +10,21 @@ RSpec.describe PervokaAchievement::Hooks::ViewsUsersHook do
   end
 
   describe 'toast notifications' do
+    fixtures :users
+
     it 'responds to view_layouts_base_body_bottom' do
       expect(hook).to respond_to(:view_layouts_base_body_bottom)
     end
 
     it 'returns empty string when user is not logged in' do
       allow(User).to receive(:current).and_return(User.anonymous)
+      expect(hook.view_layouts_base_body_bottom({})).to eq ''
+    end
+
+    it 'returns empty string when user has no unnotified achievements' do
+      user = User.find(2)
+      allow(User).to receive(:current).and_return(user)
+      Achievement.where(user_id: user.id, notified_at: nil).update_all(notified_at: Time.current)
       expect(hook.view_layouts_base_body_bottom({})).to eq ''
     end
   end
