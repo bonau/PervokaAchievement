@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  postgres:
+    image: docker.io/postgres:15-alpine
+    environment:
+      POSTGRES_DB: redmine
+      POSTGRES_USER: redmine
+      POSTGRES_PASSWORD: redmine_password
+
+  redmine:
+    build:
+      context: ..
+      dockerfile: e2e/Dockerfile.redmine
+    environment:
+      REDMINE_DB_POSTGRES: postgres
+      REDMINE_DB_DATABASE: redmine
+      REDMINE_DB_USERNAME: redmine
+      REDMINE_DB_PASSWORD: redmine_password
+      REDMINE_DB_PORT: 5432
+      RAILS_ENV: production
+      REDMINE_LANG: en
+      REDMINE_PLUGINS_MIGRATE: 1
+      REDMINE_SECRET_KEY_BASE: e2e_test_secret_key_base_not_for_production
+    depends_on:
+      - postgres
+
+  chrome:
+    image: docker.io/selenium/standalone-chrome:latest
+    shm_size: 2g
+
+  test:
+    build:
+      context: .
+      dockerfile: Dockerfile.test
+    environment:
+      REDMINE_URL: http://redmine:3000
+      SELENIUM_URL: http://chrome:4444
+    depends_on:
+      - redmine
+      - chrome

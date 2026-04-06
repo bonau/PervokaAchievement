@@ -1,0 +1,35 @@
+FROM docker.io/redmine:6.1
+
+USER root
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends git curl && \
+    rm -rf /var/lib/apt/lists/*
+
+# Wrapper entrypoint: runs original entrypoint in the background, waits for
+# the server to be ready, then loads Redmine default data (trackers, statuses,
+# roles, priorities) which the official image does not do automatically.
+RUN printf '#!/bin/bash\nset -e\n\
+/docker-entrypoint.sh "$@" &\n\
+SERVER_PID=$!\n\
+echo "E2E: waiting for Redmine..."\n\
+until curl -sf http://localhost:3000/login >/dev/null 2>&1; do sleep 2; done\n\
+echo "E2E: loading default data..."\n\
+cd /usr/src/redmine\n\
+export SECRET_KEY_BASE="${SECRET_KEY_BASE:-${REDMINE_SECRET_KEY_BASE:-e2e_fallback_key}}"\n\
+RAILS_ENV=production REDMINE_LANG=en bundle exec rake redmine:load_default_data 2>&1 || true\n\
+echo "E2E: ready"\n\
+wait $SERVER_PID\n' > /usr/local/bin/e2e-start.sh && chmod +x /usr/local/bin/e2e-start.sh
+
+USER redmine
+
+COPY --chown=redmine:redmine . /usr/src/redmine/plugins/pervoka_achievement
+WORKDIR /usr/src/redmine
+
+RUN echo "gem 'rspec-rails', '~> 6.0', group: [:development, :test]" >> Gemfile.local && \
+    echo "gem 'rspec_junit_formatter', group: [:test]" >> Gemfile.local && \
+    echo "gem 'rails-controller-testing', group: [:test]" >> Gemfile.local && \
+    bundle install
+
+ENTRYPOINT ["/usr/local/bin/e2e-start.sh"]
+CMD ["rails", "server", "-b", "0.0.0.0"]
+EXPOSE 3000
