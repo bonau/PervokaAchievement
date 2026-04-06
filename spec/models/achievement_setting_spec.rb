@@ -78,9 +78,17 @@ RSpec.describe AchievementSetting, type: :model do
     it 'strips HTML tags from custom_title on save' do
       setting = AchievementSetting.create!(
         achievement_type: achievement_class.name,
+        custom_title: '<b>Bold</b> Title'
+      )
+      expect(setting.custom_title).to eq 'Bold Title'
+    end
+
+    it 'strips script tags and their content' do
+      setting = AchievementSetting.create!(
+        achievement_type: achievement_class.name,
         custom_title: '<script>alert("xss")</script>Safe Title'
       )
-      expect(setting.custom_title).to eq 'alert("xss")Safe Title'
+      expect(setting.custom_title).to eq 'Safe Title'
     end
 
     it 'strips HTML tags from custom_description on save' do
