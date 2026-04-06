@@ -22,9 +22,10 @@
     <% if !unlocked && klass.target_count && defined?(@progresses) %>
       <% progress = @progresses[klass.name] %>
       <% current = progress&.current_count || 0 %>
+      <% pct = [(current.to_f / klass.target_count * 100).floor, 100].min %>
       <div class="achievement_progress">
-        <div class="achievement_progress_bar">
-          <div class="achievement_progress_fill" style="width: <%= [(current.to_f / klass.target_count * 100).floor, 100].min %>%"></div>
+        <div class="achievement_progress_bar" role="progressbar" aria-valuenow="<%= current %>" aria-valuemin="0" aria-valuemax="<%= klass.target_count %>" aria-label="<%= achievement_text(klass, :title) %>">
+          <div class="achievement_progress_fill" style="width: <%= pct %>%"></div>
         </div>
         <span class="achievement_progress_text"><%= current %>/<%= klass.target_count %></span>
       </div>

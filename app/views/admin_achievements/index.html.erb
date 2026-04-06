@@ -6,15 +6,15 @@
   <table class="list">
     <thead>
       <tr>
-        <th><%= l(:field_enabled) %></th>
-        <th><%= l(:label_achievement_name) %></th>
-        <th><%= l(:label_achievement_category) %></th>
-        <th><%= l(:label_achievement_tier) %></th>
-        <th><%= l(:label_achievement_tags) %></th>
-        <th><%= l(:label_achievement_points) %></th>
-        <th><%= l(:label_achievement_custom_title) %></th>
-        <th><%= l(:label_achievement_custom_description) %></th>
-        <th><%= l(:label_achievement_custom_quote) %></th>
+        <th scope="col"><%= l(:field_enabled) %></th>
+        <th scope="col"><%= l(:label_achievement_name) %></th>
+        <th scope="col"><%= l(:label_achievement_category) %></th>
+        <th scope="col"><%= l(:label_achievement_tier) %></th>
+        <th scope="col"><%= l(:label_achievement_tags) %></th>
+        <th scope="col"><%= l(:label_achievement_points) %></th>
+        <th scope="col"><%= l(:label_achievement_custom_title) %></th>
+        <th scope="col"><%= l(:label_achievement_custom_description) %></th>
+        <th scope="col"><%= l(:label_achievement_custom_quote) %></th>
       </tr>
     </thead>
     <tbody>
@@ -23,7 +23,8 @@
         <tr class="<%= cycle('odd', 'even') %>">
           <td class="center">
             <%= hidden_field_tag "settings[#{klass.name}][enabled]", '0' %>
-            <%= check_box_tag "settings[#{klass.name}][enabled]", '1', setting.enabled? %>
+            <label class="sr-only" for="settings_<%= klass.parameter_name %>_enabled"><%= l(:field_enabled) %> - <%= l(klass.locale_prefix(:title)) %></label>
+            <%= check_box_tag "settings[#{klass.name}][enabled]", '1', setting.enabled?, id: "settings_#{klass.parameter_name}_enabled" %>
           </td>
           <td>
             <%= l(klass.locale_prefix(:title)) %>

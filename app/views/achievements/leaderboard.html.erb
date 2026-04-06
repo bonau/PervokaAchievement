@@ -6,12 +6,13 @@
 
 <% if @leaderboard.any? %>
   <table class="list achievement_leaderboard">
+    <caption class="sr-only"><%= l(:'achievement.leaderboard_title') %></caption>
     <thead>
       <tr>
-        <th class="rank">#</th>
-        <th><%= l(:field_user) %></th>
-        <th class="score"><%= l(:'achievement.total_score') %></th>
-        <th class="count"><%= l(:'achievement.achievement_count') %></th>
+        <th class="rank" scope="col">#</th>
+        <th scope="col"><%= l(:field_user) %></th>
+        <th class="score" scope="col"><%= l(:'achievement.total_score') %></th>
+        <th class="count" scope="col"><%= l(:'achievement.achievement_count') %></th>
       </tr>
     </thead>
     <tbody>
