@@ -1,9 +1,9 @@
-<div id="achievement-toast-container">
+<div id="achievement-toast-container" role="status" aria-live="polite">
   <% titles.each do |title| %>
-    <div class="achievement_toast">
-      <span class="achievement_toast_icon">&#9733;</span>
+    <div class="achievement_toast" role="alert">
+      <span class="achievement_toast_icon" aria-hidden="true">&#9733;</span>
       <span class="achievement_toast_text"><%= l(:'achievement.unlocked', title: title) %></span>
-      <button class="achievement_toast_close" onclick="this.parentElement.remove()">&times;</button>
+      <button class="achievement_toast_close" onclick="this.parentElement.remove()" aria-label="<%= l(:button_close) %>">&times;</button>
     </div>
   <% end %>
 </div>

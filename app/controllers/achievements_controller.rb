@@ -31,9 +31,12 @@ class AchievementsController < ApplicationController
   def leaderboard
     users_with_achievements = User.joins(:achievements)
       .where(type: 'User', status: User::STATUS_ACTIVE)
+      .includes(:achievements)
       .distinct
+    settings_cache = AchievementSetting.all.index_by(&:achievement_type)
     @leaderboard = users_with_achievements.map do |user|
-      { user: user, score: user.achievement_score, count: user.achievements.size }
+      score = user.achievements.sum { |a| a.class.effective_points(settings_cache) }
+      { user: user, score: score, count: user.achievements.size }
     end.sort_by { |entry| -entry[:score] }
 
     respond_to do |format|

@@ -3,116 +3,143 @@ PervokaAchievement
 
 [![CI](https://github.com/bonau/PervokaAchievement/workflows/CI/badge.svg)](https://github.com/bonau/PervokaAchievement/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/bonau/PervokaAchievement/workflows/CodeQL%20Analysis/badge.svg)](https://github.com/bonau/PervokaAchievement/actions/workflows/codeql.yml)
-[![Docker Build](https://github.com/bonau/PervokaAchievement/workflows/CI/badge.svg?event=push)](https://github.com/bonau/PervokaAchievement/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-An extensible achievement system for redmine, a fantastic project management web application.
+An extensible achievement system for Redmine. Users earn achievements for completing specific actions and receive notifications when they unlock new ones.
 
-Every single achievement should be written in code, which is part of this achievement system.
+## Features
 
-## ✨ Features
+- **21 built-in achievements** across 5 categories (Issues, Projects, Wiki, Social, General)
+- **Achievement tiers** (Bronze, Silver, Gold) based on difficulty
+- **Progress tracking** for multi-stage achievements with progress bars
+- **Points & leaderboard** with admin-configurable custom point values
+- **Admin panel** to enable/disable achievements and customize text
+- **In-app toast notifications** when achievements are unlocked
+- **Email notifications** on achievement unlock
+- **REST API** (JSON) for achievements, profiles, and leaderboard
+- **Plugin API** for other Redmine plugins to register and award achievements
+- **Event hooks** for reacting to achievement unlocks
+- **User profile integration** via Redmine view hooks
+- **Public achievement profiles** (opt-in per user)
+- **i18n** support (English, Traditional Chinese, Simplified Chinese, Japanese)
+- **Docker** support for easy deployment
+- **300+ RSpec tests** with CI/CD via GitHub Actions
 
-- 🏆 Extensible achievement framework with 11 built-in achievements
-- 📂 Achievement category system (Issues, Projects, Wiki, Social)
-- 📧 Email notifications when achievements are unlocked
-- 🎨 Categorized achievement display page with inline card layout
-- 🌐 i18n support (English, Traditional Chinese, Japanese, Simplified Chinese)
-- 🐳 Docker support for easy deployment
-- ✅ Comprehensive RSpec test suite (~105 tests)
-- 🔄 CI/CD with GitHub Actions
+## Compatibility
 
+| Redmine | Rails | Ruby |
+|---------|-------|------|
+| 5.1     | 6.x   | 3.1, 3.2 |
+| 6.1     | 7.2   | 3.2, 3.3, 3.4 |
 
-Install
--------
+## Installation
 
-Simply copy this project to your own redmine directory:
+Copy the plugin to your Redmine plugins directory:
 
-    git clone git://github.com/bonau/PervokaAchievement.git /tmp/pervoka_achievement
-    cp -a /tmp/pervoka_achievement /path/to/redmine/plugins/pervoka_achievement
+```bash
+cd /path/to/redmine/plugins
+git clone https://github.com/bonau/PervokaAchievement.git pervoka_achievement
+```
 
-or use it as a submodule: (_optional_)
+Run the plugin migrations:
 
-    git submodule add git://github.com/bonau/PervokaAchievement.git plugins/pervoka_achievement
-    git add .gitmodule plugins/pervoka_achievement
-    git commit -m 'add pervoka achievement plugin'
-    git submodule init # optional
+```bash
+cd /path/to/redmine
+bundle exec rake redmine:plugins:migrate NAME=pervoka_achievement RAILS_ENV=production
+```
 
-And migrate the database by using redmine rake task.
+Restart Redmine and you're done.
 
-    rake redmine:plugins:migrate NAME=pervoka_achievement
+## Docker
 
-That's all.
+```bash
+docker-compose up -d
+```
 
-Implement A New Achievement
----------------------------
+Visit `http://localhost:3000` (default credentials: admin / admin).
 
-Notice: write your own code in plugins/pervoka\_achievement, not the redmine framework itself.
+## Creating a New Achievement
 
-### Create a model
+Create a model in `app/models/`:
 
-To implement an achievement model, simply create a file named app/models/*name_achievement.rb*
-(For example, "app/models/first\_love\_achievement.rb"). And then make it inherited from Achievement
-model.
+```ruby
+# app/models/first_love_achievement.rb
+class FirstLoveAchievement < Achievement
+  def self.category = :issue
+  def self.points = 10
+  def self.tier = :bronze
+  def self.tags = [:milestone]
 
-Achievement model has an implicit method *check_conditions_for(user)* for preventing a user from
-receiving the same award twice or above. We can reuse it and add some flavor. The example below
-shows how we could customize our own strategy:
+  def self.check_conditions_for(user)
+    return unless user.is_a?(User)
+    super(user) { |u| Issue.where(assigned_to_id: [u.id] + u.group_ids).exists? }
+  end
+end
+```
 
-    # app/models/first_love_achievement.rb
-    class FirstLoveAchievement < Achievement
-      def self.check_conditions_for(user)
-        super(user) { |user| Issue.where(:assigned_to_id => ([user.id] + user.group_ids)).size > 0 }
+Add a patch to trigger it:
+
+```ruby
+# lib/pervoka_achievement/patches/issue_patch.rb
+module PervokaAchievement
+  module Patches
+    module IssuePatch
+      extend ActiveSupport::Concern
+
+      prepended do
+        after_save :check_achievement
+      end
+
+      def check_achievement
+        return unless saved_change_to_assigned_to_id?
+        FirstLoveAchievement.check_conditions_for(assigned_to)
       end
     end
+  end
+end
+```
 
-### Add a patch to trigger the achievement
+Register the patch in `init.rb`:
 
-Now we have to decide when to check if the "First Love" achievement is reached.
+```ruby
+Issue.prepend PervokaAchievement::Patches::IssuePatch unless Issue < PervokaAchievement::Patches::IssuePatch
+```
 
-Create a patch that hooks into the relevant model's lifecycle using `after_save` callbacks:
+Add locale strings in `config/locales/en.yml`:
 
-    # lib/pervoka_achievement/patches/issue_patch.rb
-    module PervokaAchievement
-      module Patches
-        module IssuePatch
-          def self.included(base)
-            base.send(:include, InstanceMethods)
-            base.class_eval do
-              after_save :check_achievement
-            end
-          end
+```yaml
+en:
+  achievement:
+    first_love_achievement:
+      title: First Love
+      description: Assigned to at least one issue
+      quote: First time's always painful.
+```
 
-          module InstanceMethods
-            def check_achievement
-              return unless saved_change_to_assigned_to_id?
+## Plugin API
 
-              FirstLoveAchievement.check_conditions_for(self.assigned_to)
-            end
-          end
-        end
-      end
-    end
+Other Redmine plugins can integrate with the achievement system:
 
-### Register the patch
+```ruby
+# Register an achievement
+PervokaAchievement::Api.register_achievement :first_merge_request,
+  category: :social, tier: :silver, points: 15
 
-To register the patch we've created, add the following code in *init.rb*:
+# Award it
+PervokaAchievement::Api.award(:first_merge_request, user)
 
-    Rails.configuration.to_prepare do
-      Issue.send(:include, PervokaAchievement::Patches::IssuePatch) unless Issue.included_modules.include?(PervokaAchievement::Patches::IssuePatch)
-    end
+# Subscribe to events
+PervokaAchievement::Api.on(:achievement_unlocked) do |payload|
+  Rails.logger.info "#{payload[:user].login} unlocked #{payload[:achievement_class].name}"
+end
+```
 
+See [docs/API.md](docs/API.md) for full API documentation.
 
-### Modify locale file
-    # config/locales/en.yml
-    en:
-      achievement:
-        first_love_achievement:
-          title: First Love
-          description: Assigned to at least one issue
-          quote: First time's always painful.
-
-Roadmap
--------
+## Roadmap
 
 See [docs/roadmap.md](docs/roadmap.md) for the full roadmap from v0.2 to v1.0+.
 
+## License
+
+MIT

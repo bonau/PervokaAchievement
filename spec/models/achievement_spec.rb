@@ -178,6 +178,13 @@ RSpec.describe Achievement, type: :model do
     end
   end
 
+  describe '.icon_name' do
+    it 'strips the _achievement suffix' do
+      expect(FirstLoveAchievement.icon_name).to eq 'first_love'
+      expect(SpeedRunnerAchievement.icon_name).to eq 'speed_runner'
+    end
+  end
+
   describe '.parameter_name' do
     it 'returns the underscored class name' do
       expect(FirstLoveAchievement.parameter_name).to eq 'first_love_achievement'

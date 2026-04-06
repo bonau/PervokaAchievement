@@ -229,6 +229,21 @@ RSpec.describe AchievementsController, type: :controller do
       user_ids = leaderboard.map { |e| e[:user].id }
       expect(user_ids).not_to include(user.id)
     end
+
+    it 'sorts multiple users by score descending' do
+      other_user = User.find(3)
+      Achievement.where(user_id: [user.id, other_user.id]).delete_all
+
+      # Give user more points than other_user
+      FirstLoveAchievement.create(user: user)
+      CreateFirstIssueAchievement.create(user: user)
+      FirstLoveAchievement.create(user: other_user)
+
+      get :leaderboard
+      leaderboard = assigns(:leaderboard)
+      scores = leaderboard.map { |e| e[:score] }
+      expect(scores).to eq scores.sort.reverse
+    end
   end
 
   describe 'GET #index (JSON)' do
