@@ -1,0 +1,17 @@
+FROM docker.io/ruby:3.2-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY Gemfile ./
+RUN bundle install --jobs 4
+
+COPY spec/ spec/
+COPY wait-and-test.sh ./
+RUN chmod +x wait-and-test.sh
+
+CMD ["./wait-and-test.sh"]

@@ -2,6 +2,30 @@
 
 All notable changes to PervokaAchievement are documented in this file.
 
+## [1.0.0] - 2026-04-06
+
+### Added
+- Administration guide (`docs/ADMINISTRATION.md`)
+- SemVer stability guarantee and security section in API documentation
+- HTML sanitization on admin custom text inputs (defense-in-depth)
+
+### Changed
+- Public API surface now follows Semantic Versioning from this release forward
+
+## [0.9.0] - 2026-04-05
+
+### Added
+- Composite DB index on `achievements(user_id, type)` for query performance
+- Baseline accessibility: ARIA roles/labels, screen-reader-only labels, color contrast (WCAG AA)
+- Test coverage expanded to 306 specs (icon_name, helper, leaderboard edge cases)
+- README rewrite and CHANGELOG.md
+- Ruby 3.4 added to CI matrix
+
+### Changed
+- N+1 query fixes: cached AchievementSetting lookups, pre-loaded leaderboard associations
+- Modern `validates` syntax replacing `validates_presence_of`
+- `.exists?` replacing `.size > 0` for existence checks
+
 ## [0.8.0] - 2026-04-01
 
 ### Added

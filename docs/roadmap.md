@@ -163,14 +163,16 @@ touching code.
 
 ---
 
-## v1.0 — General Achievement System (Stable Release)
+## v1.0 �� General Achievement System (Stable Release) *(completed)*
 
 **Goal**: Stable, complete, and extensible Redmine achievement system.
 
-- All features from v0.2–v0.9 integrated
-- Stable public API (SemVer guarantees)
-- Full documentation: installation, extension, administration
+- All features from v0.2–v0.9 integrated and verified
+- Stable public API with SemVer guarantees (documented in `docs/API.md`)
+- Full documentation: installation (README), extension (API.md), administration (ADMINISTRATION.md)
+- Security hardening: HTML sanitization on admin custom text inputs
 - Performance and security review passed
+- 310 specs, Ruby 3.1–3.4, Redmine 5.1/6.1
 
 ---
 
