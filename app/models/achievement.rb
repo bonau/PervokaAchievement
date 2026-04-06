@@ -6,7 +6,7 @@ class Achievement < ActiveRecord::Base
   belongs_to :user
   after_create :deliver_mail
   after_create :fire_unlocked_event
-  validates_presence_of :user
+  validates :user, presence: true
 
   class << self
     attr_accessor :registered_achievements
