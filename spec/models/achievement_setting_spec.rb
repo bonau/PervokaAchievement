@@ -74,6 +74,40 @@ RSpec.describe AchievementSetting, type: :model do
     end
   end
 
+  describe 'HTML sanitization' do
+    it 'strips HTML tags from custom_title on save' do
+      setting = AchievementSetting.create!(
+        achievement_type: achievement_class.name,
+        custom_title: '<script>alert("xss")</script>Safe Title'
+      )
+      expect(setting.custom_title).to eq 'alert("xss")Safe Title'
+    end
+
+    it 'strips HTML tags from custom_description on save' do
+      setting = AchievementSetting.create!(
+        achievement_type: achievement_class.name,
+        custom_description: '<b>Bold</b> and <em>italic</em>'
+      )
+      expect(setting.custom_description).to eq 'Bold and italic'
+    end
+
+    it 'strips HTML tags from custom_quote on save' do
+      setting = AchievementSetting.create!(
+        achievement_type: achievement_class.name,
+        custom_quote: '<img src=x onerror=alert(1)>Nice quote'
+      )
+      expect(setting.custom_quote).to eq 'Nice quote'
+    end
+
+    it 'leaves nil values unchanged' do
+      setting = AchievementSetting.create!(
+        achievement_type: achievement_class.name,
+        custom_title: nil
+      )
+      expect(setting.custom_title).to be_nil
+    end
+  end
+
   describe '#display_text' do
     it 'returns custom text when present' do
       setting = AchievementSetting.new(
