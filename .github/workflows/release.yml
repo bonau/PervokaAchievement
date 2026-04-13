@@ -44,7 +44,7 @@ jobs:
           git archive --format=zip --prefix=pervoka_achievement/ HEAD > release/pervoka_achievement-${GITHUB_REF#refs/tags/}.zip
 
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v3
         with:
           body: |
             ## Changes in this Release
