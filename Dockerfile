@@ -1,5 +1,5 @@
 # Redmine with PervokaAchievement Plugin
-FROM redmine:6.1
+FROM redmine:7.0
 
 # 維護者資訊
 LABEL maintainer="PervokaAchievement"
