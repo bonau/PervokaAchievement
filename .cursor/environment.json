@@ -1,0 +1,18 @@
+{
+  "name": "PervokaAchievement (Redmine host + plugin)",
+  "install": "bash .cursor/install.sh",
+  "start": "bash .cursor/start.sh",
+  "terminals": [
+    {
+      "name": "redmine-server",
+      "command": "bash .cursor/run-server.sh",
+      "description": "Redmine (production) with the PervokaAchievement plugin, served on http://localhost:3000 (login admin / adminadmin1)."
+    }
+  ],
+  "ports": [
+    {
+      "name": "redmine",
+      "port": 3000
+    }
+  ]
+}
