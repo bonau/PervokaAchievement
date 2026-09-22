@@ -1,190 +1,161 @@
-# PervokaAchievement — Version Roadmap
+# PervokaAchievement — v1.x Roadmap
 
-## Overview
+v1.0.0 已發布。這份文件只記錄 **v1.0 之後尚未實作** 的方向，供選擇架構之用。v0.2–v1.0 的里程碑留在 [CHANGELOG.md](../CHANGELOG.md)。
 
-PervokaAchievement aims to be the most general-purpose achievement system for Redmine.
-This roadmap covers v0.2 through v1.0, tracking milestones from compatibility restoration
-to a fully configurable, notification-rich, and extensible achievement platform.
+## 目標
 
-**Version strategy**: Semantic versioning (plugin-independent of Redmine version).
-Redmine compatibility is documented per release in the changelog.
+1. 成就條件與程式碼解耦。新增或調整條件時，不需要改 model patch、也不需要為每個成就新增 Ruby class。
+2. 管理者可以在管理介面建立自己的成就條件。
+3. 條件以封閉、可審查的形式儲存。管理介面不能變成任意程式執行。
+4. 評估改為非同步、事件驅動。原本的 Redmine 操作先提交成功，給獎在背景完成。
 
----
+## 現況
 
-## v0.2 — Compatibility Release
+條件寫在 `Achievement` 子類別的 `check_conditions_for`。`IssuePatch`、`JournalPatch` 等 patch 在 `after_save` / `after_create` 裡直接點名這些類別，於同一個請求同步判斷。管理介面（`/admin/achievements`）只能啟用、停用、覆寫文案與點數。
 
-**Goal**: First modern release. Establishes a stable, tested foundation.
+這帶來三個限制：
 
-- Redmine 5.1 / 6.1 compatibility
-- Rails 6.x / 7.x compatibility
-- Ruby 3.1 / 3.2 / 3.3 support
-- Zeitwerk autoloading (removes deprecated `unloadable`)
-- RSpec test suite (12 spec files, 65 tests)
-- GitHub Actions CI/CD matrix (Ruby × Redmine combinations)
-- Docker support
-- 6 critical bug fixes (see project-001-revive retrospective)
-- Plugin version reset to semantic versioning (0.2.0)
+- 觸發點與成就類別綁在一起。每加一種條件，就要改 patch。
+- 多個內建成就讀取 `User.current`。背景工作沒有這個值，事件必須自己帶上行為者。
+- 計數與關聯查詢發生在使用者的請求裡。規則一多，會拖慢 Redmine 本身的儲存。
 
----
+v1.0 的公開 API 依 SemVer 維持相容：REST 端點，以及 `PervokaAchievement::Api` 的 `register_achievement`、`award`、`increment_progress`、`on`。README 裡「繼承 `Achievement` 並在 patch 呼叫」的寫法改為舊路徑，1.x 期間繼續可用。
 
-## v0.3 — Content & UX Expansion *(current develop)*
+## 共同架構
 
-**Goal**: Broaden achievement variety and improve the display experience.
+不論下面選哪一種條件寫法，執行路徑都相同：
 
-- Expanded built-in achievements from 4 to 11
-  - Issue-based: CreateFirstIssue, ResolveFirstIssue, BugHunter, SpeedRunner
-  - Comment-based: FirstComment (journal with notes)
-  - Wiki-based: WikiEditor
-  - Social: TeamPlayer (3+ project memberships)
-- Achievement category system (issue, project, wiki, social, general)
-- Categorized achievement list UI with section headers
-- Inline-block card layout with improved timestamp display
-- 3 new Redmine model patches: JournalPatch, WikiContentPatch, MemberPatch
-- i18n expansion: added `ja.yml` (Japanese) and `zh-CN.yml` (Simplified Chinese)
-- ~22 spec files, ~105 tests
+```text
+Redmine model after_commit
+  -> 領域事件（名稱、行為者、主體、發生時間、變更快照）
+  -> ActiveJob
+  -> 條件引擎（只認得允許清單）
+  -> 給獎或累計進度
+  -> 既有的郵件與 toast
+```
 
-> **Design decision**: Progress tracking and countable achievements (N > 1) deferred
-> to v0.5. All v0.3 achievements are binary (one-time trigger). Time-based achievements
-> (active on N consecutive days) also deferred to v0.5.
+事件目錄由程式維護，例如 `issue.created`、`issue.closed`、`journal.created`、`wiki.updated`、`member.created`、`time_entry.created`。管理者組合的是這些事件上的條件。新的事件種類仍由開發者加入；這條界線用來避免管理介面掛上任意 callback。
 
----
+### 安全底線
 
-## v0.4 — Admin-Configurable Achievements *(Client-based)*
+每個選項都遵守：
 
-**Goal**: Redmine administrators can control achievements from the admin UI without
-touching code.
+- 不 `eval`、不 `instance_eval`、不接受 Ruby 或 SQL 字串。
+- 事件、欄位、運算子、聚合函式都來自允許清單。欄位是宣告好的名稱，不是方法鏈。
+- 規則有節點數、巢狀深度與執行時間上限。
+- 查詢由引擎組成，且為只讀。
+- 給獎冪等。同一位使用者、同一個成就、同一來源事件只會成功一次。
+- 評估失敗只寫入日誌。背景工作的錯誤不回滾已經成功的 Redmine 操作。
+- 只有管理者可以寫入規則。自訂文案沿用現有的 HTML 清理。
+- 事件在 `after_commit` 發布，讓工作讀到已提交的資料。
+- 佇列後端交給站台的 ActiveJob 設定。外掛不綁定 Sidekiq 或 Solid Queue。測試以 inline 執行。
 
-- Admin panel at `/admin/achievements`
-  - List all code-defined achievements
-  - Enable / disable individual achievements
-  - Override title, description, and quote per achievement (stored in DB, takes
-    precedence over locale defaults)
-- New `achievement_settings` table (or Redmine plugin settings mechanism)
-- UI styled to match Redmine admin interface
+`deliver_later` 已經負責郵件。Toast 是下次請求才讀 `notified_at`，與背景給獎相容。
 
-> **Design note**: Achievement *conditions* remain code-defined in this version.
-> Dynamic condition configuration via UI is scoped to v1.0+.
+## 選項一：條件怎麼寫
 
----
+### A. 參數化範本
 
-## v0.5 — Progress & Tier System
+管理者選擇範本並填參數。引擎是固定的範本實作。
 
-**Goal**: Support cumulative achievements and add depth through tiered rewards.
+範本涵蓋目前內建成就的形狀：第一次發生、欄位相等、時間差、時段或週末、次數門檻、相異值門檻。
 
-- Progress tracking (`achievement_progresses` table: `user_id`, `achievement_type`,
-  `current_count`)
-- Achievement tier support (Bronze / Silver / Gold, or custom levels)
-- Progress bar displayed in the achievement list view
-- Backfill mechanism for existing users' historical data
+- 管理者不接觸表達式，審查規則就是看範本名稱與參數。
+- 新的條件形狀仍要開發者加範本。跨條件組合（「關閉的議題超過 10 筆，而且專案是 X」）需要事先做成範本，或是不支援。
 
----
+### B. 結構化規則
 
-## v0.6 — Social & Discovery *(completed)*
+管理者用表單組出一棵規則樹，存成 JSON。節點只有 `all`、`any`、`not`、比較、以及宣告過的聚合。
 
-**Goal**: Give the achievement system a sense of community.
+```json
+{
+  "on": "issue.closed",
+  "actor": "user",
+  "when": {
+    "all": [
+      { "field": "tracker_name", "op": "eq", "value": "Bug" },
+      { "field": "hours_since_created", "op": "lt", "value": 24 }
+    ]
+  }
+}
+```
 
-- Achievement points system (10–25 pts per achievement based on difficulty)
-  - Admin-configurable custom point values per achievement
-  - Total score displayed on achievements page
-- Shareable personal achievement page (opt-in public profile)
-  - `AchievementUserSetting` model with `public_profile` toggle
-  - Route: `GET /achievements/:id` for viewing other users' achievements
-  - Admins can view any profile regardless of visibility settings
-- Simple leaderboard view (`GET /achievements/leaderboard`)
-  - Ranks users by total achievement score
-  - Links to public profiles; current user highlighted
-- Achievement tags system (milestone, exploratory, fun, skill, teamwork)
-  - Color-coded tag badges on achievement cards
-  - Tags visible in admin settings table
-- 2 new migrations (004, 005), ~30 new specs
-- i18n: all new strings in en, zh-TW, zh-CN, ja
+```json
+{
+  "on": "issue.created",
+  "actor": "author",
+  "award_when": {
+    "count_distinct": { "of": "tracker_id", "scope": { "author_id": "$actor" }, "gte": 3 }
+  }
+}
+```
 
-> **Decision**: Leaderboard is accessible to any user with `:view_achievements`
-> permission. Individual profile visibility is controlled by users via opt-in.
+- 可以組合「次數門檻 AND 專案等於 X」，而不為每種組合寫 Ruby。
+- 允許清單、深度與節點上限讓規則可靜態檢查。
+- 表單與引擎都要自己做。聚合（相異 tracker、連續天數）必須是一等節點，不能靠臨時查詢語法補上。
 
----
+### C. 受限表達式（CEL）
 
-## v0.7 — Tiers, Progress & Notifications *(completed)*
+管理者撰寫 [Common Expression Language](https://cel.dev/) 表達式。CEL 本身沒有 I/O；唯一能讀 Redmine 資料的是我們註冊的函式，例如 `count_issues(author, tracker: "Bug")`。
 
-**Goal**: Add depth through tiered rewards, progress tracking, and in-app notifications.
+- 表達力高於表單，仍禁止任意程式與任意 SQL。
+- 管理者要會寫表達式。需要另一個 gem，並為函式設定成本上限。
+- 函式清單就是安全邊界。少註冊一個函式，就少一種可表達的條件。
 
-- Achievement tier system (Bronze / Silver / Gold)
-  - Tier badges displayed on achievement cards and admin panel
-  - Each achievement defines its tier based on difficulty
-- Achievement progress tracking system
-  - `achievement_progresses` table for multi-stage achievement support
-  - `Achievement.target_count` and `Achievement.increment_progress_for` API
-  - Progress bars displayed on unlockable achievements
-- In-app toast notifications on achievement unlock
-  - `notified_at` column on achievements table
-  - Slide-in toast popup via view hook, auto-dismiss after 6 seconds
-- 10 new achievements (total: 21)
-  - Night Owl, Early Bird, Long Haul, Priority Expert, Detailed Reporter,
-    Paperwork, Time Keeper, Self Starter, Weekend Warrior, Multi-tracker
-- New `TimeEntryPatch` for time tracking hook
-- Docker setup fixed (use official Redmine entrypoint)
-- 2 new migrations (006, 007), ~50 new specs
-- i18n: all new strings in en, zh-TW, zh-CN, ja
+### D. 站台腳本
 
----
+管理者貼上 Ruby（或其他腳本），在沙箱執行。
 
-## v0.8 — Developer API & Extension Points *(completed)*
+- 任何條件都能寫。
+- 在 Redmine 行程內對管理者輸入做沙箱，實務上仍等於遠端程式執行。此選項不符合「以安全的方式讓管理者設立條件」。
 
-**Goal**: Allow other Redmine plugins to integrate cleanly with the achievement system.
+## 選項二：事件要不要留下紀錄
 
-- Public plugin API: `PervokaAchievement::Api.register_achievement(...)`
-  - External plugins can register achievements without subclassing
-  - `.award(:key, user)` and `.increment_progress(:key, user)` helpers
-  - `.registered?` / `.registered_keys` for querying
-- REST API endpoints (JSON, with `accept_api_auth`):
-  - `GET /achievements.json` — current user's achievements
-  - `GET /achievements/:id.json` — specific user's achievements
-  - `GET /achievements/leaderboard.json` — ranked leaderboard
-- Event hook interface: `PervokaAchievement::Api.on(:achievement_unlocked)`
-  - Fired after any achievement is awarded (including external)
-  - Error-isolated handlers (exceptions logged, not propagated)
-- Versioned API documentation (`docs/API.md`)
-- ~20 new specs for API and REST endpoints
+條件寫法與事件儲存可以分開選。
 
----
+### 1. 短暫事件
 
-## v0.9 — Stabilization & Polish *(completed)*
+`after_commit` 把 payload 送進 ActiveJob，不另存事件表。工作失敗由佇列重試。
 
-**Goal**: Final preparation for the v1.0 release.
+- 與目標直接對應：解耦、非同步、規則引擎可接上。
+- 外掛安裝前的歷史動作不會自動重算。補資料仍要像現在一樣另寫掃描。
+- 工作 payload 要自帶行為者與當時的欄位快照，避免事後讀到已變更的 `User.current` 或被改過的議題。
 
-- Composite DB index on `achievements(user_id, type)` for query performance
-- N+1 query fixes: cached AchievementSetting lookups, pre-loaded leaderboard
-- Baseline accessibility (a11y): ARIA roles/labels, color contrast (WCAG AA)
-- Deprecation cleanup: modern `validates` syntax, `.exists?` over `.size > 0`
-- Test coverage: 306 specs (added icon_name, helper, leaderboard edge cases)
-- README rewrite and CHANGELOG.md added
-- Ruby 3.4 added to CI matrix
-- Compatibility verified: Ruby 3.1–3.4, Redmine 5.1/6.1
+### 2. 事件紀錄（事件溯源）
 
----
+同一種領域事件先寫入 append-only 表，再由投影工作評估成就。需要時可從某個序號重放。
 
-## v1.0 �� General Achievement System (Stable Release) *(completed)*
+- 補算歷史、稽核「為什麼給獎」、重跑規則都用同一條紀錄。
+- 要處理順序、保留期限、至少一次投遞，以及外掛安裝前的一次性回補。Redmine 本身沒有這條事件流，紀錄從此外掛開始寫入才算完整。
 
-**Goal**: Stable, complete, and extensible Redmine achievement system.
+## 內建成就
 
-- All features from v0.2–v0.9 integrated and verified
-- Stable public API with SemVer guarantees (documented in `docs/API.md`)
-- Full documentation: installation (README), extension (API.md), administration (ADMINISTRATION.md)
-- Security hardening: HTML sanitization on admin custom text inputs
-- Performance and security review passed
-- 310 specs, Ruby 3.1–3.4, Redmine 5.1/6.1
+21 個內建成就是規則引擎的遷移來源，不是第一版就要刪掉的程式。建議順序：
 
----
+1. Patch 只發布事件。現有類別改為訂閱事件，行為與文案維持不變。
+2. 選定的條件語言上線後，能表達的內建成就改成種子規則。
+3. 尚未能表達的（若有）繼續以程式訂閱，直到語言補上對應的欄位或聚合。
 
-## Post v1.0 Direction
+`Api.award` 保留給其他外掛。它們可以繼續自己決定何時給獎，也可以改為發布領域事件，讓同一套引擎處理。
 
-After v1.0, the focus shifts toward making achievement *conditions* themselves
-configurable without code changes:
+## 建議
 
-- **Event sourcing architecture**: Abstract trigger conditions from code into a
-  configurable event pipeline, enabling admins to define complete achievement
-  conditions through the UI
-- **Pluggable condition engine (rule engine)**: Composable condition building
-  (e.g., "issues closed by user > 10 AND project = X")
+採用 **B. 結構化規則**，加上 **1. 短暫事件**。
 
-This work will be planned incrementally starting in v1.x.
+這組同時滿足解耦、管理者自訂、以及非同步事件驅動。安全邊界是 JSON 綱要與允許清單，不依賴沙箱。事件表留到真的要重放或稽核時再加，避免第一版同時做規則引擎與事件溯源。
+
+對應的版本切片：
+
+| 版本 | 內容 |
+|------|------|
+| v1.1 | 領域事件與 ActiveJob。內建成就改為訂閱。管理介面不變。 |
+| v1.2 | 規則儲存、引擎、管理介面。管理者可新增成就與條件。 |
+| v1.3 | 內建成就依序改成種子規則。文件把子類別寫法標成相容路徑。 |
+
+若選 A，v1.2 改為範本目錄與參數表單。若選 C，v1.2 改為 CEL 編輯器與允許函式。若選事件紀錄，在 v1.1 就加入事件表，其後版本的評估器改讀這張表。
+
+## 尚未決定
+
+- 條件寫法：A 範本、B 結構化規則、C CEL、D 站台腳本。
+- 事件模型：短暫事件，或從 v1.1 就做事件紀錄。
+- 內建成就：先搬到事件訂閱，或在規則引擎完成前維持 patch 直呼。

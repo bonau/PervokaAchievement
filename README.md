@@ -138,7 +138,7 @@ See [docs/API.md](docs/API.md) for full API documentation.
 
 ## Roadmap
 
-See [docs/roadmap.md](docs/roadmap.md) for the full roadmap from v0.2 to v1.0+.
+See [docs/roadmap.md](docs/roadmap.md) for the post-v1.0 direction. Completed v0.2–v1.0 milestones are in [CHANGELOG.md](CHANGELOG.md).
 
 ## License
 
