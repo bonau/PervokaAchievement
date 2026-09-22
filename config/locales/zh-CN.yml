@@ -11,6 +11,7 @@
   label_achievement_tags: 标签
   label_achievement_points: 点数
   text_achievement_admin_info: 留空自定义栏位将使用语系预设值。
+  field_enabled: 启用
   achievement:
     unlocked: 您已获得「%{title}」成就
     detail: 获得新的成就，未来系统将会有更多功能与成就，请继续努力。

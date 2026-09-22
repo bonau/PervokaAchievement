@@ -11,6 +11,7 @@ en:
   label_achievement_tags: Tags
   label_achievement_points: Points
   text_achievement_admin_info: "Leave custom fields blank to use locale defaults."
+  field_enabled: Enabled
   achievement:
     unlocked: Achievement "%{title}" Unlocked!
     detail: An achievement is unlocked. More functions will be available in the future.
